@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "503594139897",
+    "project_id": "conecta-umadim",
+    "storage_bucket": "conecta-umadim.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503594139897:android:da09bb7522286a5c5a2228",
+        "android_client_info": {
+          "package_name": "com.example.conecta_umadim_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCi5tetdQuEDxHntluMf47JuUp9M9EagY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503594139897:android:dd95eefc93fecd6e5a2228",
+        "android_client_info": {
+          "package_name": "com.example.connect_umadim_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCi5tetdQuEDxHntluMf47JuUp9M9EagY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
