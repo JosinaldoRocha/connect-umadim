@@ -1,3 +1,4 @@
+import 'package:connect_umadim_app/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class AppWidget extends StatelessWidget {
@@ -12,6 +13,8 @@ class AppWidget extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      initialRoute: AppRoutes().initialRoute,
+      routes: AppRoutes().allAppRoutes,
     );
   }
 }
