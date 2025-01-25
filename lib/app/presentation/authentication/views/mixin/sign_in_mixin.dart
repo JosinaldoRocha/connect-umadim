@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../pages/sign_in_page.dart';
+import '../pages/sign_in/sign_in_page.dart';
 
 mixin SignInMixin<T extends SignInPage> on ConsumerState<T> {
   final emailController = TextEditingController();
