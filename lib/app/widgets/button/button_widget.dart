@@ -126,7 +126,10 @@ class ButtonWidget extends StatelessWidget {
   Widget _buildText() {
     return Text(
       title,
-      style: AppText.text().bodyMedium!.copyWith(fontSize: 16),
+      style: AppText.text().bodyLarge!.copyWith(
+            fontWeight: FontWeight.bold,
+            color: AppColor.white,
+          ),
     );
   }
 
