@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"conecta-umadim","appId":"1:503594139897:android:dd95eefc93fecd6e5a2228","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"conecta-umadim","configurations":{"android":"1:503594139897:android:dd95eefc93fecd6e5a2228","ios":"1:503594139897:ios:02a0cbdb2faea2195a2228","macos":"1:503594139897:ios:02a0cbdb2faea2195a2228","web":"1:503594139897:web:c677159b4827d3a45a2228","windows":"1:503594139897:web:9d0e8085ceb534eb5a2228"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "conecta-umadim",
+          "appId": "1:503594139897:android:dd95eefc93fecd6e5a2228",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "conecta-umadim",
+          "configurations": {
+            "android": "1:503594139897:android:dd95eefc93fecd6e5a2228",
+            "ios": "1:503594139897:ios:02a0cbdb2faea2195a2228",
+            "macos": "1:503594139897:ios:02a0cbdb2faea2195a2228",
+            "web": "1:503594139897:web:c677159b4827d3a45a2228",
+            "windows": "1:503594139897:web:9d0e8085ceb534eb5a2228"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
