@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../provider/auth_provider.dart';
 import '../pages/sign_in/sign_in_page.dart';
 
 mixin SignInMixin<T extends SignInPage> on ConsumerState<T> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  void addListeners() {
+    emailController.addListener(_validateFields);
+    passwordController.addListener(_validateFields);
+  }
+
+  void _validateFields() {
+    final isValid =
+        emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+
+    ref.read(isButtonEnabledProvider.notifier).state = isValid;
+  }
 
   // void listen() {
   //   ref.listen<SignInState>(

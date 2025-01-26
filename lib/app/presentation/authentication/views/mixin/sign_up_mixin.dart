@@ -3,6 +3,8 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../provider/auth_provider.dart';
+
 mixin SignUpMixin<T extends SignUpPage> on ConsumerState<T> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -11,6 +13,26 @@ mixin SignUpMixin<T extends SignUpPage> on ConsumerState<T> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  void addListeners() {
+    nameController.addListener(_validateFields);
+    emailController.addListener(_validateFields);
+    umadimFucntionController.addListener(_validateFields);
+    localFunctionController.addListener(_validateFields);
+    passwordController.addListener(_validateFields);
+    confirmPasswordController.addListener(_validateFields);
+  }
+
+  void _validateFields() {
+    final isValid = nameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        umadimFucntionController.dropDownValue != null &&
+        localFunctionController.dropDownValue != null &&
+        passwordController.text.isNotEmpty &&
+        confirmPasswordController.text.isNotEmpty;
+
+    ref.read(isButtonEnabledProvider.notifier).state = isValid;
+  }
 
   // void listen() {
   //   ref.listen<SignInState>(
