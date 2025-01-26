@@ -39,7 +39,9 @@ class _DropDownWidgetState extends State<DropDownWidget> {
             }
             return null;
           },
-      textStyle: AppText.text().bodyMedium!.copyWith(fontSize: 18),
+      textStyle: AppText.text().bodyMedium!.copyWith(
+            color: AppColor.primaryGrey,
+          ),
       textFieldDecoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
@@ -66,11 +68,12 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       dropDownIconProperty: IconProperty(
         icon: Icons.arrow_drop_down_rounded,
         size: 35,
-        color: AppColor.mediumBlue,
+        color: AppColor.primaryGrey,
       ),
       clearIconProperty: IconProperty(
         icon: Icons.close,
         size: 20,
+        color: AppColor.primaryGrey,
       ),
       readOnly: true,
       controller: widget.controller,
