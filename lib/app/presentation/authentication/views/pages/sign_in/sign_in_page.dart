@@ -8,6 +8,7 @@ import '../../../../../widgets/button/button_widget.dart';
 import '../../../../../widgets/input/input_validators.dart';
 import '../../../../../widgets/input/input_widget.dart';
 import '../../../../../widgets/spacing/spacing.dart';
+import '../../../provider/auth_provider.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
   const SignInPage({super.key});
@@ -18,11 +19,18 @@ class SignInPage extends ConsumerStatefulWidget {
 
 class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
   @override
+  void initState() {
+    super.initState();
+    addListeners();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isButtonEnabled = ref.watch(isButtonEnabledProvider);
+
     return Scaffold(
       body: Form(
         key: formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: ListView(
           padding: const EdgeInsets.all(16).copyWith(top: 72),
           children: [
@@ -61,7 +69,7 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
             ),
             const SpaceVertical.x5(),
             ButtonWidget(
-              onTap: onTapButton,
+              onTap: isButtonEnabled ? onTapButton : null,
               // isLoading: state is CommonStateLoadInProgress,
               title: 'Continuar',
             ),
@@ -111,7 +119,6 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
           textAlign: TextAlign.center,
           style: AppText.text().bodyMedium!.copyWith(
                 color: AppColor.primary,
-                fontWeight: FontWeight.w600,
               ),
         ),
       ),
