@@ -63,4 +63,15 @@ class InputValidators {
 
     return null;
   }
+
+  static String? password(String? name) {
+    if (name!.isEmpty) {
+      return 'Por favor, insira uma senha.';
+    }
+    if (name.length < 8) {
+      return 'Senha muito curta';
+    }
+
+    return null;
+  }
 }
