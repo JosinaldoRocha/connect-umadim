@@ -9,3 +9,5 @@ final authenticationState =
     dataSource: ref.read(authDataSourceProvider),
   ),
 );
+
+final isButtonEnabledProvider = StateProvider<bool>((ref) => false);
