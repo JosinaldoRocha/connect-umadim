@@ -71,14 +71,14 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
               },
               onSubmitted: (p0) => onTapButton(),
             ),
+            _buildForgotPassword(),
+            _buildCreateAccount(),
             const SpaceVertical.x5(),
             ButtonWidget(
               onTap: isButtonEnabled ? onTapButton : null,
               // isLoading: state is CommonStateLoadInProgress,
               title: 'Continuar',
             ),
-            _buildForgotPassword(),
-            _buildCreateAccount(),
           ],
         ),
       ),
@@ -97,6 +97,7 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, '/auth/register');
+            clearFields();
           },
           child: Text(
             'Cadastre-se.',
@@ -116,7 +117,8 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: GestureDetector(
         onTap: () {
-          //TODO: added routes
+          Navigator.pushNamed(context, '/auth/recover-password');
+          clearFields();
         },
         child: Text(
           'Esqueceu a senha?',
