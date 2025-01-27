@@ -51,7 +51,10 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
               textCapitalization: TextCapitalization.none,
               keyboardType: TextInputType.emailAddress,
               validator: InputValidators.email,
-              //autoFocus: true,
+              action: TextInputAction.next,
+              onSubmitted: (p0) {
+                FocusScope.of(context).nextFocus();
+              },
             ),
             const SpaceVertical.x5(),
             InputWidget(
@@ -66,6 +69,7 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
                 }
                 return null;
               },
+              onSubmitted: (p0) => onTapButton(),
             ),
             const SpaceVertical.x5(),
             ButtonWidget(
