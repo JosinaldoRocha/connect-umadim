@@ -20,6 +20,11 @@ mixin SignInMixin<T extends SignInPage> on ConsumerState<T> {
     ref.read(isButtonEnabledProvider.notifier).state = isValid;
   }
 
+  void clearFields() {
+    emailController.clear();
+    passwordController.clear();
+  }
+
   // void listen() {
   //   ref.listen<SignInState>(
   //     signInProvider,
