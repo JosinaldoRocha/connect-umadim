@@ -4,6 +4,7 @@ import 'package:connect_umadim_app/app/presentation/authentication/views/mixin/s
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../core/helpers/helpers.dart';
 import '../../../../../widgets/button/button_widget.dart';
 import '../../../../../widgets/input/input_validators.dart';
 import '../../../../../widgets/input/input_widget.dart';
@@ -26,7 +27,11 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
 
   @override
   Widget build(BuildContext context) {
+    listen();
+
     final isButtonEnabled = ref.watch(isButtonEnabledProvider);
+
+    final state = ref.watch(signInProvider);
 
     return Scaffold(
       body: Form(
@@ -76,7 +81,7 @@ class _SignInPageState extends ConsumerState<SignInPage> with SignInMixin {
             const SpaceVertical.x5(),
             ButtonWidget(
               onTap: isButtonEnabled ? onTapButton : null,
-              // isLoading: state is CommonStateLoadInProgress,
+              isLoading: state is CommonStateLoadInProgress,
               title: 'Continuar',
             ),
           ],

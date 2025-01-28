@@ -6,6 +6,7 @@ import 'package:connect_umadim_app/app/widgets/button/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../core/helpers/common_state/state.dart';
 import '../../../../../widgets/dropdown/dropdown_widget.dart';
 import '../../../../../widgets/input/input_validators.dart';
 import '../../../../../widgets/input/input_widget.dart';
@@ -28,7 +29,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
 
   @override
   Widget build(BuildContext context) {
+    listen();
+
     final isButtonEnabled = ref.watch(isButtonEnabledProvider);
+
+    final state = ref.watch(signUpProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -71,15 +76,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
                     },
                   ),
                   const SpaceVertical.x5(),
-                  DropDownWidget(
-                    controller: localFunctionController,
-                    list: functionTypeList,
-                    hintText: 'Sua função na congregação',
-                    onChanged: (p0) {
-                      setState(() {});
-                    },
-                  ),
-                  const SpaceVertical.x5(),
                   InputWidget(
                     controller: passwordController,
                     hintText: 'Crie uma senha para sua conta',
@@ -89,7 +85,19 @@ class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
                   InputWidget(
                     controller: confirmPasswordController,
                     hintText: 'Confirme a senha',
-                    validator: InputValidators.password,
+                    validator: (p0) {
+                      if (p0!.isEmpty) {
+                        return 'Por favor, insira uma senha.';
+                      }
+                      if (p0.length < 8) {
+                        return 'Senha muito curta';
+                      }
+                      if (p0 != passwordController.text) {
+                        return 'As senhas não coincidem';
+                      }
+
+                      return null;
+                    },
                   ),
                   const SpaceVertical.x5(),
                 ],
@@ -99,6 +107,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
           Padding(
             padding: const EdgeInsets.all(16),
             child: ButtonWidget(
+              isLoading: state is CommonStateLoadInProgress,
               title: 'Finalizar',
               onTap: isButtonEnabled ? onTapButton : null,
             ),
