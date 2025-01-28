@@ -99,7 +99,6 @@ class InputWidget extends StatelessWidget {
             maxLines: lines,
             style: AppText.text().bodyMedium!.copyWith(
                   color: !isEnabled ? AppColor.black : AppColor.primaryGrey,
-                  fontSize: 18,
                 ),
             textAlign: TextAlign.left,
             decoration: InputDecoration(
