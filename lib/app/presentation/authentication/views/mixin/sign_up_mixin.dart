@@ -45,7 +45,7 @@ mixin SignUpMixin<T extends SignUpPage> on ConsumerState<T> {
           loadFailure: (message) {
             AppSnackBar.show(
               context,
-              'Houve um erro ao cadastrar usuário.',
+              message,
               AppColor.error,
             );
           },
@@ -71,6 +71,7 @@ mixin SignUpMixin<T extends SignUpPage> on ConsumerState<T> {
         phoneNumber: '',
         createdAt: DateTime.now(),
       );
+
       ref.read(signUpProvider.notifier).load(user: user);
     }
   }
