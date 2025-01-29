@@ -26,7 +26,7 @@ class AuthDataSource {
         if (leader.isRegistered) return Left(SignUpError.emailAlreadyExists);
 
         final userCredential =
-            await _createUserAuth(email: user.email, password: user.password);
+            await _createUserAuth(email: user.email, password: user.password!);
         user.id = userCredential.user!.uid;
 
         await _saveUser(user: user);
@@ -39,7 +39,7 @@ class AuthDataSource {
       }
 
       final userCredential =
-          await _createUserAuth(email: user.email, password: user.password);
+          await _createUserAuth(email: user.email, password: user.password!);
       user.id = userCredential.user!.uid;
 
       await _saveUser(user: user);

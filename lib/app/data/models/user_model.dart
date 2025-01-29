@@ -4,7 +4,7 @@ class UserModel {
   String id;
   String name;
   String email;
-  String password;
+  String? password;
   String? umadimFunction;
   String localFunction;
   String? birthDate;
@@ -18,7 +18,7 @@ class UserModel {
     required this.id,
     required this.name,
     required this.email,
-    required this.password,
+    this.password,
     this.umadimFunction,
     required this.localFunction,
     this.birthDate,
@@ -34,10 +34,9 @@ class UserModel {
       'id': id,
       'name': name,
       'email': email,
-      //'password': password,
+      'password': '',
       'umadimFunction': umadimFunction,
       'localFunction': localFunction,
-
       'birthDate': birthDate,
       'gender': gender,
       'congregation': congregation,
@@ -53,7 +52,8 @@ class UserModel {
       id: snapshot['id'] as String,
       name: snapshot['name'] as String,
       email: snapshot['email'] as String,
-      password: snapshot['password'] as String,
+      password:
+          snapshot['password'] != null ? snapshot['password'] as String : null,
       umadimFunction: snapshot['umadimFunction'] != null
           ? snapshot['umadimFunction'] as String
           : null,
