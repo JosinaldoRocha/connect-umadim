@@ -71,9 +71,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
                     controller: umadimFucntionController,
                     list: functionTypeList,
                     hintText: 'Sua função na umadim',
-                    onChanged: (p0) {
-                      setState(() {});
-                    },
+                    onChanged: (p0) {},
                   ),
                   const SpaceVertical.x5(),
                   InputWidget(
