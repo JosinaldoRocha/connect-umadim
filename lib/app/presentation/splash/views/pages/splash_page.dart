@@ -28,18 +28,14 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       authenticationState,
       (previous, next) {
         if (next is IsLogged) {
-          // if (next.user!.displayName != null) {
-          //   Navigator.of(context).pushReplacementNamed('/home');
-          // } else {
-          //   Navigator.of(context).pushReplacementNamed(
-          //     '/profile/update',
-          //   );
-          // }
-          Scaffold(
-            body: Center(
-              child: Text('data'),
-            ),
-          );
+          if (next.user!.displayName != null &&
+              next.user!.displayName!.isNotEmpty) {
+            //Navigator.of(context).pushReplacementNamed('/home');
+          } else {
+            Navigator.of(context).pushReplacementNamed(
+              '/auth/complete-profile',
+            );
+          }
         } else if (next is IsNotLogged) {
           Navigator.of(context).pushReplacementNamed('/auth/login');
         }
