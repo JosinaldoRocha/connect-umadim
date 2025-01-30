@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/helpers/errors/errors.dart';
 import '../models/user_model.dart';
@@ -8,18 +11,20 @@ import '../models/user_model.dart';
 class UserDataSource {
   final _firestore = FirebaseFirestore.instance;
   final authUser = FirebaseAuth.instance.currentUser;
+  final supabase = Supabase.instance.client;
 
   Future<Either<CommonError, bool>> completeProfile({
     required UserModel user,
   }) async {
     try {
-      // user.photoUrl = await updateUserImage(user);
+      user.photoUrl = await completeProfileImage(user);
+
+      await authUser!.updatePhotoURL(user.photoUrl);
+
+      await authUser!.updateDisplayName(user.name);
 
       await _firestore.collection('users').doc(authUser!.uid).set(user.toMap());
 
-      //await authUser!.updatePhotoURL(user.photoUrl);
-
-      await authUser!.updateDisplayName(user.name);
       return Right(true);
     } on Exception catch (e) {
       return Left(GenerateError.fromException(e));
@@ -39,25 +44,19 @@ class UserDataSource {
     }
   }
 
-  // Future<String?> updateUserImage(UserModel user) async {
-  //   String? image;
-  //   if (user.photoUrl != null && user.photoUrl!.isNotEmpty) {
-  //     if (!user.photoUrl!.contains(user.id)) {
-  //       final storageRef = FirebaseStorage.instance
-  //           .ref()
-  //           .child('users')
-  //           .child(user.id)
-  //           .child('uploads')
-  //           .child('${user.id}.png');
-  //       final uploadTask = storageRef.putFile(File(user.photoUrl!));
-  //       final TaskSnapshot downloadUrl = (await uploadTask);
-  //       final String imageUrl = await downloadUrl.ref.getDownloadURL();
+  Future<String?> completeProfileImage(UserModel user) async {
+    if (user.photoUrl != null && user.photoUrl!.isNotEmpty) {
+      final fileName = 'user_profile_images/${user.id}.jpg';
 
-  //       image = imageUrl;
-  //     } else {
-  //       image = user.photoUrl;
-  //     }
-  //   }
-  //   return image;
-  // }
+      await supabase.storage.from('user_profile_images').upload(
+            fileName,
+            File(user.photoUrl!),
+          );
+
+      return supabase.storage
+          .from('user_profile_images')
+          .getPublicUrl(fileName);
+    }
+    return null;
+  }
 }
