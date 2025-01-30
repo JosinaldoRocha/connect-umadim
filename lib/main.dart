@@ -1,13 +1,12 @@
-import 'package:connect_umadim_app/app_widget.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:connect_umadim_app/app/core/firebase/firebase_init.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:flutter/material.dart';
 
-import 'app/core/firebase/firebase_options.dart';
+import 'app_widget.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await FirebaseInit.init();
+  await SupabaseInit.init();
   runApp(const AppWidget());
 }
