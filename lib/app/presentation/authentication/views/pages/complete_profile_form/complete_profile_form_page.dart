@@ -58,6 +58,7 @@ class _CompleteProfileFormPageState
             width: 80,
             child: LoadingIndicator(
               indicatorType: Indicator.ballPulse,
+              colors: [AppColor.primary],
             ),
           ),
         ),
@@ -106,6 +107,7 @@ class _CompleteProfileFormPageState
                       controller: phoneController,
                       hintText: 'Telefone',
                       keyboardType: TextInputType.phone,
+                      inputFormatters: [InputFormatters.phone()],
                     ),
                     const SpaceVertical.x5(),
                   ],
