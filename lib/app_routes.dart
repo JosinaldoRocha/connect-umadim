@@ -1,4 +1,5 @@
 import 'package:connect_umadim_app/app/presentation/authentication/routes/atuh_routes.dart';
+import 'package:connect_umadim_app/app/presentation/home/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 import 'app/core/navigator/navigator.dart';
@@ -13,5 +14,7 @@ class AppRoutes extends IAppRoutes {
   String get initialRoute => '/auth';
 
   @override
-  Map<String, Widget Function(BuildContext p1)> get routes => {};
+  Map<String, Widget Function(BuildContext p1)> get routes => {
+        '/home': (context) => const HomePage(),
+      };
 }

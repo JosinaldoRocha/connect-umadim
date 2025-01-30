@@ -30,7 +30,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
         if (next is IsLogged) {
           if (next.user!.displayName != null &&
               next.user!.displayName!.isNotEmpty) {
-            //Navigator.of(context).pushReplacementNamed('/home');
+            Navigator.of(context).pushReplacementNamed('/home');
           } else {
             Navigator.of(context).pushReplacementNamed(
               '/auth/complete-profile',
