@@ -27,7 +27,7 @@ class ProfileImageWidget extends StatelessWidget {
           : SizedBox(
               width: size,
               height: size,
-              child: image!.contains('control-concierge-agents')
+              child: image!.contains('connect-umadim')
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image.network(
