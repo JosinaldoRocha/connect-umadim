@@ -1,4 +1,5 @@
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
+import 'package:connect_umadim_app/app/presentation/home/views/componentes/home_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -44,7 +45,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         context,
         controller: controller,
         screens: [
-          Center(child: Text('Início')),
+          HomeComponent(),
           Center(child: Text('Agenda')),
           Center(child: Text('Diretório')),
           Center(child: Text('Perfil')),
