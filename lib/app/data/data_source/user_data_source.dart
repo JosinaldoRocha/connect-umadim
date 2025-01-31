@@ -46,7 +46,7 @@ class UserDataSource {
 
   Future<String?> completeProfileImage(UserModel user) async {
     if (user.photoUrl != null && user.photoUrl!.isNotEmpty) {
-      final fileName = 'user_profile_images/${user.id}.jpg';
+      final fileName = 'user_profile_images/connect-umadim${user.id}.jpg';
 
       await supabase.storage.from('user_profile_images').upload(
             fileName,
