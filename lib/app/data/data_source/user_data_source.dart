@@ -9,9 +9,26 @@ import '../../core/helpers/errors/errors.dart';
 import '../models/user_model.dart';
 
 class UserDataSource {
-  final _firestore = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
   final authUser = FirebaseAuth.instance.currentUser;
   final supabase = Supabase.instance.client;
+
+  Future<Either<CommonError, List<UserModel>>> getAllUsers() async {
+    try {
+      final getDocuments = await firestore.collection('users').get();
+      final documents = getDocuments.docs;
+      List<UserModel> users = [];
+
+      for (var docs in documents) {
+        final user = UserModel.fromSnapShot(docs);
+        users.add(user);
+      }
+
+      return Right(users);
+    } on Exception catch (e) {
+      return Left(GenerateError.fromException(e));
+    }
+  }
 
   Future<Either<CommonError, bool>> completeProfile({
     required UserModel user,
@@ -23,7 +40,7 @@ class UserDataSource {
 
       await authUser!.updateDisplayName(user.name);
 
-      await _firestore.collection('users').doc(authUser!.uid).set(user.toMap());
+      await firestore.collection('users').doc(authUser!.uid).set(user.toMap());
 
       return Right(true);
     } on Exception catch (e) {
@@ -34,7 +51,7 @@ class UserDataSource {
   Future<Either<CommonError, UserModel>> getLocalUser() async {
     try {
       final getDocument =
-          await _firestore.collection('users').doc(authUser!.uid).get();
+          await firestore.collection('users').doc(authUser!.uid).get();
 
       final user = UserModel.fromSnapShot(getDocument);
 
