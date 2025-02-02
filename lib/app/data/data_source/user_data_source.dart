@@ -10,7 +10,6 @@ import '../models/user_model.dart';
 
 class UserDataSource {
   final firestore = FirebaseFirestore.instance;
-  final authUser = FirebaseAuth.instance.currentUser;
   final supabase = Supabase.instance.client;
 
   Future<Either<CommonError, List<UserModel>>> getAllUsers() async {
@@ -33,14 +32,16 @@ class UserDataSource {
   Future<Either<CommonError, bool>> completeProfile({
     required UserModel user,
   }) async {
+    final authUser = FirebaseAuth.instance.currentUser;
+
     try {
       user.photoUrl = await completeProfileImage(user);
 
       await authUser!.updatePhotoURL(user.photoUrl);
 
-      await authUser!.updateDisplayName(user.name);
+      await authUser.updateDisplayName(user.name);
 
-      await firestore.collection('users').doc(authUser!.uid).set(user.toMap());
+      await firestore.collection('users').doc(authUser.uid).set(user.toMap());
 
       return Right(true);
     } on Exception catch (e) {
@@ -49,6 +50,7 @@ class UserDataSource {
   }
 
   Future<Either<CommonError, UserModel>> getLocalUser() async {
+    final authUser = FirebaseAuth.instance.currentUser;
     try {
       final getDocument =
           await firestore.collection('users').doc(authUser!.uid).get();
