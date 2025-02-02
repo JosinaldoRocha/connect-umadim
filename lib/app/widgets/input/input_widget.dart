@@ -128,7 +128,6 @@ class InputWidget extends StatelessWidget {
               prefixIcon: prefix,
               hintStyle: AppText.text().bodyMedium?.copyWith(
                     color: AppColor.primaryGrey,
-                    fontWeight: FontWeight.w500,
                   ),
               hintText: hintText,
               suffixIcon: sufix,
