@@ -2,7 +2,9 @@ import 'package:connect_umadim_app/app/widgets/spacing/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_text.dart';
+import '../../../../data/models/user_model.dart';
 import '../../../../widgets/image/profile_image_widget.dart';
 import '../../../user/providers/user_provider.dart';
 import 'loading_home_app_bar_widget.dart';
@@ -20,11 +22,13 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
   Widget build(BuildContext context) {
     final userState = ref.watch(getUserProvider);
 
-    return Padding(
+    return Container(
+      color: AppColor.bgColor,
       padding: const EdgeInsets.only(
         left: 16,
         right: 16,
         top: 48,
+        bottom: 8,
       ),
       child: userState.maybeWhen(
         loadInProgress: () => LoadingHomeAppBarWidget(),
@@ -45,7 +49,7 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '${data.umadimFunction ?? (data.localFunction != 'Membro' ? data.localFunction : '')} ',
+                      _getUserFunction(data),
                       style: AppText.text().titleSmall!.copyWith(),
                     ),
                     Text(
@@ -69,6 +73,17 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
         orElse: () => Container(),
       ),
     );
+  }
+
+  String _getUserFunction(UserModel data) {
+    if (data.umadimFunction != null &&
+        (data.umadimFunction == "Líder" || data.umadimFunction == "Regente")) {
+      return '${data.umadimFunction} ';
+    }
+
+    return (data.localFunction == "Líder" || data.localFunction == "Regente")
+        ? data.localFunction
+        : '';
   }
 
   String getGreetingMessage() {
