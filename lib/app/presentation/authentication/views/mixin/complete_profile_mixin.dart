@@ -16,11 +16,11 @@ mixin CompleteProfileFormMixin<T extends CompleteProfileFormPage>
     on ConsumerState<T> {
   final congregationController = SingleValueDropDownController();
   final localFunctionController = SingleValueDropDownController();
-  final birthDateController = TextEditingController();
   final genderController = SingleValueDropDownController();
   final phoneController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   File? image;
+  DateTime? birthDate;
 
   void listen() {
     ref.listen<CompleteProfileState>(
@@ -42,6 +42,21 @@ mixin CompleteProfileFormMixin<T extends CompleteProfileFormPage>
     );
   }
 
+  Future<void> selectBirthDate() async {
+    final currentDate = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      firstDate: DateTime(1900),
+      lastDate: currentDate,
+    );
+
+    if (picked != null && picked != birthDate) {
+      setState(() {
+        birthDate = picked;
+      });
+    }
+  }
+
   Future<void> getImage() async {
     final pickedFile = await ImagePicker()
         .pickImage(source: ImageSource.gallery, imageQuality: 30);
@@ -55,22 +70,24 @@ mixin CompleteProfileFormMixin<T extends CompleteProfileFormPage>
 
   void onTapButton(UserModel data) {
     if (formKey.currentState!.validate()) {
-      final user = UserModel(
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        umadimFunction: data.umadimFunction,
-        localFunction: localFunctionController.dropDownValue!.name,
-        birthDate: birthDateController.text,
-        gender: genderController.dropDownValue!.name,
-        congregation: congregationController.dropDownValue!.name,
-        photoUrl: image?.path,
-        phoneNumber: phoneController.text,
-        createdAt: data.createdAt,
-      );
+      if (birthDate != null) {
+        final user = UserModel(
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          umadimFunction: data.umadimFunction,
+          localFunction: localFunctionController.dropDownValue!.name,
+          birthDate: birthDate,
+          gender: genderController.dropDownValue!.name,
+          congregation: congregationController.dropDownValue!.name,
+          photoUrl: image?.path,
+          phoneNumber: phoneController.text,
+          createdAt: data.createdAt,
+        );
 
-      ref.read(completeProfileProvider.notifier).load(user: user);
+        ref.read(completeProfileProvider.notifier).load(user: user);
+      }
     }
   }
 }
