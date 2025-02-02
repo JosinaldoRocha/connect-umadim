@@ -2,6 +2,7 @@ import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:connect_umadim_app/app/presentation/authentication/views/mixin/complete_profile_mixin.dart';
 import 'package:connect_umadim_app/app/presentation/authentication/views/widgets/select_user_image_widget.dart';
 import 'package:connect_umadim_app/app/widgets/input/input_formatters.dart';
+import 'package:connect_umadim_app/app/widgets/select_date/select_date_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -12,7 +13,6 @@ import '../../../../../core/style/app_colors.dart';
 import '../../../../../core/style/app_text.dart';
 import '../../../../../widgets/button/button_widget.dart';
 import '../../../../../widgets/dropdown/dropdown_widget.dart';
-import '../../../../../widgets/input/input_validators.dart';
 import '../../../../../widgets/input/input_widget.dart';
 import '../../../../../widgets/spacing/spacing.dart';
 import '../../../../user/providers/user_provider.dart';
@@ -89,12 +89,15 @@ class _CompleteProfileFormPageState
                       hintText: 'Sua função na congregação',
                     ),
                     const SpaceVertical.x5(),
-                    InputWidget(
-                      controller: birthDateController,
-                      hintText: 'Data de nascimento ex.: 01//01/0101',
-                      keyboardType: TextInputType.datetime,
-                      validator: InputValidators.date,
-                      inputFormatters: [InputFormatters.date()],
+                    SelectDateWidget(
+                      date: birthDate,
+                      hintText: 'Data de nascimento',
+                      onTap: () => selectBirthDate(),
+                      onClean: () {
+                        setState(() {
+                          birthDate = null;
+                        });
+                      },
                     ),
                     const SpaceVertical.x5(),
                     DropDownWidget(
