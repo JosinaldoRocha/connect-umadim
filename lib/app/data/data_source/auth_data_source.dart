@@ -99,4 +99,13 @@ class AuthDataSource {
       return Left(GenerateError.fromException(e));
     }
   }
+
+  Future<Either<CommonError, bool>> logout() async {
+    try {
+      await firebaseAuth.signOut();
+      return Right(true);
+    } on Exception catch (e) {
+      return Left(GenerateError.fromException(e));
+    }
+  }
 }
