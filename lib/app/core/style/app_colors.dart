@@ -2,6 +2,7 @@ import 'dart:ui';
 
 class AppColor {
   static const bgColor = Color(0xFFFFECD7);
+  static const lightBgColor = Color(0xFFFBF6F2);
   static const lightPurple = Color.fromARGB(255, 196, 183, 251);
   static const cardBackground = Color(0xFFF4F2FF);
   static const primary = Color(0xFFF69730);
