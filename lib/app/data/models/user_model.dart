@@ -7,7 +7,7 @@ class UserModel {
   String? password;
   String? umadimFunction;
   String localFunction;
-  String? birthDate;
+  DateTime? birthDate;
   String gender;
   String? photoUrl;
   String? phoneNumber;
@@ -59,7 +59,7 @@ class UserModel {
           : null,
       localFunction: snapshot['localFunction'] as String,
       birthDate: snapshot['birthDate'] != null
-          ? snapshot['birthDate'] as String
+          ? (snapshot['birthDate'] as Timestamp).toDate()
           : null,
       gender: snapshot['gender'] as String,
       congregation: snapshot['congregation'] as String,
