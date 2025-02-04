@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/helpers/errors/errors.dart';
@@ -29,13 +30,14 @@ class UserDataSource {
     }
   }
 
-  Future<Either<CommonError, bool>> completeProfile({
-    required UserModel user,
-  }) async {
+  Future<Either<CommonError, bool>> completeProfile(
+    UserModel user,
+    Uint8List? imageBytes,
+  ) async {
     final authUser = FirebaseAuth.instance.currentUser;
 
     try {
-      user.photoUrl = await completeProfileImage(user);
+      user.photoUrl = await completeProfileImage(user, imageBytes);
 
       await authUser!.updatePhotoURL(user.photoUrl);
 
@@ -63,19 +65,25 @@ class UserDataSource {
     }
   }
 
-  Future<String?> completeProfileImage(UserModel user) async {
-    if (user.photoUrl != null && user.photoUrl!.isNotEmpty) {
-      final fileName = 'user_profile_images/connect-umadim${user.id}.jpg';
+  Future<String?> completeProfileImage(
+    UserModel user,
+    Uint8List? imageBytes,
+  ) async {
+    if ((user.photoUrl?.isEmpty ?? true) && imageBytes == null) return null;
 
-      await supabase.storage.from('user_profile_images').upload(
-            fileName,
-            File(user.photoUrl!),
-          );
+    final fileName = 'user_profile_images/connect-umadim${user.id}.jpg';
+    final storage = supabase.storage.from('user_profile_images');
 
-      return supabase.storage
-          .from('user_profile_images')
-          .getPublicUrl(fileName);
+    if (kIsWeb) {
+      await storage.uploadBinary(
+        fileName,
+        imageBytes!,
+        fileOptions: const FileOptions(contentType: 'image/jpeg'),
+      );
+    } else {
+      await storage.upload(fileName, File(user.photoUrl!));
     }
-    return null;
+
+    return storage.getPublicUrl(fileName);
   }
 }

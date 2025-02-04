@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -10,9 +11,11 @@ class SelectUserImageWidget extends StatelessWidget {
     super.key,
     required this.image,
     required this.onTap,
+    this.imageBytes,
   });
   final File? image;
   final Function() onTap;
+  final Uint8List? imageBytes;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class SelectUserImageWidget extends StatelessWidget {
           children: [
             ProfileImageWidget(
               image: image?.path,
+              imageBytes: imageBytes,
               size: 100,
             ),
             Positioned(

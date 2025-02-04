@@ -72,6 +72,7 @@ class _CompleteProfileFormPageState
                   children: [
                     SelectUserImageWidget(
                       image: image,
+                      imageBytes: imageBytes,
                       onTap: getImage,
                     ),
                     const SpaceVertical.x10(),

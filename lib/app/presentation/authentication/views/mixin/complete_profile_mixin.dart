@@ -4,6 +4,7 @@ import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:connect_umadim_app/app/presentation/user/providers/user_provider.dart';
 import 'package:connect_umadim_app/app/presentation/user/states/complete_profile/complete_profile_state_notifier.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +21,7 @@ mixin CompleteProfileFormMixin<T extends CompleteProfileFormPage>
   final phoneController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   File? image;
+  Uint8List? imageBytes;
   DateTime? birthDate;
 
   void listen() {
@@ -58,13 +60,25 @@ mixin CompleteProfileFormMixin<T extends CompleteProfileFormPage>
   }
 
   Future<void> getImage() async {
-    final pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 30);
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 30,
+    );
 
     if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-      });
+      if (kIsWeb) {
+        Uint8List bytes = await pickedFile.readAsBytes();
+
+        setState(() {
+          imageBytes = bytes;
+          image = null;
+        });
+      } else {
+        setState(() {
+          image = File(pickedFile.path);
+          imageBytes = null;
+        });
+      }
     }
   }
 
@@ -86,7 +100,7 @@ mixin CompleteProfileFormMixin<T extends CompleteProfileFormPage>
           createdAt: data.createdAt,
         );
 
-        ref.read(completeProfileProvider.notifier).load(user: user);
+        ref.read(completeProfileProvider.notifier).load(user, imageBytes);
       }
     }
   }

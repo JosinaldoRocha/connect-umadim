@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
@@ -63,15 +62,17 @@ mixin BirthdayItemMixin {
   }
 
   Expanded buildImage(UserModel user) {
+    //TODO: handle image loading in the web version
     return Expanded(
       child: Center(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: user.photoUrl != null && user.photoUrl!.isNotEmpty
-              ? CachedNetworkImage(
-                  imageUrl: user.photoUrl!,
+              ? Image.network(
+                  user.photoUrl!,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) {
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
                     return SizedBox(
                       height: 6,
                       width: 40,

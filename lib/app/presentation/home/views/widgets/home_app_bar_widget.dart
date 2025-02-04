@@ -1,4 +1,5 @@
 import 'package:connect_umadim_app/app/widgets/spacing/spacing.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,7 +28,7 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
       padding: const EdgeInsets.only(
         left: 16,
         right: 16,
-        top: 48,
+        top: kIsWeb ? 12 : 48,
         bottom: 8,
       ),
       child: userState.maybeWhen(
@@ -50,7 +51,7 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
                   children: [
                     Text(
                       _getUserFunction(data),
-                      style: AppText.text().titleSmall!.copyWith(),
+                      style: AppText.text().titleSmall!.copyWith(fontSize: 14),
                     ),
                     Text(
                       getFirstAndSecondName(data.name),
