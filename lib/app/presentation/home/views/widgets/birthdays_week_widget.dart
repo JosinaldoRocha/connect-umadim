@@ -57,15 +57,20 @@ class BirthdaysWeekWidget extends ConsumerWidget {
     final startOfWeek = now.subtract(Duration(days: now.weekday % 7));
     final endOfWeek = startOfWeek.add(const Duration(days: 6));
 
-    final filteredUsers = users.where((user) {
-      final birthDate = user.birthDate;
-      if (birthDate == null) return false;
+    List<UserModel> filteredUsers = [];
 
+    for (var item in users) {
+      final birthDate = item.birthDate!;
       final birthThisYear = DateTime(now.year, birthDate.month, birthDate.day);
-      return birthThisYear
+
+      if (birthThisYear
               .isAfter(startOfWeek.subtract(const Duration(days: 1))) &&
-          birthThisYear.isBefore(endOfWeek.add(const Duration(days: 1)));
-    }).toList();
+          birthThisYear.isBefore(endOfWeek.add(const Duration(days: 1)))) {
+        final user = item.copyWith(birthDate: birthThisYear);
+
+        filteredUsers.add(user);
+      }
+    }
 
     filteredUsers.sort((a, b) {
       int getWeekday(DateTime date) {
