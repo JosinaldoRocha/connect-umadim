@@ -37,12 +37,12 @@ class UserModel {
       'password': '',
       'umadimFunction': umadimFunction,
       'localFunction': localFunction,
-      'birthDate': birthDate,
+      'birthDate': birthDate != null ? Timestamp.fromDate(birthDate!) : null,
       'gender': gender,
       'congregation': congregation,
       'photoUrl': photoUrl,
       'phoneNumber': phoneNumber,
-      'createdAt': createdAt,
+      'createdAt': Timestamp.fromDate(createdAt),
     };
   }
 
@@ -59,7 +59,7 @@ class UserModel {
           : null,
       localFunction: snapshot['localFunction'] as String,
       birthDate: snapshot['birthDate'] != null
-          ? (snapshot['birthDate'] as Timestamp).toDate()
+          ? (snapshot['birthDate'] as Timestamp).toDate().toLocal()
           : null,
       gender: snapshot['gender'] as String,
       congregation: snapshot['congregation'] as String,
@@ -68,7 +68,37 @@ class UserModel {
       phoneNumber: snapshot['phoneNumber'] != null
           ? snapshot['phoneNumber'] as String
           : null,
-      createdAt: (snapshot['createdAt'] as Timestamp).toDate(),
+      createdAt: (snapshot['createdAt'] as Timestamp).toDate().toLocal(),
+    );
+  }
+
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? password,
+    String? umadimFunction,
+    String? localFunction,
+    DateTime? birthDate,
+    String? gender,
+    String? photoUrl,
+    String? phoneNumber,
+    String? congregation,
+    DateTime? createdAt,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      umadimFunction: umadimFunction ?? this.umadimFunction,
+      localFunction: localFunction ?? this.localFunction,
+      birthDate: birthDate ?? this.birthDate,
+      gender: gender ?? this.gender,
+      photoUrl: photoUrl ?? this.photoUrl,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      congregation: congregation ?? this.congregation,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }
