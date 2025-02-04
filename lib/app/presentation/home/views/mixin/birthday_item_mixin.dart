@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
@@ -7,28 +6,34 @@ import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_text.dart';
 
 mixin BirthdayItemMixin {
-  String formatBirthdayDate(DateTime birthday) {
+  String formatBirthdayDate(DateTime birthDate) {
     final now = DateTime.now();
     final yesterday = now.subtract(Duration(days: 1));
     final tomorrow = now.add(Duration(days: 1));
 
-    if (birthday.day == now.day && birthday.month == now.month) return "Hoje";
-    if (birthday.day == yesterday.day && birthday.month == yesterday.month) {
+    if (birthDate.day == now.day && birthDate.month == now.month) return "Hoje";
+    if (birthDate.day == yesterday.day && birthDate.month == yesterday.month) {
       return "Ontem";
     }
-    if (birthday.day == tomorrow.day && birthday.month == tomorrow.month) {
+    if (birthDate.day == tomorrow.day && birthDate.month == tomorrow.month) {
       return "Amanhã";
     }
-
-    final startWeek = now.subtract(Duration(days: now.weekday % 7));
-    final birthdayCurrentWeek =
-        DateTime(now.year, birthday.month, birthday.day);
-    final differenceDays = birthdayCurrentWeek.difference(startWeek).inDays;
-
-    final correctDate = startWeek.add(Duration(days: differenceDays + 1));
-    final newWeekDay = DateFormat.EEEE('pt_BR').format(correctDate);
-
-    return newWeekDay[0].toUpperCase() + newWeekDay.substring(1);
+    switch (birthDate.weekday) {
+      case 1:
+        return "Segunda-feira";
+      case 2:
+        return "Terça-feira";
+      case 3:
+        return "Quarta-feira";
+      case 4:
+        return "Quinta-feira";
+      case 5:
+        return "Sexta-feira";
+      case 6:
+        return "Sábado";
+      default:
+        return "Domingo";
+    }
   }
 
   String getUserFunction(UserModel user) {
