@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import '../../../../core/style/app_colors.dart';
+import '../../../user/providers/user_provider.dart';
 import '../../provider/home_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -21,7 +22,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(homeTabsProvider.notifier).updateState = 0);
+    Future.microtask(() {
+      ref.read(getUserProvider.notifier).load();
+      return ref.read(homeTabsProvider.notifier).updateState = 0;
+    });
   }
 
   void listenTab() {
