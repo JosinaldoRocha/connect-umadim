@@ -14,19 +14,19 @@ class BirthdayItemWidget extends StatelessWidget with BirthdayItemMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
         Container(
           height: 208,
           width: 150,
+          margin: EdgeInsets.only(),
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: user.gender == "Masculino"
                 ? AppColor.primary
                 : AppColor.secondary,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
+            borderRadius: BorderRadius.circular(16).copyWith(
+              topRight: Radius.circular(4),
             ),
             boxShadow: [
               BoxShadow(
@@ -59,14 +59,16 @@ class BirthdayItemWidget extends StatelessWidget with BirthdayItemMixin {
               Text(
                 user.congregation,
                 overflow: TextOverflow.ellipsis,
-                style: AppText.text()
-                    .bodySmall!
-                    .copyWith(color: AppColor.lightGrey),
+                style:
+                    AppText.text().bodySmall!.copyWith(color: AppColor.white),
               ),
             ],
           ),
         ),
-        buildWeekDayText(user),
+        Positioned(
+          right: 0,
+          child: buildWeekDayText(user),
+        ),
       ],
     );
   }

@@ -20,15 +20,15 @@ mixin BirthdayItemMixin {
     }
     switch (birthDate.weekday) {
       case 1:
-        return "Segunda-feira";
+        return "Segunda";
       case 2:
-        return "Terça-feira";
+        return "Terça";
       case 3:
-        return "Quarta-feira";
+        return "Quarta";
       case 4:
-        return "Quinta-feira";
+        return "Quinta";
       case 5:
-        return "Sexta-feira";
+        return "Sexta";
       case 6:
         return "Sábado";
       default:
@@ -47,21 +47,30 @@ mixin BirthdayItemMixin {
 
   Container buildWeekDayText(UserModel user) {
     return Container(
-      width: 150,
-      padding: EdgeInsets.only(bottom: 2),
+      padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: formatBirthdayDate(user.birthDate!) == "Hoje"
             ? AppColor.primaryGreen
-            : AppColor.primaryGrey,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(8),
-          bottomRight: Radius.circular(8),
+            : user.gender == "Feminino"
+                ? AppColor.primary
+                : AppColor.secondary,
+        borderRadius: BorderRadius.circular(4).copyWith(
+          topLeft: Radius.circular(0),
         ),
       ),
-      child: Text(
-        formatBirthdayDate(user.birthDate!),
-        textAlign: TextAlign.center,
-        style: AppText.text().bodySmall!.copyWith(color: AppColor.white),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: formatBirthdayDate(user.birthDate!)
+            .split("")
+            .map(
+              (char) => Text(
+                char,
+                textAlign: TextAlign.center,
+                style:
+                    AppText.text().bodySmall!.copyWith(color: AppColor.white),
+              ),
+            )
+            .toList(),
       ),
     );
   }
