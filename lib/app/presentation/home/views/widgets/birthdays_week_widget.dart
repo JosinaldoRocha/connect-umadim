@@ -1,4 +1,3 @@
-import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/birthday_item_widget.dart';
 import 'package:connect_umadim_app/app/presentation/user/providers/user_provider.dart';
@@ -37,7 +36,6 @@ class BirthdaysWeekWidget extends ConsumerWidget {
                   ),
                   Container(
                     height: 244,
-                    color: AppColor.white,
                     margin: EdgeInsets.symmetric(vertical: 4),
                     child: birthdayUsers.length == 1
                         ? Center(
