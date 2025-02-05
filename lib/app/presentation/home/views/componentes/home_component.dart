@@ -31,8 +31,11 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
       loadInProgress: () => Center(
         child: SizedBox(
           height: 8,
-          width: 30,
-          child: LoadingIndicator(indicatorType: Indicator.ballPulse),
+          width: 40,
+          child: LoadingIndicator(
+            indicatorType: Indicator.ballPulse,
+            colors: [AppColor.primary],
+          ),
         ),
       ),
       loadSuccess: (data) => Container(
@@ -41,7 +44,7 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
           image: (data.birthDate!.day == now.day &&
                   data.birthDate!.month == now.month)
               ? DecorationImage(
-                  opacity: 0.4,
+                  opacity: 0.2,
                   fit: BoxFit.fitWidth,
                   alignment: Alignment(0, 0.8),
                   image: AssetImage('assets/images/birthday_cake.png'),
