@@ -51,9 +51,7 @@ mixin BirthdayItemMixin {
       decoration: BoxDecoration(
         color: formatBirthdayDate(user.birthDate!) == "Hoje"
             ? AppColor.primaryGreen
-            : user.gender == "Feminino"
-                ? AppColor.primary
-                : AppColor.secondary,
+            : AppColor.mediumGrey,
         borderRadius: BorderRadius.circular(4).copyWith(
           topLeft: Radius.circular(0),
         ),
