@@ -1,6 +1,8 @@
-import 'package:connect_umadim_app/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:connect_umadim_app/app_routes.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -17,6 +19,13 @@ class AppWidget extends StatelessWidget {
         ),
         initialRoute: AppRoutes().initialRoute,
         routes: AppRoutes().allAppRoutes,
+        locale: const Locale('pt', 'BR'),
+        supportedLocales: const [Locale('pt', 'BR')],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
       ),
     );
   }
