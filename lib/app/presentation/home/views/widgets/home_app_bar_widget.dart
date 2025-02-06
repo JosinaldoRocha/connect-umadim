@@ -29,6 +29,9 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
   Widget build(BuildContext context) {
     final now = DateTime.now();
 
+    final isBirthday = (widget.user.birthDate!.day == now.day &&
+        widget.user.birthDate!.month == now.month);
+
     return Container(
       padding: const EdgeInsets.only(
         left: 16,
@@ -38,11 +41,13 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
       ),
       decoration: BoxDecoration(
         color: AppColor.lightBgColor,
-        image: DecorationImage(
-          opacity: 0.3,
-          fit: BoxFit.fitWidth,
-          image: AssetImage('assets/images/confetti.png'),
-        ),
+        image: isBirthday
+            ? DecorationImage(
+                opacity: 0.3,
+                fit: BoxFit.fitWidth,
+                image: AssetImage('assets/images/confetti.png'),
+              )
+            : null,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,10 +59,7 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                (widget.user.birthDate!.day == now.day &&
-                        widget.user.birthDate!.month == now.month)
-                    ? 'Happy Birthday 🎉'
-                    : 'A paz do Senhor ✋',
+                isBirthday ? 'Happy Birthday 🎉' : 'A paz do Senhor ✋',
                 style: AppText.text().titleSmall,
               ),
               Row(
@@ -79,8 +81,7 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
             ],
           ),
           Spacer(),
-          if (widget.user.birthDate!.day == now.day &&
-              widget.user.birthDate!.month == now.month)
+          if (isBirthday)
             GestureDetector(
               onTap: () {
                 showDialog(
