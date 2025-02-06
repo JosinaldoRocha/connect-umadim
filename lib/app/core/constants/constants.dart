@@ -1,4 +1,6 @@
 import 'package:connect_umadim_app/app/data/enums/congregation_enum.dart';
+import 'package:connect_umadim_app/app/data/enums/department_enum.dart';
+import 'package:connect_umadim_app/app/data/enums/event_type_enum.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 
 import '../../data/enums/funciton_type_enum.dart';
@@ -101,5 +103,95 @@ final genderList = [
   DropDownValueModel(
     name: 'Feminino',
     value: 'feminino',
+  ),
+];
+
+final departmentList = [
+  DropDownValueModel(
+    name: Department.umadim.text,
+    value: Department.umadim,
+  ),
+  DropDownValueModel(
+    name: Department.juvTC.text,
+    value: Department.juvTC,
+  ),
+  DropDownValueModel(
+    name: Department.juvCMS.text,
+    value: Department.juvCMS,
+  ),
+  DropDownValueModel(
+    name: Department.juvCLV.text,
+    value: Department.juvCLV,
+  ),
+  DropDownValueModel(
+    name: Department.juvCRS.text,
+    value: Department.juvCRS,
+  ),
+  DropDownValueModel(
+    name: Department.juvCVB.text,
+    value: Department.juvCVB,
+  ),
+  DropDownValueModel(
+    name: Department.juvCJ.text,
+    value: Department.juvCJ,
+  ),
+  DropDownValueModel(
+    name: Department.juvCNJ.text,
+    value: Department.juvCNJ,
+  ),
+  DropDownValueModel(
+    name: Department.juvCAR.text,
+    value: Department.juvCAR,
+  ),
+  DropDownValueModel(
+    name: Department.juvCMO.text,
+    value: Department.juvCMO,
+  ),
+  DropDownValueModel(
+    name: Department.juvCE.text,
+    value: Department.juvCE,
+  ),
+  DropDownValueModel(
+    name: Department.juvCM.text,
+    value: Department.juvCM,
+  ),
+  DropDownValueModel(
+    name: Department.juvCMM.text,
+    value: Department.juvCMM,
+  ),
+];
+
+final eventTypeList = [
+  DropDownValueModel(
+    name: EventType.congress.text,
+    value: EventType.congress,
+  ),
+  DropDownValueModel(
+    name: EventType.retreat.text,
+    value: EventType.retreat,
+  ),
+  DropDownValueModel(
+    name: EventType.cult.text,
+    value: EventType.cult,
+  ),
+  DropDownValueModel(
+    name: EventType.bibleStudy.text,
+    value: EventType.bibleStudy,
+  ),
+  DropDownValueModel(
+    name: EventType.cinema.text,
+    value: EventType.cinema,
+  ),
+  DropDownValueModel(
+    name: EventType.scavengerHunt.text,
+    value: EventType.scavengerHunt,
+  ),
+  DropDownValueModel(
+    name: EventType.social.text,
+    value: EventType.social,
+  ),
+  DropDownValueModel(
+    name: EventType.exchange.text,
+    value: EventType.exchange,
   ),
 ];
