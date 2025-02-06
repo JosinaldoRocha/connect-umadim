@@ -93,7 +93,7 @@ class _CompleteProfileFormPageState
                     SelectDateWidget(
                       date: birthDate,
                       hintText: 'Data de nascimento',
-                      onTap: () => selectBirthDate(),
+                      onTap: selectBirthDate,
                       onClean: () {
                         setState(() {
                           birthDate = null;
