@@ -81,7 +81,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       dropDownItemCount: widget.list.length,
       dropDownList: widget.list,
-      listPadding: widget.listPadding,
+      listPadding: ListPadding(top: 12, bottom: 4),
       onChanged: widget.onChanged,
     );
   }
