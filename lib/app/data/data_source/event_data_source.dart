@@ -33,29 +33,40 @@ class EventDataSource {
     }
   }
 
-  // Future<Either<CommonError, EventModel>> getNextEvent() async {
-  //   try {
-  //     final now = DateTime.now();
-  //     final getDocuments = await firestore.collection('events').get();
+  Future<Either<CommonError, List<EventModel>>> getNextEvent() async {
+    try {
+      final now = DateTime.now();
 
-  //     final documents = getDocuments.docs;
-  //     List<EventModel> events = [];
+      final querySnapshot = await firestore
+          .collection('events')
+          .where('eventDate', isGreaterThanOrEqualTo: Timestamp.fromDate(now))
+          .orderBy('eventDate', descending: false)
+          .get();
 
-  //     EventModel event;
+      if (querySnapshot.docs.isEmpty) {
+        return Right([]);
+      }
 
-  //     for (var docs in documents) {
-  //       final item = EventModel.fromSnapShot(docs);
+      List<EventModel> events = querySnapshot.docs
+          .map((doc) => EventModel.fromSnapShot(doc))
+          .toList();
 
-  //       events.add(item);
-  //     }
+      DateTime closestDate = events.first.eventDate!.toLocal();
+      closestDate =
+          DateTime(closestDate.year, closestDate.month, closestDate.day);
 
-  //    event = events.where((element) => element.eventDate.day,);
+      List<EventModel> filteredEvents = events.where((event) {
+        final eventDate = event.eventDate!.toLocal();
+        final eventDay =
+            DateTime(eventDate.year, eventDate.month, eventDate.day);
+        return eventDay == closestDate;
+      }).toList();
 
-  //     return Right(events);
-  //   } on Exception catch (e) {
-  //     return Left(GenerateError.fromException(e));
-  //   }
-  // }
+      return Right(filteredEvents);
+    } on Exception catch (e) {
+      return Left(GenerateError.fromException(e));
+    }
+  }
 
   Future<Either<CommonError, bool>> addEvent(
     EventModel event,
