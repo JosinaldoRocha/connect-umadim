@@ -1,3 +1,4 @@
+import 'package:connect_umadim_app/app/presentation/event/views/widgets/next_event_widget.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/birthdays_week_widget.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/home_app_bar_widget.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
           children: [
             HomeAppBarWidget(user: data),
             BirthdaysWeekWidget(),
+            NextEventWidget(),
           ],
         ),
       ),
