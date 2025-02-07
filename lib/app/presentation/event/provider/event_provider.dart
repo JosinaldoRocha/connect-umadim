@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../states/add/add_event_state_notifier.dart';
 import '../states/get/get_all_events_state_notifier.dart';
+import '../states/get/get_next_event_state_notifier.dart';
 
 final eventDataSourceProvider = Provider(
   (ref) => EventDataSource(),
@@ -18,6 +19,13 @@ final getAllEventProvider =
 final addEventProvider =
     StateNotifierProvider<AddEventStateNotifier, AddEventState>(
   (ref) => AddEventStateNotifier(
+    dataSource: ref.read(eventDataSourceProvider),
+  ),
+);
+
+final getNextEventProvider =
+    StateNotifierProvider<GetNextEventStateNotifier, GetNextEventState>(
+  (ref) => GetNextEventStateNotifier(
     dataSource: ref.read(eventDataSourceProvider),
   ),
 );
