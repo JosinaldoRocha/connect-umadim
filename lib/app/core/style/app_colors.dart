@@ -4,7 +4,7 @@ class AppColor {
   static const bgColor = Color(0xFFFFECD7);
   static const lightBgColor = Color(0xFFFBF6F2);
   static const lightPurple = Color.fromARGB(255, 196, 183, 251);
-  static const cardBackground = Color(0xFFF4F2FF);
+  static const cardBackground = Color(0xFFF5C086);
   static const primary = Color(0xFFF69730);
   static const secondary = Color(0xFFFF4D6F);
   static const tertiary = Color(0xFF00124F);
