@@ -1,7 +1,6 @@
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/birthday_item_widget.dart';
 import 'package:connect_umadim_app/app/presentation/user/providers/user_provider.dart';
-import 'package:connect_umadim_app/app/widgets/spacing/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,9 +23,12 @@ class BirthdaysWeekWidget extends ConsumerWidget {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SpaceVertical.x5(),
                   Padding(
-                    padding: const EdgeInsets.only(left: 8),
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      top: 20,
+                      bottom: 4,
+                    ),
                     child: Text(
                       birthdayUsers.length > 1
                           ? 'Aniversariantes da semana 🎈'
@@ -34,9 +36,8 @@ class BirthdaysWeekWidget extends ConsumerWidget {
                       style: AppText.text().titleSmall,
                     ),
                   ),
-                  Container(
-                    height: 244,
-                    margin: EdgeInsets.symmetric(vertical: 4),
+                  SizedBox(
+                    height: 208,
                     child: birthdayUsers.length == 1
                         ? Center(
                             child: BirthdayItemWidget(user: birthdayUsers[0]),
