@@ -17,9 +17,7 @@ class BirthdayItemWidget extends StatelessWidget with BirthdayItemMixin {
     return Stack(
       children: [
         Container(
-          height: 208,
           width: 150,
-          margin: EdgeInsets.only(),
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: user.gender == "Masculino"
