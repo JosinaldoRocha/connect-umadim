@@ -124,6 +124,7 @@ mixin AddEventMixin<T extends AddEventPage> on ConsumerState<T> {
           eventDate: eventDate,
           eventTime: eventTime!,
           description: descriptionController.text,
+          confirmedPresences: [],
           createdAt: DateTime.now(),
         );
 
