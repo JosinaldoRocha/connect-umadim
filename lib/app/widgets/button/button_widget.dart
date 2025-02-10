@@ -87,17 +87,15 @@ class ButtonWidget extends StatelessWidget {
       onPressed: !isLoading ? onTap : null,
       child: !isLoading
           ? _buildContent()
-          : Center(
-              child: SizedBox(
-                height: 8,
-                width: 48,
-                child: LoadingIndicator(
-                  indicatorType: Indicator.ballPulse,
-                  colors: [
-                    (color == Colors.white) ? AppColor.primary : Colors.white,
-                  ],
-                  strokeWidth: 1,
-                ),
+          : SizedBox(
+              height: 8,
+              width: 48,
+              child: LoadingIndicator(
+                indicatorType: Indicator.ballPulse,
+                colors: [
+                  (color == Colors.white) ? AppColor.primary : Colors.white,
+                ],
+                strokeWidth: 1,
               ),
             ),
     );
@@ -111,15 +109,9 @@ class ButtonWidget extends StatelessWidget {
     return trailing == null
         ? _buildText()
         : Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: AppText.text().bodyMedium!.copyWith(fontSize: 16),
-              ),
-              const SpaceHorizontal.x2(),
-              trailing!
-            ],
+            children: [_buildText(), const SpaceHorizontal.x2(), trailing!],
           );
   }
 
@@ -128,7 +120,7 @@ class ButtonWidget extends StatelessWidget {
       title,
       style: AppText.text().bodyLarge!.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppColor.white,
+            color: textColor ?? AppColor.white,
           ),
     );
   }
