@@ -82,6 +82,15 @@ class EventDataSource {
     }
   }
 
+  Future<Either<CommonError, bool>> updateEvent(EventModel event) async {
+    try {
+      await firestore.collection('events').doc(event.id).update(event.toMap());
+      return const Right(true);
+    } on Exception catch (e) {
+      return Left(GenerateError.fromException(e));
+    }
+  }
+
   Future<String?> eventImage(
     EventModel event,
     Uint8List? imageBytes,
