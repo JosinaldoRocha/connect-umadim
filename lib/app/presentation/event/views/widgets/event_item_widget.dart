@@ -1,11 +1,10 @@
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/event_model.dart';
-import 'package:connect_umadim_app/app/presentation/home/views/mixin/birthday_item_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class EventItemWidget extends StatelessWidget with BirthdayItemMixin {
+class EventItemWidget extends StatelessWidget {
   const EventItemWidget({
     super.key,
     required this.event,
@@ -17,7 +16,12 @@ class EventItemWidget extends StatelessWidget with BirthdayItemMixin {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).pushNamed(
+          '/event/details',
+          arguments: event,
+        );
+      },
       child: Container(
         height: 202,
         width: isHorizontalScrolling ? 300 : double.infinity,
