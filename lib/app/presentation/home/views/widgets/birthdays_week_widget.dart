@@ -25,7 +25,7 @@ class BirthdaysWeekWidget extends ConsumerWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                      left: 8,
+                      left: 16,
                       top: 20,
                       bottom: 4,
                     ),
@@ -39,7 +39,8 @@ class BirthdaysWeekWidget extends ConsumerWidget {
                   SizedBox(
                     height: 208,
                     child: birthdayUsers.length == 1
-                        ? Center(
+                        ? Padding(
+                            padding: EdgeInsets.only(left: 16),
                             child: BirthdayItemWidget(user: birthdayUsers[0]),
                           )
                         : BirthdaysListWidget(birthdayUsers: birthdayUsers),
