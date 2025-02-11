@@ -65,8 +65,11 @@ mixin BirthdayItemMixin {
               (char) => Text(
                 char,
                 textAlign: TextAlign.center,
-                style:
-                    AppText.text().bodySmall!.copyWith(color: AppColor.white),
+                style: AppText.text().bodySmall!.copyWith(
+                      fontSize: 10,
+                      color: AppColor.white,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             )
             .toList(),
