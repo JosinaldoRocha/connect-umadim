@@ -53,7 +53,7 @@ class EventItemWidget extends StatelessWidget {
                 ),
                 Text(
                   event.eventDate != null
-                      ? '📌 ${DateFormat('dd/MM/yyyy').format(event.eventDate!)}'
+                      ? '📌 ${formatEventDate(event.eventDate!)}'
                       : event.status.text,
                   style: AppText.text().bodySmall!.copyWith(fontSize: 14),
                 ),
@@ -75,5 +75,23 @@ class EventItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String formatEventDate(DateTime eventDate) {
+    final now = DateTime.now();
+    final yesterday = now.subtract(Duration(days: 1));
+    final tomorrow = now.add(Duration(days: 1));
+
+    if (eventDate.day == now.day && eventDate.month == now.month) {
+      return "Hoje";
+    } else if (eventDate.day == yesterday.day &&
+        eventDate.month == yesterday.month) {
+      return "Ontem";
+    } else if (eventDate.day == tomorrow.day &&
+        eventDate.month == tomorrow.month) {
+      return "Amanhã";
+    } else {
+      return DateFormat('dd/MM/yyyy').format(event.eventDate!);
+    }
   }
 }
