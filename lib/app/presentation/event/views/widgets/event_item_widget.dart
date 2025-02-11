@@ -43,7 +43,7 @@ class EventItemWidget extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   event.title,
@@ -59,6 +59,7 @@ class EventItemWidget extends StatelessWidget {
                 ),
               ],
             ),
+            //TODO: get image by event type
             Image.asset('assets/images/bible_study.png'),
             Align(
               alignment: Alignment.bottomRight,
