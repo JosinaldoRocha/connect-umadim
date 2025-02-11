@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
-
 import 'dart:ui';
 
 import 'package:connect_umadim_app/app/presentation/event/provider/event_provider.dart';
@@ -14,6 +13,7 @@ import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_text.dart';
 import '../../../../widgets/button/button_widget.dart';
 import '../../../../widgets/snack_bar/app_snack_bar_widget.dart';
+import '../../../../widgets/spacing/spacing.dart';
 import '../widgets/confirm_presence_dialog_widget.dart';
 
 mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
@@ -130,6 +130,46 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
             : null,
         textColor: confirmPresence ? AppColor.error : AppColor.white,
         onTap: !confirmPresence ? onConfirmPresence : null,
+      ),
+    );
+  }
+
+  Container buildAppBar(bool validImage) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 36,
+        left: 8,
+        right: 16,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildBackButton(validImage),
+          SpaceHorizontal.x4(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                'widget.event.title df a daf ad daf adfa df',
+                style: AppText.text().titleMedium,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconButton buildBackButton(bool validImage) {
+    return IconButton(
+      style: IconButton.styleFrom(
+        elevation: 0,
+        backgroundColor: validImage ? const Color(0x291A1A1A) : null,
+      ),
+      onPressed: () => Navigator.pop(context),
+      icon: Icon(
+        Icons.arrow_back,
+        color: validImage ? AppColor.white : AppColor.tertiary,
       ),
     );
   }

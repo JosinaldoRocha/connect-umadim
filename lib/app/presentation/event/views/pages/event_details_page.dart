@@ -3,7 +3,6 @@ import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/event_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/views/mixin/event_details_mixin.dart';
 import 'package:connect_umadim_app/app/widgets/spacing/spacing.dart';
-import 'package:connect_umadim_app/app/widgets/spacing/vertical_space_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -26,68 +25,61 @@ class _EventDetailsPageState extends ConsumerState<EventDetailsPage>
   @override
   Widget build(BuildContext context) {
     listen();
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          _buildContent(),
-          Positioned(
-            top: 40,
-            left: 10,
-            child: IconButton(
-              style: IconButton.styleFrom(
-                shadowColor: Colors.amber,
-                elevation: 0,
-                backgroundColor: const Color.fromARGB(41, 26, 26, 26),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: AppColor.white,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Column _buildContent() {
     final bool validImage =
         widget.event.imageUrl != null && widget.event.imageUrl!.isNotEmpty;
 
+    return Scaffold(
+      body: validImage
+          ? Stack(
+              children: [
+                _buildContent(validImage),
+                Positioned(
+                  top: 40,
+                  left: 10,
+                  child: buildBackButton(validImage),
+                ),
+              ],
+            )
+          : _buildContent(validImage),
+    );
+  }
+
+  Column _buildContent(bool validImage) {
     return Column(
       children: [
-        if (validImage)
-          SizedBox(
-            height: 300,
-            width: double.infinity,
-            child: Image.network(
-              widget.event.imageUrl!,
-              fit: BoxFit.fill,
-            ),
-          ),
+        validImage
+            ? SizedBox(
+                height: 300,
+                width: double.infinity,
+                child: Image.network(
+                  widget.event.imageUrl!,
+                  fit: BoxFit.fill,
+                ),
+              )
+            : buildAppBar(validImage),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16).copyWith(
-              top: validImage ? 16 : 68,
+              top: validImage ? 16 : 24,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text(
-                  widget.event.title,
-                  textAlign: TextAlign.center,
-                  style: AppText.text().titleMedium,
-                ),
+                if (validImage)
+                  Text(
+                    widget.event.title,
+                    textAlign: TextAlign.center,
+                    style: AppText.text().titleMedium,
+                  ),
                 SpaceVertical.x2(),
                 if (widget.event.description != null)
                   Text(
                     widget.event.description!,
                     textAlign: TextAlign.center,
-                    style: AppText.text().bodySmall!.copyWith(fontSize: 14),
+                    style: AppText.text().bodySmall!.copyWith(
+                          fontSize: 14,
+                          color: AppColor.primaryGrey,
+                        ),
                   ),
                 Spacer(),
                 if (widget.event.theme != null &&
