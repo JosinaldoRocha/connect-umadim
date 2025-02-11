@@ -14,20 +14,18 @@ class BirthdaysListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ListView.separated(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => Container(
-          margin: EdgeInsets.only(
-            left: index == 0 ? 8 : 0,
-            right: index == birthdayUsers.length - 1 ? 8 : 0,
-          ),
-          child: BirthdayItemWidget(user: birthdayUsers[index]),
+    return ListView.separated(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) => Container(
+        margin: EdgeInsets.only(
+          left: index == 0 ? 16 : 0,
+          right: index == birthdayUsers.length - 1 ? 16 : 0,
         ),
-        separatorBuilder: (context, index) => SpaceHorizontal.x2(),
-        itemCount: birthdayUsers.length,
+        child: BirthdayItemWidget(user: birthdayUsers[index]),
       ),
+      separatorBuilder: (context, index) => SpaceHorizontal.x2(),
+      itemCount: birthdayUsers.length,
     );
   }
 }
