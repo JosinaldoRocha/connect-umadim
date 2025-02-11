@@ -36,10 +36,14 @@ class EventDataSource {
   Future<Either<CommonError, List<EventModel>>> getNextEvent() async {
     try {
       final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
 
       final querySnapshot = await firestore
           .collection('events')
-          .where('eventDate', isGreaterThanOrEqualTo: Timestamp.fromDate(now))
+          .where(
+            'eventDate',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(today),
+          )
           .orderBy('eventDate', descending: false)
           .get();
 
