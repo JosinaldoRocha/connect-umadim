@@ -1,3 +1,5 @@
+import 'package:connect_umadim_app/app/data/enums/department_enum.dart';
+import 'package:connect_umadim_app/app/data/models/function_model.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:connect_umadim_app/app/presentation/authentication/views/pages/sign_up/sign_up_page.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -12,28 +14,11 @@ import '../../state/sign_up/sign_up_state_notifier.dart';
 mixin SignUpMixin<T extends SignUpPage> on ConsumerState<T> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final umadimFucntionController = SingleValueDropDownController();
+  final umadimFunctionController = SingleValueDropDownController();
+  final localFunctionController = SingleValueDropDownController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
-  void addListeners() {
-    nameController.addListener(_validateFields);
-    emailController.addListener(_validateFields);
-    umadimFucntionController.addListener(_validateFields);
-    passwordController.addListener(_validateFields);
-    confirmPasswordController.addListener(_validateFields);
-  }
-
-  void _validateFields() {
-    final isValid = nameController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        umadimFucntionController.dropDownValue != null &&
-        passwordController.text.isNotEmpty &&
-        confirmPasswordController.text.isNotEmpty;
-
-    ref.read(isButtonEnabledProvider.notifier).state = isValid;
-  }
 
   void listen() {
     ref.listen<SignUpState>(
@@ -57,13 +42,18 @@ mixin SignUpMixin<T extends SignUpPage> on ConsumerState<T> {
 
   void onTapButton() {
     if (formKey.currentState!.validate()) {
+      final function = FunctionModel(
+        title: umadimFunctionController.dropDownValue?.value,
+        department: Department.umadim,
+      );
+
       final user = UserModel(
         id: '',
         name: nameController.text,
         email: emailController.text,
         password: passwordController.text,
-        umadimFunction: umadimFucntionController.dropDownValue?.name,
-        localFunction: '',
+        umadimFunction: function,
+        localFunction: function,
         birthDate: null,
         gender: '',
         congregation: '',

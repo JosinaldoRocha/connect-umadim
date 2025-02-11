@@ -1,17 +1,20 @@
 enum FunctionType {
   leader,
+  viceLeader,
   regent,
   media,
   receptionist,
   secretary,
-  concierge,
-  evangelism,
+  doorman,
+  evangelist,
   events,
   member;
 
   factory FunctionType.fromString(String type) {
     if (type == 'Líder') {
       return FunctionType.leader;
+    } else if (type == 'Vice-líder') {
+      return FunctionType.viceLeader;
     } else if (type == 'Regente') {
       return FunctionType.regent;
     } else if (type == 'Mídia') {
@@ -20,12 +23,12 @@ enum FunctionType {
       return FunctionType.receptionist;
     } else if (type == 'Secretário(a)') {
       return FunctionType.secretary;
-    } else if (type == 'Portaria') {
-      return FunctionType.concierge;
-    } else if (type == 'Evangelismo') {
-      return FunctionType.secretary;
-    } else if (type == 'Eventos') {
-      return FunctionType.secretary;
+    } else if (type == 'Porteiro') {
+      return FunctionType.doorman;
+    } else if (type == 'Evangelista') {
+      return FunctionType.evangelist;
+    } else if (type == 'Organizador(a) de eventos') {
+      return FunctionType.events;
     } else {
       return FunctionType.member;
     }
@@ -35,6 +38,8 @@ enum FunctionType {
     switch (this) {
       case FunctionType.leader:
         return 'Líder';
+      case FunctionType.viceLeader:
+        return 'Vice-líder';
       case FunctionType.regent:
         return 'Regente';
       case FunctionType.media:
@@ -43,12 +48,12 @@ enum FunctionType {
         return 'Recepcionista';
       case FunctionType.secretary:
         return 'Secretário(a)';
-      case FunctionType.concierge:
-        return 'Portaria';
-      case FunctionType.evangelism:
-        return 'Evangelismo';
+      case FunctionType.doorman:
+        return 'Porteiro';
+      case FunctionType.evangelist:
+        return 'Evangelista';
       case FunctionType.events:
-        return 'Eventos';
+        return 'Organizador(a) de eventos';
       case FunctionType.member:
         return 'Membro';
     }

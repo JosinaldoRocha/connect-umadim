@@ -22,16 +22,8 @@ class SignUpPage extends ConsumerStatefulWidget {
 
 class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
   @override
-  void initState() {
-    super.initState();
-    addListeners();
-  }
-
-  @override
   Widget build(BuildContext context) {
     listen();
-
-    final isButtonEnabled = ref.watch(isButtonEnabledProvider);
 
     final state = ref.watch(signUpProvider);
 
@@ -68,7 +60,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
                   ),
                   const SpaceVertical.x5(),
                   DropDownWidget(
-                    controller: umadimFucntionController,
+                    controller: umadimFunctionController,
                     list: functionTypeList,
                     hintText: 'Sua função na umadim',
                     onChanged: (p0) {},
@@ -107,7 +99,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> with SignUpMixin {
             child: ButtonWidget(
               isLoading: state is CommonStateLoadInProgress,
               title: 'Finalizar',
-              onTap: isButtonEnabled ? onTapButton : null,
+              onTap: onTapButton,
             ),
           ),
         ],

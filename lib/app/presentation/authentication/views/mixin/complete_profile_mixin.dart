@@ -10,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/style/app_colors.dart';
+import '../../../../data/enums/department_enum.dart';
+import '../../../../data/models/function_model.dart';
 import '../../../../widgets/snack_bar/app_snack_bar_widget.dart';
 import '../pages/complete_profile_form/complete_profile_form_page.dart';
 
@@ -85,13 +87,18 @@ mixin CompleteProfileFormMixin<T extends CompleteProfileFormPage>
   void onTapButton(UserModel data) {
     if (formKey.currentState!.validate()) {
       if (birthDate != null) {
+        final congregation = congregationController.dropDownValue?.value;
+
         final user = UserModel(
           id: data.id,
           name: data.name,
           email: data.email,
           password: data.password,
           umadimFunction: data.umadimFunction,
-          localFunction: localFunctionController.dropDownValue!.name,
+          localFunction: FunctionModel(
+            title: localFunctionController.dropDownValue?.value,
+            department: Department.fromByCongregation(congregation),
+          ),
           birthDate: birthDate,
           gender: genderController.dropDownValue!.name,
           congregation: congregationController.dropDownValue!.name,

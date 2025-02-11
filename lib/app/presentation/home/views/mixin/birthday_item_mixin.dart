@@ -1,3 +1,4 @@
+import 'package:connect_umadim_app/app/data/enums/funciton_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -37,10 +38,10 @@ mixin BirthdayItemMixin {
   }
 
   String getUserFunction(UserModel user) {
-    if (user.umadimFunction != "Membro" && user.umadimFunction != null) {
-      return user.umadimFunction!;
-    } else if (user.localFunction != "Membro") {
-      return user.localFunction;
+    if (user.umadimFunction.title != FunctionType.member) {
+      return user.umadimFunction.title.text;
+    } else if (user.localFunction.title != FunctionType.member) {
+      return user.localFunction.title.text;
     }
     return '';
   }
@@ -95,9 +96,7 @@ mixin BirthdayItemMixin {
                     );
                   },
                 )
-              : Image.asset(
-                  'assets/images/profile.png',
-                ),
+              : Image.asset('assets/images/profile.png'),
         ),
       ),
     );

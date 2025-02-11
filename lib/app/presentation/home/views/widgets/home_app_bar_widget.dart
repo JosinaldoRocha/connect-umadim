@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:connect_umadim_app/app/data/enums/funciton_type_enum.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/happy_birthday_widget.dart';
 import 'package:connect_umadim_app/app/widgets/spacing/spacing.dart';
 import 'package:flutter/foundation.dart';
@@ -29,7 +30,7 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
   Widget build(BuildContext context) {
     final now = DateTime.now();
 
-    final isBirthday = (widget.user.birthDate!.day == now.day &&
+    final isBirthday = (widget.user.birthDate?.day == now.day &&
         widget.user.birthDate!.month == now.month);
 
     return Container(
@@ -134,15 +135,14 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
   }
 
   String _getUserFunction() {
-    if (widget.user.umadimFunction != null &&
-        (widget.user.umadimFunction == "Líder" ||
-            widget.user.umadimFunction == "Regente")) {
-      return '${widget.user.umadimFunction} ';
+    if (widget.user.umadimFunction.title == FunctionType.leader ||
+        widget.user.umadimFunction.title == FunctionType.regent) {
+      return '${widget.user.umadimFunction.title.text} ';
     }
 
-    return (widget.user.localFunction == "Líder" ||
-            widget.user.localFunction == "Regente")
-        ? widget.user.localFunction
+    return (widget.user.localFunction.title == FunctionType.leader ||
+            widget.user.localFunction.title == FunctionType.regent)
+        ? '${widget.user.localFunction.title.text} '
         : '';
   }
 

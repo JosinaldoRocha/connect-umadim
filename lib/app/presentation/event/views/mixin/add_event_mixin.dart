@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:connect_umadim_app/app/data/enums/department_enum.dart';
 import 'package:connect_umadim_app/app/data/enums/event_status_enum.dart';
+import 'package:connect_umadim_app/app/data/enums/funciton_type_enum.dart';
 import 'package:connect_umadim_app/app/data/models/event_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/states/add/add_event_state_notifier.dart';
 import 'package:connect_umadim_app/app/presentation/event/views/pages/add_event_page.dart';
@@ -128,13 +128,18 @@ mixin AddEventMixin<T extends AddEventPage> on ConsumerState<T> {
           createdAt: DateTime.now(),
         );
 
-        final isUserLeader = widget.user.umadimFunction == "Líder";
-        final isPromotedByUmadim = event.promotedBy == Department.umadim;
-        final isPromotedByCongregation = event.promotedBy.text
-            .toLowerCase()
-            .contains(widget.user.congregation.toLowerCase());
+        final authorizedUser =
+            widget.user.umadimFunction.title == FunctionType.leader ||
+                widget.user.umadimFunction.title == FunctionType.viceLeader ||
+                widget.user.umadimFunction.title == FunctionType.regent ||
+                widget.user.localFunction.title == FunctionType.leader ||
+                widget.user.localFunction.title == FunctionType.viceLeader;
 
-        if (isUserLeader && isPromotedByUmadim || isPromotedByCongregation) {
+        final isDepartmentAllowed =
+            widget.user.umadimFunction.department == event.promotedBy ||
+                widget.user.localFunction.department == event.promotedBy;
+
+        if (authorizedUser && isDepartmentAllowed) {
           ref.read(addEventProvider.notifier).add(event, imageBytes);
         } else {
           AppSnackBar.show(

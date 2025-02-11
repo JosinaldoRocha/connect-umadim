@@ -1,3 +1,4 @@
+import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/views/widgets/next_event_widget.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/birthdays_week_widget.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/home_app_bar_widget.dart';
@@ -24,34 +25,13 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
     final userState = ref.watch(getUserProvider);
 
     return userState.maybeWhen(
       //TODO: create component for loading
-      loadInProgress: () => Center(
-        child: SizedBox(
-          height: 8,
-          width: 40,
-          child: LoadingIndicator(
-            indicatorType: Indicator.ballPulse,
-            colors: [AppColor.primary],
-          ),
-        ),
-      ),
+      loadInProgress: () => _buildLoadingIndicator(),
       loadSuccess: (data) => Container(
-        decoration: BoxDecoration(
-          color: AppColor.lightBgColor,
-          image: (data.birthDate!.day == now.day &&
-                  data.birthDate!.month == now.month)
-              ? DecorationImage(
-                  opacity: 0.2,
-                  fit: BoxFit.fitWidth,
-                  alignment: Alignment(0, 0.8),
-                  image: AssetImage('assets/images/birthday_cake.png'),
-                )
-              : null,
-        ),
+        decoration: _buildBoxDecoration(data),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -68,6 +48,36 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
         ),
       ),
       orElse: () => Container(),
+    );
+  }
+
+  Center _buildLoadingIndicator() {
+    return Center(
+      child: SizedBox(
+        height: 8,
+        width: 40,
+        child: LoadingIndicator(
+          indicatorType: Indicator.ballPulse,
+          colors: [AppColor.primary],
+        ),
+      ),
+    );
+  }
+
+  BoxDecoration _buildBoxDecoration(UserModel data) {
+    final now = DateTime.now();
+
+    return BoxDecoration(
+      color: AppColor.lightBgColor,
+      image:
+          (data.birthDate?.day == now.day && data.birthDate?.month == now.month)
+              ? DecorationImage(
+                  opacity: 0.2,
+                  fit: BoxFit.fitWidth,
+                  alignment: Alignment(0, 0.8),
+                  image: AssetImage('assets/images/birthday_cake.png'),
+                )
+              : null,
     );
   }
 }

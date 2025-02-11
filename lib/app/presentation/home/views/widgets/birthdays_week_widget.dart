@@ -33,7 +33,7 @@ class BirthdaysWeekWidget extends ConsumerWidget {
                       birthdayUsers.length > 1
                           ? 'Aniversariantes da semana 🎈'
                           : 'Aniversariante da semana 🎈',
-                      style: AppText.text().titleSmall,
+                      style: AppText.text().titleSmall!.copyWith(fontSize: 14),
                     ),
                   ),
                   SizedBox(

@@ -1,3 +1,5 @@
+import 'package:connect_umadim_app/app/data/enums/congregation_enum.dart';
+
 enum Department {
   juvTC,
   juvCMS,
@@ -37,6 +39,36 @@ enum Department {
     } else if (type == 'Juv. Maranata') {
       return Department.juvCM;
     } else if (type == 'Juv. Monte Moriá') {
+      return Department.juvCMM;
+    } else {
+      return Department.umadim;
+    }
+  }
+
+  factory Department.fromByCongregation(Congregation type) {
+    if (type == Congregation.temploCentral) {
+      return Department.juvTC;
+    } else if (type == Congregation.monteSinai) {
+      return Department.juvCMS;
+    } else if (type == Congregation.lirioDosVales) {
+      return Department.juvCLV;
+    } else if (type == Congregation.rosaDeSaron) {
+      return Department.juvCRS;
+    } else if (type == Congregation.valeDeBencaos) {
+      return Department.juvCVB;
+    } else if (type == Congregation.juda) {
+      return Department.juvCJ;
+    } else if (type == Congregation.novaJerusalem) {
+      return Department.juvCNJ;
+    } else if (type == Congregation.altoRefugio) {
+      return Department.juvCAR;
+    } else if (type == Congregation.monteDasOliveiras) {
+      return Department.juvCMO;
+    } else if (type == Congregation.ebenezer) {
+      return Department.juvCE;
+    } else if (type == Congregation.maranata) {
+      return Department.juvCM;
+    } else if (type == Congregation.monteMoria) {
       return Department.juvCMM;
     } else {
       return Department.umadim;

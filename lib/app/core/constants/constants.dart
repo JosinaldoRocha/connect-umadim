@@ -11,6 +11,10 @@ final functionTypeList = [
     value: FunctionType.leader,
   ),
   DropDownValueModel(
+    name: FunctionType.viceLeader.text,
+    value: FunctionType.viceLeader,
+  ),
+  DropDownValueModel(
     name: FunctionType.regent.text,
     value: FunctionType.regent,
   ),
@@ -27,12 +31,12 @@ final functionTypeList = [
     value: FunctionType.secretary,
   ),
   DropDownValueModel(
-    name: FunctionType.concierge.text,
-    value: FunctionType.concierge,
+    name: FunctionType.doorman.text,
+    value: FunctionType.doorman,
   ),
   DropDownValueModel(
-    name: FunctionType.evangelism.text,
-    value: FunctionType.evangelism,
+    name: FunctionType.evangelist.text,
+    value: FunctionType.evangelist,
   ),
   DropDownValueModel(
     name: FunctionType.events.text,

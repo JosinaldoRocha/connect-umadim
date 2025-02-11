@@ -36,12 +36,12 @@ class _NextEventWidgetState extends ConsumerState<NextEventWidget> {
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 16,
-                    top: 20,
+                    top: 12,
                     bottom: 4,
                   ),
                   child: Text(
                     data.length > 1 ? 'Próximos eventos' : 'Próximo evento',
-                    style: AppText.text().titleSmall,
+                    style: AppText.text().titleSmall!.copyWith(fontSize: 14),
                   ),
                 ),
                 data.length == 1

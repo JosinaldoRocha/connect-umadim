@@ -87,7 +87,7 @@ class _CompleteProfileFormPageState
                     DropDownWidget(
                       controller: localFunctionController,
                       list: functionTypeList,
-                      hintText: 'Sua função na congregação',
+                      hintText: 'Função na congregação',
                     ),
                     const SpaceVertical.x5(),
                     SelectDateWidget(

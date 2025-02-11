@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_umadim_app/app/data/models/function_model.dart';
 
 class UserModel {
   String id;
   String name;
   String email;
   String? password;
-  String? umadimFunction;
-  String localFunction;
+  FunctionModel umadimFunction;
+  FunctionModel localFunction;
   DateTime? birthDate;
   String gender;
   String? photoUrl;
@@ -19,7 +20,7 @@ class UserModel {
     required this.name,
     required this.email,
     this.password,
-    this.umadimFunction,
+    required this.umadimFunction,
     required this.localFunction,
     this.birthDate,
     required this.gender,
@@ -35,8 +36,8 @@ class UserModel {
       'name': name,
       'email': email,
       'password': '',
-      'umadimFunction': umadimFunction,
-      'localFunction': localFunction,
+      'umadimFunction': umadimFunction.toMap(),
+      'localFunction': localFunction.toMap(),
       'birthDate': birthDate != null ? Timestamp.fromDate(birthDate!) : null,
       'gender': gender,
       'congregation': congregation,
@@ -54,10 +55,12 @@ class UserModel {
       email: snapshot['email'] as String,
       password:
           snapshot['password'] != null ? snapshot['password'] as String : null,
-      umadimFunction: snapshot['umadimFunction'] != null
-          ? snapshot['umadimFunction'] as String
-          : null,
-      localFunction: snapshot['localFunction'] as String,
+      umadimFunction: FunctionModel.fromMap(
+        snapshot['umadimFunction'] as Map<String, dynamic>,
+      ),
+      localFunction: FunctionModel.fromMap(
+        snapshot['localFunction'] as Map<String, dynamic>,
+      ),
       birthDate: snapshot['birthDate'] != null
           ? (snapshot['birthDate'] as Timestamp).toDate().toLocal()
           : null,
@@ -77,8 +80,8 @@ class UserModel {
     String? name,
     String? email,
     String? password,
-    String? umadimFunction,
-    String? localFunction,
+    FunctionModel? umadimFunction,
+    FunctionModel? localFunction,
     DateTime? birthDate,
     String? gender,
     String? photoUrl,

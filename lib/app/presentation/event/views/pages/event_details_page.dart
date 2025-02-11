@@ -55,9 +55,12 @@ class _EventDetailsPageState extends ConsumerState<EventDetailsPage>
   }
 
   Column _buildContent() {
+    final bool validImage =
+        widget.event.imageUrl != null && widget.event.imageUrl!.isNotEmpty;
+
     return Column(
       children: [
-        if (widget.event.imageUrl?.isNotEmpty ?? true)
+        if (validImage)
           SizedBox(
             height: 300,
             width: double.infinity,
@@ -66,13 +69,10 @@ class _EventDetailsPageState extends ConsumerState<EventDetailsPage>
               fit: BoxFit.fill,
             ),
           ),
-        widget.event.imageUrl?.isNotEmpty ?? true
-            ? SpaceVertical.x2()
-            : SpaceVertical.x10(),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16).copyWith(
-              top: widget.event.imageUrl?.isNotEmpty ?? true ? 8 : 52,
+              top: validImage ? 16 : 68,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -90,12 +90,16 @@ class _EventDetailsPageState extends ConsumerState<EventDetailsPage>
                     style: AppText.text().bodySmall!.copyWith(fontSize: 14),
                   ),
                 Spacer(),
-                if (widget.event.theme?.isNotEmpty ?? true)
-                  buildEventInfo('📖 Tema: ', widget.event.theme!),
-                if (widget.event.minister?.isNotEmpty ?? true)
-                  buildEventInfo('🎤 Ministração: ', widget.event.minister!),
-                if (widget.event.singer?.isNotEmpty ?? true)
-                  buildEventInfo('🎶 Louvor: ', widget.event.singer!),
+                if (widget.event.theme != null &&
+                    widget.event.theme!.isNotEmpty)
+                  buildEventInfo('📖 Tema: ', widget.event.theme ?? ''),
+                if (widget.event.minister != null &&
+                    widget.event.minister!.isNotEmpty)
+                  buildEventInfo(
+                      '🎤 Ministração: ', widget.event.minister ?? ''),
+                if (widget.event.singer != null &&
+                    widget.event.singer!.isNotEmpty)
+                  buildEventInfo('🎶 Louvor: ', widget.event.singer ?? ''),
                 buildEventInfo('📍 Local: ', widget.event.eventLocation),
                 buildEventInfo(
                   '🕖 Data e Horário: ',

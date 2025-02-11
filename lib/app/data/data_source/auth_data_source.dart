@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_umadim_app/app/core/helpers/errors/sign_up_errors.dart';
+import 'package:connect_umadim_app/app/data/enums/funciton_type_enum.dart';
 import 'package:connect_umadim_app/app/data/models/leader_model.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
@@ -18,7 +19,7 @@ class AuthDataSource {
 
       if (isEmailRegistered) return Left(SignUpError.emailAlreadyExists);
 
-      if (user.umadimFunction != "Membro") {
+      if (user.umadimFunction.title != FunctionType.member) {
         final leader = await _getLeaderIfExists(email: user.email);
 
         if (leader == null) return Left(SignUpError.noPermission);
@@ -66,8 +67,10 @@ class AuthDataSource {
     return LeaderModel.fromSnapShot(getLeaders.docs.first);
   }
 
-  Future<UserCredential> _createUserAuth(
-      {required String email, required String password}) {
+  Future<UserCredential> _createUserAuth({
+    required String email,
+    required String password,
+  }) {
     return firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
   }
