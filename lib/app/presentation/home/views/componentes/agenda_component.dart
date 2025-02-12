@@ -39,7 +39,8 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
       loadSuccess: (data) {
         filterEventsByMonth(data, focusedDay);
 
-        return Padding(
+        return Container(
+          color: AppColor.lightBgColor,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Stack(
             children: [
