@@ -137,7 +137,7 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
   Container buildAppBar(bool validImage) {
     return Container(
       padding: EdgeInsets.only(
-        top: 36,
+        top: 40,
         left: 8,
         right: 16,
       ),
@@ -150,7 +150,7 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
             child: Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
-                'widget.event.title df a daf ad daf adfa df',
+                widget.event.title,
                 style: AppText.text().titleMedium,
               ),
             ),
