@@ -33,104 +33,115 @@ class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
     final isBirthday = (widget.user.birthDate?.day == now.day &&
         widget.user.birthDate!.month == now.month);
 
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: kIsWeb ? 12 : 48,
-        bottom: 8,
-      ),
-      decoration: BoxDecoration(
-        color: AppColor.lightBgColor,
-        image: isBirthday
-            ? DecorationImage(
-                opacity: 0.3,
-                fit: BoxFit.fitWidth,
-                image: AssetImage('assets/images/confetti.png'),
-              )
-            : null,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SpaceHorizontal.x1(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: kIsWeb ? 12 : 48,
+            bottom: 12,
+          ),
+          decoration: BoxDecoration(
+            color: AppColor.lightBgColor,
+            image: isBirthday
+                ? DecorationImage(
+                    opacity: 0.3,
+                    fit: BoxFit.fitWidth,
+                    image: AssetImage('assets/images/confetti.png'),
+                  )
+                : null,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                isBirthday ? 'Happy Birthday 🎉' : 'A paz do Senhor ✋',
-                style: AppText.text().titleSmall,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              SpaceHorizontal.x1(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    _getUserFunction(),
-                    style: AppText.text().titleSmall!.copyWith(fontSize: 14),
+                    isBirthday ? 'Happy Birthday 🎉' : 'A paz do Senhor ✋',
+                    style: AppText.text().titleSmall,
                   ),
-                  Text(
-                    getFirstAndSecondName(widget.user.name),
-                    style: AppText.text().titleMedium!.copyWith(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Spacer(),
-          if (isBirthday)
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  barrierColor: Colors.transparent,
-                  builder: (context) => Stack(
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                        child: Container(
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.2),
-                        ),
+                      Text(
+                        _getUserFunction(),
+                        style:
+                            AppText.text().titleSmall!.copyWith(fontSize: 14),
                       ),
-                      AlertDialog(
-                        contentPadding: EdgeInsets.all(0),
-                        content: HappyBirthdayWidget(),
+                      Text(
+                        getFirstAndSecondName(widget.user.name),
+                        style: AppText.text().titleMedium!.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ],
                   ),
-                );
-              },
-              child: Container(
-                height: 40,
-                width: 40,
-                margin: const EdgeInsets.only(right: 8),
-                child: Stack(
-                  children: [
-                    Lottie.asset(
-                      'assets/animations/received_message.json',
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      bottom: 5,
-                      child: Text('🎂'),
-                    ),
-                  ],
-                ),
+                ],
               ),
-            ),
-          ProfileImageWidget(
-            image: widget.user.photoUrl,
-            size: 52,
+              Spacer(),
+              if (isBirthday)
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.transparent,
+                      builder: (context) => Stack(
+                        children: [
+                          BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: Container(
+                              // ignore: deprecated_member_use
+                              color: Colors.black.withOpacity(0.2),
+                            ),
+                          ),
+                          AlertDialog(
+                            contentPadding: EdgeInsets.all(0),
+                            content: HappyBirthdayWidget(),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    margin: const EdgeInsets.only(right: 8),
+                    child: Stack(
+                      children: [
+                        Lottie.asset(
+                          'assets/animations/received_message.json',
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          bottom: 5,
+                          child: Text('🎂'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ProfileImageWidget(
+                image: widget.user.photoUrl,
+                size: 52,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Divider(
+          height: 0,
+          endIndent: 16,
+          indent: 16,
+          color: AppColor.lightGrey2,
+        ),
+      ],
     );
   }
 
