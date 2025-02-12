@@ -10,7 +10,7 @@ final eventDataSourceProvider = Provider(
   (ref) => EventDataSource(),
 );
 
-final getAllEventProvider =
+final getAllEventsProvider =
     StateNotifierProvider<GetAllEventsStateNotifier, GetAllEventsState>(
   (ref) => GetAllEventsStateNotifier(
     dataSource: ref.read(eventDataSourceProvider),
