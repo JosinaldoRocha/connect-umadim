@@ -82,27 +82,33 @@ mixin BirthdayItemMixin {
     return Expanded(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: user.photoUrl != null && user.photoUrl!.isNotEmpty
-            ? Image.network(
-                user.photoUrl!,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: LoadingIndicator(
-                        indicatorType: Indicator.ballPulse,
-                        colors: [AppColor.white],
+        child: Center(
+          child: user.photoUrl != null && user.photoUrl!.isNotEmpty
+              ? Image.network(
+                  user.photoUrl!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: LoadingIndicator(
+                          indicatorType: Indicator.ballPulse,
+                          colors: [AppColor.white],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              )
-            : Image.asset('assets/images/profile.png'),
+                    );
+                  },
+                )
+              : Image.asset(
+                  'assets/images/profile.png',
+                  height: 90,
+                  width: 90,
+                ),
+        ),
       ),
     );
   }
