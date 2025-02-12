@@ -38,8 +38,17 @@ class AgendaCalendarWidget extends StatelessWidget {
         calendarFormat: CalendarFormat.month,
         headerStyle: HeaderStyle(
           titleTextStyle: AppText.text().titleMedium!,
-          leftChevronIcon: Icon(Icons.arrow_back_ios_rounded),
-          rightChevronIcon: Icon(Icons.arrow_forward_ios_rounded),
+          leftChevronIcon: Icon(
+            Icons.arrow_back_ios_rounded,
+            size: 22,
+            color: AppColor.tertiary,
+          ),
+          rightChevronIcon: Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 22,
+            color: AppColor.tertiary,
+          ),
+          headerPadding: EdgeInsets.symmetric(vertical: 4),
           formatButtonVisible: false,
           titleCentered: true,
           titleTextFormatter: (date, locale) => toBeginningOfSentenceCase(
