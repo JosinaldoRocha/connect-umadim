@@ -80,27 +80,29 @@ mixin BirthdayItemMixin {
   Expanded buildImage(UserModel user) {
     //TODO: handle image loading in the web version
     return Expanded(
-      child: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: user.photoUrl != null && user.photoUrl!.isNotEmpty
-              ? Image.network(
-                  user.photoUrl!,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return SizedBox(
-                      height: 6,
-                      width: 40,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: user.photoUrl != null && user.photoUrl!.isNotEmpty
+            ? Image.network(
+                user.photoUrl!,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: SizedBox(
+                      height: 20,
+                      width: 20,
                       child: LoadingIndicator(
                         indicatorType: Indicator.ballPulse,
                         colors: [AppColor.white],
                       ),
-                    );
-                  },
-                )
-              : Image.asset('assets/images/profile.png'),
-        ),
+                    ),
+                  );
+                },
+              )
+            : Image.asset('assets/images/profile.png'),
       ),
     );
   }
