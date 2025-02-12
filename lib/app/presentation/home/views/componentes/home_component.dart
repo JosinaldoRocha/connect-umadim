@@ -8,6 +8,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 
 import '../../../../core/style/app_colors.dart';
 import '../../../user/providers/user_provider.dart';
+import '../widgets/umadim_board_widget.dart';
 
 class HomeComponent extends ConsumerStatefulWidget {
   const HomeComponent({super.key});
@@ -33,11 +34,18 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
       loadSuccess: (data) => Container(
         decoration: _buildBoxDecoration(data),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             HomeAppBarWidget(user: data),
-            BirthdaysWeekWidget(),
-            NextEventWidget(),
+            ListView(
+              shrinkWrap: true,
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UmadimBoardWidget(),
+                BirthdaysWeekWidget(),
+                NextEventWidget(),
+              ],
+            ),
           ],
         ),
       ),
@@ -72,7 +80,7 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
       image:
           (data.birthDate?.day == now.day && data.birthDate?.month == now.month)
               ? DecorationImage(
-                  opacity: 0.2,
+                  opacity: 0.1,
                   fit: BoxFit.fitWidth,
                   alignment: Alignment(0, 0.8),
                   image: AssetImage('assets/images/birthday_cake.png'),
