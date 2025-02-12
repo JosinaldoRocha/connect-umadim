@@ -27,7 +27,7 @@ enum FunctionType {
       return FunctionType.doorman;
     } else if (type == 'Evangelista') {
       return FunctionType.evangelist;
-    } else if (type == 'Organizador(a) de eventos') {
+    } else if (type == 'Org. eventos') {
       return FunctionType.events;
     } else {
       return FunctionType.member;
@@ -53,7 +53,7 @@ enum FunctionType {
       case FunctionType.evangelist:
         return 'Evangelista';
       case FunctionType.events:
-        return 'Organizador(a) de eventos';
+        return 'Org. eventos';
       case FunctionType.member:
         return 'Membro';
     }
