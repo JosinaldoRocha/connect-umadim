@@ -36,7 +36,7 @@ class _NextEventWidgetState extends ConsumerState<NextEventWidget> {
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 16,
-                    top: 12,
+                    top: 24,
                     bottom: 4,
                   ),
                   child: Text(

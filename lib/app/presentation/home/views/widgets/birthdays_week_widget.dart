@@ -26,7 +26,7 @@ class BirthdaysWeekWidget extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 16,
-                      top: 20,
+                      top: 24,
                       bottom: 4,
                     ),
                     child: Text(
