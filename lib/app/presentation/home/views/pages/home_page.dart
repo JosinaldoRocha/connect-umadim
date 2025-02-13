@@ -27,6 +27,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     Future.microtask(() {
       ref.read(listUsersProvider.notifier).load();
       ref.read(getUserProvider.notifier).load();
+      ref.read(getAllVersesProvider.notifier).load();
       return ref.read(homeTabsProvider.notifier).updateState = 0;
     });
   }
