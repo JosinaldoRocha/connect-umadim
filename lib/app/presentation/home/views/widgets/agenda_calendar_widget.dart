@@ -80,11 +80,11 @@ class AgendaCalendarWidget extends StatelessWidget {
             color: AppColor.primary,
             shape: BoxShape.circle,
           ),
-          markerSize: 10,
+          markerSize: 6,
           markerMargin: EdgeInsets.only(top: 2),
           markerDecoration: BoxDecoration(
-            color: AppColor.secondary,
             shape: BoxShape.circle,
+            color: AppColor.secondary,
           ),
         ),
       ),
