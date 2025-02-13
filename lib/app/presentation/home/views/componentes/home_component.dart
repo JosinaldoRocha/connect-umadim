@@ -1,5 +1,10 @@
+import 'dart:math';
+
+import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
+import 'package:connect_umadim_app/app/data/models/verse_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/views/widgets/next_event_widget.dart';
+import 'package:connect_umadim_app/app/presentation/home/provider/home_provider.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/birthdays_week_widget.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/home_app_bar_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +26,7 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(getUserProvider);
+    final verseState = ref.watch(getAllVersesProvider);
 
     return userState.maybeWhen(
       //TODO: create component for loading
@@ -31,13 +37,21 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
           mainAxisSize: MainAxisSize.min,
           children: [
             HomeAppBarWidget(user: data),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                UmadimBoardWidget(),
-                BirthdaysWeekWidget(),
-                NextEventWidget(),
-              ],
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  UmadimBoardWidget(),
+                  BirthdaysWeekWidget(),
+                  NextEventWidget(),
+                  verseState.maybeWhen(
+                    loadSuccess: (data) {
+                      return _buildVerseItem(data);
+                    },
+                    orElse: () => Container(),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -61,6 +75,35 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
           indicatorType: Indicator.ballPulse,
           colors: [AppColor.primary],
         ),
+      ),
+    );
+  }
+
+  Padding _buildVerseItem(List<VerseModel> data) {
+    int index = Random().nextInt(data.length);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Text(
+            data[index].text,
+            textAlign: TextAlign.center,
+            style: AppText.text().bodySmall!.copyWith(
+                  fontSize: 14,
+                  color: AppColor.primaryGrey,
+                ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              data[index].reference,
+              style: AppText.text().bodySmall!.copyWith(
+                    color: AppColor.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+        ],
       ),
     );
   }
