@@ -36,7 +36,7 @@ class DirectoryComponent extends ConsumerWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Umadim campo 01',
+                    'UMADIM ${DateTime.now().year}',
                     style: AppText.text().bodyLarge!.copyWith(
                           fontSize: 26,
                           color: AppColor.white,
