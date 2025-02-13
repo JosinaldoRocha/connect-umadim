@@ -24,6 +24,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     Future.microtask(() {
+      ref.read(listUsersProvider.notifier).load();
       ref.read(getUserProvider.notifier).load();
       return ref.read(homeTabsProvider.notifier).updateState = 0;
     });
