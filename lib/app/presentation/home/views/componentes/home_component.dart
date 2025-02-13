@@ -19,12 +19,6 @@ class HomeComponent extends ConsumerStatefulWidget {
 
 class _HomeComponentState extends ConsumerState<HomeComponent> {
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => ref.read(listUsersProvider.notifier).load());
-  }
-
-  @override
   Widget build(BuildContext context) {
     final userState = ref.watch(getUserProvider);
 
@@ -39,7 +33,6 @@ class _HomeComponentState extends ConsumerState<HomeComponent> {
             HomeAppBarWidget(user: data),
             ListView(
               shrinkWrap: true,
-              //crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 UmadimBoardWidget(),
                 BirthdaysWeekWidget(),
