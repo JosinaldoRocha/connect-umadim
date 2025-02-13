@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/helpers/errors/errors.dart';
 import '../models/user_model.dart';
+import '../models/verse_model.dart';
 
 class UserDataSource {
   final firestore = FirebaseFirestore.instance;
@@ -85,5 +86,22 @@ class UserDataSource {
     }
 
     return storage.getPublicUrl(fileName);
+  }
+
+  Future<Either<CommonError, List<VerseModel>>> getAllverses() async {
+    try {
+      final getDocuments = await firestore.collection('verses').get();
+      final documents = getDocuments.docs;
+      List<VerseModel> verses = [];
+
+      for (var docs in documents) {
+        final verse = VerseModel.fromSnapShot(docs);
+        verses.add(verse);
+      }
+
+      return Right(verses);
+    } on Exception catch (e) {
+      return Left(GenerateError.fromException(e));
+    }
   }
 }
