@@ -18,7 +18,7 @@ class EventsListWidget extends StatelessWidget {
     return Expanded(
       child: events.isEmpty
           ? Padding(
-              padding: const EdgeInsets.only(top: 416),
+              padding: const EdgeInsets.only(top: 372),
               child: Center(
                 child: Text(
                   'Nenhum evento para este mês 😕',
@@ -27,7 +27,7 @@ class EventsListWidget extends StatelessWidget {
               ),
             )
           : ListView.separated(
-              padding: const EdgeInsets.only(top: 416),
+              padding: const EdgeInsets.only(top: 372),
               itemCount: events.length,
               itemBuilder: (context, index) {
                 return Padding(
