@@ -4,15 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../data/models/event_model.dart';
+
 class AgendaCalendarWidget extends StatelessWidget {
   const AgendaCalendarWidget({
     super.key,
     required this.focusedDay,
     required this.onPageChanged,
+    required this.events,
   });
 
   final DateTime focusedDay;
   final Function(DateTime) onPageChanged;
+  final List<EventModel> events;
+
+  List<EventModel> getEventsForDay(DateTime date) {
+    return events.where((event) {
+      return event.eventDate?.year == date.year &&
+          event.eventDate?.month == date.month &&
+          event.eventDate?.day == date.day;
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +48,7 @@ class AgendaCalendarWidget extends StatelessWidget {
         firstDay: DateTime(DateTime.now().year),
         lastDay: DateTime(DateTime.now().year + 1),
         calendarFormat: CalendarFormat.month,
+        eventLoader: getEventsForDay,
         headerStyle: HeaderStyle(
           titleTextStyle: AppText.text().titleMedium!,
           leftChevronIcon: Icon(
@@ -65,6 +78,12 @@ class AgendaCalendarWidget extends StatelessWidget {
         calendarStyle: CalendarStyle(
           todayDecoration: BoxDecoration(
             color: AppColor.primary,
+            shape: BoxShape.circle,
+          ),
+          markerSize: 10,
+          markerMargin: EdgeInsets.only(top: 2),
+          markerDecoration: BoxDecoration(
+            color: AppColor.secondary,
             shape: BoxShape.circle,
           ),
         ),
