@@ -8,6 +8,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../user/providers/user_provider.dart';
 import '../../provider/home_provider.dart';
+import '../componentes/directory_component.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -53,7 +54,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         screens: [
           HomeComponent(),
           AgendaComponent(),
-          Center(child: Text('Diretório')),
+          DirectoryComponent(),
           Center(child: Text('Perfil')),
           Center(child: Text('Mais')),
         ],
