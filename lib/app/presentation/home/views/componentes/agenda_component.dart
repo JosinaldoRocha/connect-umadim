@@ -1,4 +1,3 @@
-import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/event_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/provider/event_provider.dart';
 import 'package:connect_umadim_app/app/presentation/event/views/widgets/events_list_widget.dart';
@@ -50,14 +49,10 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
               Column(
                 children: [
                   SpaceVertical.x10(),
-                  SpaceVertical.x2(),
-                  Text(
-                    'Agenda - 2025',
-                    style: AppText.text().titleMedium,
-                  ),
                   SpaceVertical.x4(),
                   AgendaCalendarWidget(
                     focusedDay: focusedDay,
+                    events: data,
                     onPageChanged: (newFocusedDay) => setState(() {
                       focusedDay = newFocusedDay;
                       filterEventsByMonth(data, newFocusedDay);
@@ -88,7 +83,8 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
         .where((event) =>
             event.eventDate?.month == date.month &&
             event.eventDate?.year == date.year)
-        .toList();
+        .toList()
+      ..sort((a, b) => a.eventDate!.compareTo(b.eventDate!));
 
     return filteredEvents;
   }
