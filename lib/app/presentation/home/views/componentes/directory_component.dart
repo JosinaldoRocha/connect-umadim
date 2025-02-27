@@ -39,7 +39,7 @@ class DirectoryComponent extends ConsumerWidget {
                     'UMADIM ${DateTime.now().year}',
                     style: AppText.text().bodyLarge!.copyWith(
                           fontSize: 26,
-                          color: AppColor.white,
+                          color: AppColor.tertiary,
                         ),
                   ),
                 ),
