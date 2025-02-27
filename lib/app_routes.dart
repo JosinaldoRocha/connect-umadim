@@ -4,12 +4,14 @@ import 'package:connect_umadim_app/app/presentation/home/views/pages/home_page.d
 import 'package:flutter/material.dart';
 
 import 'app/core/navigator/navigator.dart';
+import 'app/presentation/user/routes/user_routes.dart';
 
 class AppRoutes extends IAppRoutes {
   @override
   List<IModuleRoutes> get features => [
         AuthRoutes(),
         EventRoutes(),
+        UserRoutes(),
       ];
 
   @override
