@@ -1,10 +1,13 @@
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
-import 'package:connect_umadim_app/app/widgets/spacing/space_horizontal_widget.dart';
+import 'package:connect_umadim_app/app/presentation/user/views/widgets/user_details_modal_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserItemWidget extends StatelessWidget {
+import '../../../../widgets/spacing/spacing.dart';
+
+class UserItemWidget extends ConsumerWidget {
   const UserItemWidget({
     super.key,
     required this.user,
@@ -12,44 +15,33 @@ class UserItemWidget extends StatelessWidget {
   final UserModel user;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {},
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 6,
-          vertical: 4,
-        ),
-        decoration: BoxDecoration(
-          color: AppColor.lightGrey,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                user.name,
-                overflow: TextOverflow.ellipsis,
-                style: AppText.text()
-                    .bodyMedium!
-                    .copyWith(color: AppColor.primaryGrey),
-              ),
+      onTap: () => showModalBottomSheet(
+        context: context,
+        builder: (context) => UserDetailsModalWidget(user: user),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              user.name,
+              overflow: TextOverflow.ellipsis,
+              style: AppText.text()
+                  .bodyMedium!
+                  .copyWith(color: AppColor.primaryGrey),
             ),
-            SpaceHorizontal.x2(),
-            CircleAvatar(
-              radius: 14,
-              backgroundColor: AppColor.lightGrey2,
-              child: Text(
-                getInitials(user.name),
-                style: AppText.text().bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.primaryGrey,
-                    ),
-              ),
-            ),
-          ],
-        ),
+          ),
+          SpaceHorizontal.x2(),
+          Text(
+            getInitials(user.name),
+            style: AppText.text().bodyMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.primaryGrey,
+                ),
+          ),
+        ],
       ),
     );
   }
