@@ -36,7 +36,8 @@ class _UsersListWidgetState extends State<UsersListWidget> {
     final Map<String, List<UserModel>> groupedUsers = {};
 
     for (var user in widget.users) {
-      groupedUsers.putIfAbsent(user.congregation, () => []).add(user);
+      final department = user.localFunction.department.text;
+      groupedUsers.putIfAbsent(department, () => []).add(user);
     }
 
     return Expanded(
@@ -44,8 +45,8 @@ class _UsersListWidgetState extends State<UsersListWidget> {
         shrinkWrap: true,
         padding: EdgeInsets.symmetric(horizontal: 8),
         children: groupedUsers.keys.map(
-          (congregation) {
-            final usersInGroup = groupedUsers[congregation]!;
+          (department) {
+            final usersInGroup = groupedUsers[department]!;
 
             usersInGroup.sort((a, b) {
               int indexA = functionOrder.indexOf(a.localFunction.title);
@@ -60,7 +61,7 @@ class _UsersListWidgetState extends State<UsersListWidget> {
               return a.name.compareTo(b.name);
             });
 
-            final isExpanded = expandedSections[congregation] ?? false;
+            final isExpanded = expandedSections[department] ?? false;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,32 +89,27 @@ class _UsersListWidgetState extends State<UsersListWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          congregation != "Templo central"
-                              ? 'Cong. $congregation'
-                              : congregation,
-                          style: AppText.text().bodyMedium!.copyWith(
-                                color: AppColor.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          department,
+                          style: AppText.text().bodyMedium,
                         ),
                         Icon(
                           isExpanded ? Icons.expand_less : Icons.expand_more,
                           size: 28,
-                          color: AppColor.primary,
+                          color: AppColor.tertiary,
                         )
                       ],
                     ),
                   ),
                   onTap: () {
                     setState(() {
-                      expandedSections[congregation] = !isExpanded;
+                      expandedSections[department] = !isExpanded;
                     });
                   },
                 ),
                 if (isExpanded)
                   ...usersInGroup.map(
                     (user) => ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 6),
                       visualDensity: VisualDensity.compact,
                       title: UserItemWidget(user: user),
                     ),
