@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connect_umadim_app/app/core/auth/auth_permission_service.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/enums/post_type_enum.dart';
@@ -308,7 +309,9 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage>
             gradient: const LinearGradient(
                 colors: [AppColor.wine700, AppColor.orange600]),
           ),
-          child: user.photoUrl != null && user.photoUrl!.isNotEmpty
+          child: user.photoUrl != null &&
+                  user.photoUrl!.isNotEmpty &&
+                  isSupabaseImageUrlValid(user.photoUrl)
               ? ClipRRect(
                   borderRadius: AppDecoration.radiusMd,
                   child: Image.network(user.photoUrl!, fit: BoxFit.cover),
