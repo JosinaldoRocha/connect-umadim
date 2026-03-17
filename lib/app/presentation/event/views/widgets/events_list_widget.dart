@@ -1,9 +1,8 @@
+import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/event_model.dart';
+import 'package:connect_umadim_app/app/presentation/event/views/widgets/event_card_widget.dart';
+import 'package:connect_umadim_app/app/widgets/spacing/spacing.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../core/style/app_text.dart';
-import '../../../../widgets/spacing/spacing.dart';
-import 'event_item_widget.dart';
 
 class EventsListWidget extends StatelessWidget {
   const EventsListWidget({
@@ -35,9 +34,9 @@ class EventsListWidget extends StatelessWidget {
                     top: index == 0 ? 16 : 0,
                     bottom: index == events.length - 1 ? 16 : 0,
                   ),
-                  child: EventItemWidget(
+                  child: EventCardWidget(
                     event: events[index],
-                    isHorizontalScrolling: false,
+                    isCompact: false,
                   ),
                 );
               },

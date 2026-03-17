@@ -1,8 +1,11 @@
+import 'package:connect_umadim_app/app/core/style/app_colors.dart';
+import 'package:connect_umadim_app/app/core/style/app_text.dart';
+import 'package:connect_umadim_app/app/data/models/event_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/provider/event_provider.dart';
-import 'package:connect_umadim_app/app/presentation/event/views/widgets/event_item_widget.dart';
-import 'package:connect_umadim_app/app/presentation/event/views/widgets/next_event_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'event_card_widget.dart';
 
 class NextEventWidget extends ConsumerStatefulWidget {
   const NextEventWidget({super.key});
@@ -16,6 +19,7 @@ class _NextEventWidgetState extends ConsumerState<NextEventWidget> {
   @override
   void initState() {
     super.initState();
+    // Preservado: mesmo provider e lógica de carregamento do original
     Future.microtask(
       () => ref.read(getNextEventProvider.notifier).load(),
     );
@@ -26,37 +30,64 @@ class _NextEventWidgetState extends ConsumerState<NextEventWidget> {
     final state = ref.watch(getNextEventProvider);
 
     return state.maybeWhen(
-      loadSuccess: (data) => data.isEmpty
-          ? Container()
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    top: 24,
-                    bottom: 4,
-                  ),
+      loadSuccess: (data) {
+        if (data.isEmpty) return const SizedBox.shrink();
+        return _buildSection(context, data);
+      },
+      orElse: () => const SizedBox.shrink(),
+    );
+  }
+
+  Widget _buildSection(BuildContext context, List<EventModel> events) {
+    final isSingle = events.length == 1;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ── Header ──────────────────────────────────────────────
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                isSingle ? 'Próximo evento' : 'Próximos eventos',
+                style: AppText.headlineSmall(context),
+              ),
+              if (!isSingle)
+                GestureDetector(
+                  onTap: () {},
                   child: Text(
-                    data.length > 1 ? 'Próximos eventos' : 'Próximo evento',
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                    'Ver todos',
+                    style: AppText.labelSmall(context)
+                        .copyWith(color: AppColor.orange400),
                   ),
                 ),
-                data.length == 1
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: EventItemWidget(
-                          event: data[0],
-                          isHorizontalScrolling: false,
-                        ),
-                      )
-                    : SizedBox(
-                        height: 204,
-                        child: NextEventListWidget(events: data),
-                      ),
-              ],
+            ],
+          ),
+        ),
+
+        // ── Evento único: card full-width ────────────────────────
+        if (isSingle)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: EventCardWidget(event: events[0], isCompact: false),
+          ),
+
+        // ── Múltiplos eventos: scroll horizontal ─────────────────
+        if (!isSingle)
+          SizedBox(
+            height: 185,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: events.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              itemBuilder: (_, i) =>
+                  EventCardWidget(event: events[i], isCompact: true),
             ),
-      orElse: () => Container(),
+          ),
+      ],
     );
   }
 }
