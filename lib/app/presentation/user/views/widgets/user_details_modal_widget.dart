@@ -1,4 +1,5 @@
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -33,11 +34,11 @@ class UserDetailsModalWidget extends ConsumerWidget {
           SpaceVertical.x6(),
           _buildImage(),
           SpaceVertical.x8(),
-          _buildItem(description: user.name),
+          _buildItem(context, description: user.name),
           if (user.umadimFunction.title != FunctionType.member)
-            _buildItem(
+            _buildItem(context,
                 description: '${user.umadimFunction.title.text} da UMADIM'),
-          _buildItem(
+          _buildItem(context,
             description:
                 '${user.localFunction.title.text} da ${user.localFunction.department.text}',
           ),
@@ -57,19 +58,19 @@ class UserDetailsModalWidget extends ConsumerWidget {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildItem(title: 'E-mail: ', description: user.email),
-                        _buildItem(title: 'Sexo: ', description: user.gender),
-                        _buildItem(
+                        _buildItem(context, title: 'E-mail: ', description: user.email),
+                        _buildItem(context, title: 'Sexo: ', description: user.gender),
+                        _buildItem(context,
                           title: 'Congregação: ',
                           description: user.congregation,
                         ),
                         if (user.phoneNumber != null &&
                             user.phoneNumber!.isNotEmpty)
-                          _buildItem(
+                          _buildItem(context,
                             title: 'Telefone: ',
                             description: user.phoneNumber!,
                           ),
-                        _buildItem(
+                        _buildItem(context,
                           title: 'Nascimento: ',
                           description:
                               DateFormat('dd/MM/yyyy').format(user.birthDate!),
@@ -86,7 +87,8 @@ class UserDetailsModalWidget extends ConsumerWidget {
     );
   }
 
-  Padding _buildItem({
+  Padding _buildItem(
+    BuildContext context, {
     String? title,
     required String description,
   }) {
@@ -96,12 +98,14 @@ class UserDetailsModalWidget extends ConsumerWidget {
         children: [
           Text(
             title ?? '',
-            style:
-                AppText.text().bodyLarge!.copyWith(color: AppColor.primaryGrey),
+            style: AppText.bodyLarge(context).copyWith(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColor.darkOnSurfaceMuted
+                    : AppColor.lightOnSurfaceMuted),
           ),
           Text(
             description,
-            style: AppText.text().bodyLarge!.copyWith(),
+            style: AppText.bodyLarge(context).copyWith(),
           ),
         ],
       ),
@@ -111,7 +115,9 @@ class UserDetailsModalWidget extends ConsumerWidget {
   Center _buildImage() {
     return Center(
       child: ClipOval(
-        child: user.photoUrl != null && user.photoUrl!.isNotEmpty
+        child: user.photoUrl != null &&
+                user.photoUrl!.isNotEmpty &&
+                isSupabaseImageUrlValid(user.photoUrl)
             ? Image.network(
                 user.photoUrl!,
                 fit: BoxFit.cover,
