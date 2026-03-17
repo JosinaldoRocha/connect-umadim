@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
@@ -28,11 +29,6 @@ class UmadimBoardItemWidget extends StatelessWidget {
     String initials = names.isNotEmpty ? names.first[0] : '';
     if (names.length > 1) initials += names[1][0];
     return initials.toUpperCase();
-  }
-
-  bool _isValidUrl(String? url) {
-    if (url == null || url.isEmpty) return false;
-    return url.startsWith('http://') || url.startsWith('https://');
   }
 
   @override
@@ -74,7 +70,9 @@ class UmadimBoardItemWidget extends StatelessWidget {
                 ),
               ),
               child: ClipOval(
-                child: _isValidUrl(user.photoUrl)
+                child: user.photoUrl != null &&
+                        user.photoUrl!.isNotEmpty &&
+                        isSupabaseImageUrlValid(user.photoUrl)
                     ? CachedNetworkImage(
                         imageUrl: user.photoUrl!,
                         fit: BoxFit.cover,

@@ -1,4 +1,5 @@
 import 'package:connect_umadim_app/app/core/auth/auth_permission_service.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
@@ -194,7 +195,9 @@ class _ProfileHeader extends StatelessWidget {
                       ],
                     ),
                     child: ClipOval(
-                      child: user.photoUrl != null && user.photoUrl!.isNotEmpty
+                      child: user.photoUrl != null &&
+                          user.photoUrl!.isNotEmpty &&
+                          isSupabaseImageUrlValid(user.photoUrl)
                           ? Image.network(
                               user.photoUrl!,
                               fit: BoxFit.cover,

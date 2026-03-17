@@ -124,7 +124,7 @@ class HomeAppBarWidget extends StatelessWidget {
 
   Widget _buildNotifButton(BuildContext context, bool isDark) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, '/notifications'),
+      //onTap: () => Navigator.pushNamed(context, '/notifications'),
       child: Stack(
         children: [
           Container(
