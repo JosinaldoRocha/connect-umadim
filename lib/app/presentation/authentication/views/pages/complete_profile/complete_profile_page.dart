@@ -23,16 +23,16 @@ class CompleteProfilePage extends StatelessWidget {
             Spacer(),
             Text(
               'Estamos quase lá!',
-              style: AppText.text().titleLarge!.copyWith(
-                    color: AppColor.primary,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: AppColor.orange500,
                     fontWeight: FontWeight.bold,
                   ),
             ),
             SpaceVertical.x10(),
             Text(
               'Agora, complete seu cadastro e comece a usar o conecta umadim!',
-              style: AppText.text().bodyMedium!.copyWith(
-                    color: AppColor.tertiary,
+              style: AppText.bodyMedium(context).copyWith(
+                    color: AppColor.amber500,
                     fontSize: 18,
                   ),
             ),

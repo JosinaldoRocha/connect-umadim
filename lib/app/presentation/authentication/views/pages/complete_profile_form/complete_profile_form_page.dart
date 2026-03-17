@@ -46,8 +46,8 @@ class _CompleteProfileFormPageState
       appBar: AppBar(
         title: Text(
           'Completar cadastro',
-          style: AppText.text().titleLarge!.copyWith(
-                color: AppColor.tertiary,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: AppColor.amber500,
               ),
         ),
       ),
@@ -58,7 +58,7 @@ class _CompleteProfileFormPageState
             width: 80,
             child: LoadingIndicator(
               indicatorType: Indicator.ballPulse,
-              colors: [AppColor.primary],
+              colors: [AppColor.orange500],
             ),
           ),
         ),
@@ -76,7 +76,7 @@ class _CompleteProfileFormPageState
                       onTap: getImage,
                     ),
                     const SpaceVertical.x10(),
-                    _buildFullName(data),
+                    _buildFullName(context, data),
                     const SpaceVertical.x5(),
                     DropDownWidget(
                       controller: congregationController,
@@ -131,7 +131,7 @@ class _CompleteProfileFormPageState
         loadFailure: (failure) => Center(
           child: Text(
             'Não foi possível carregar a página. Tente novamente!',
-            style: AppText.text().bodyMedium!,
+            style: AppText.bodyMedium(context),
           ),
         ),
         orElse: () => Container(),
@@ -139,7 +139,7 @@ class _CompleteProfileFormPageState
     );
   }
 
-  Container _buildFullName(UserModel data) {
+  Container _buildFullName(BuildContext context, UserModel data) {
     return Container(
       height: 56,
       padding: EdgeInsets.symmetric(
@@ -147,14 +147,16 @@ class _CompleteProfileFormPageState
         vertical: 16,
       ),
       decoration: BoxDecoration(
-        color: AppColor.lightGrey,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColor.darkOnSurfaceMuted
+            : AppColor.lightOnSurfaceMuted,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Text(
         data.name,
         overflow: TextOverflow.ellipsis,
-        style: AppText.text().bodyMedium!.copyWith(
-              color: AppColor.tertiary,
+        style: AppText.bodyMedium(context).copyWith(
+              color: AppColor.amber500,
               fontWeight: FontWeight.w600,
             ),
       ),

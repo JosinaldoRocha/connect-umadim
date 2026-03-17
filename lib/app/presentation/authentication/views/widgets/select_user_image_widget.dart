@@ -12,13 +12,17 @@ class SelectUserImageWidget extends StatelessWidget {
     required this.image,
     required this.onTap,
     this.imageBytes,
+    this.networkPhotoUrl,
   });
   final File? image;
   final Function() onTap;
   final Uint8List? imageBytes;
+  /// URL da foto atual (ex: Supabase) - usada quando não há image/imageBytes
+  final String? networkPhotoUrl;
 
   @override
   Widget build(BuildContext context) {
+    final displayImage = image?.path ?? networkPhotoUrl;
     return Center(
       child: SizedBox(
         height: 104,
@@ -26,7 +30,7 @@ class SelectUserImageWidget extends StatelessWidget {
         child: Stack(
           children: [
             ProfileImageWidget(
-              image: image?.path,
+              image: displayImage,
               imageBytes: imageBytes,
               size: 100,
             ),
@@ -38,7 +42,7 @@ class SelectUserImageWidget extends StatelessWidget {
                 child: SvgPicture.asset(
                   'assets/icons/edit.svg',
                   colorFilter: const ColorFilter.mode(
-                    AppColor.primary,
+                    AppColor.orange500,
                     BlendMode.srcIn,
                   ),
                 ),
