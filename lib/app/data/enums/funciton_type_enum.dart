@@ -1,4 +1,6 @@
 enum FunctionType {
+  umadimLeader,
+  areaLeader,
   leader,
   viceLeader,
   regent,
@@ -11,7 +13,11 @@ enum FunctionType {
   member;
 
   factory FunctionType.fromString(String type) {
-    if (type == 'Líder') {
+    if (type == 'Líder UMADIM') {
+      return FunctionType.umadimLeader;
+    } else if (type == 'Líder de Área') {
+      return FunctionType.areaLeader;
+    } else if (type == 'Líder') {
       return FunctionType.leader;
     } else if (type == 'Vice-líder') {
       return FunctionType.viceLeader;
@@ -36,6 +42,10 @@ enum FunctionType {
 
   String get text {
     switch (this) {
+      case FunctionType.umadimLeader:
+        return 'Líder UMADIM';
+      case FunctionType.areaLeader:
+        return 'Líder de Área';
       case FunctionType.leader:
         return 'Líder';
       case FunctionType.viceLeader:

@@ -13,6 +13,10 @@ class UserModel {
   String? photoUrl;
   String? phoneNumber;
   String congregation;
+  String areaId; // ← novo: identifica a área (area1, area2, etc.)
+  bool? isApproved; // ← novo: aprovado por um líder?
+  String? approvedBy; // ← novo: uid do líder que aprovou
+  DateTime? approvedAt; // ← novo: quando foi aprovado
   DateTime createdAt;
 
   UserModel({
@@ -25,6 +29,10 @@ class UserModel {
     this.birthDate,
     required this.gender,
     required this.congregation,
+    this.areaId = '',
+    this.isApproved,
+    this.approvedBy,
+    this.approvedAt,
     this.photoUrl,
     this.phoneNumber,
     required this.createdAt,
@@ -41,6 +49,10 @@ class UserModel {
       'birthDate': birthDate != null ? Timestamp.fromDate(birthDate!) : null,
       'gender': gender,
       'congregation': congregation,
+      'areaId': areaId,
+      'isApproved': isApproved ?? false,
+      'approvedBy': approvedBy,
+      'approvedAt': approvedAt != null ? Timestamp.fromDate(approvedAt!) : null,
       'photoUrl': photoUrl,
       'phoneNumber': phoneNumber,
       'createdAt': Timestamp.fromDate(createdAt),
@@ -49,29 +61,32 @@ class UserModel {
 
   factory UserModel.fromSnapShot(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data() ?? {};
     return UserModel(
-      id: snapshot['id'] as String,
-      name: snapshot['name'] as String,
-      email: snapshot['email'] as String,
-      password:
-          snapshot['password'] != null ? snapshot['password'] as String : null,
+      id: data['id'] as String,
+      name: data['name'] as String,
+      email: data['email'] as String,
+      password: data['password'] as String?,
       umadimFunction: FunctionModel.fromMap(
-        snapshot['umadimFunction'] as Map<String, dynamic>,
+        data['umadimFunction'] as Map<String, dynamic>,
       ),
       localFunction: FunctionModel.fromMap(
-        snapshot['localFunction'] as Map<String, dynamic>,
+        data['localFunction'] as Map<String, dynamic>,
       ),
-      birthDate: snapshot['birthDate'] != null
-          ? (snapshot['birthDate'] as Timestamp).toDate().toLocal()
+      birthDate: data['birthDate'] != null
+          ? (data['birthDate'] as Timestamp).toDate().toLocal()
           : null,
-      gender: snapshot['gender'] as String,
-      congregation: snapshot['congregation'] as String,
-      photoUrl:
-          snapshot['photoUrl'] != null ? snapshot['photoUrl'] as String : null,
-      phoneNumber: snapshot['phoneNumber'] != null
-          ? snapshot['phoneNumber'] as String
+      gender: data['gender'] as String? ?? '',
+      congregation: data['congregation'] as String? ?? '',
+      areaId: (data['areaId'] as String?) ?? '',
+      isApproved: data['isApproved'] as bool?,
+      approvedBy: data['approvedBy'] as String?,
+      approvedAt: data['approvedAt'] != null
+          ? (data['approvedAt'] as Timestamp).toDate().toLocal()
           : null,
-      createdAt: (snapshot['createdAt'] as Timestamp).toDate().toLocal(),
+      photoUrl: data['photoUrl'] as String?,
+      phoneNumber: data['phoneNumber'] as String?,
+      createdAt: (data['createdAt'] as Timestamp).toDate().toLocal(),
     );
   }
 
@@ -87,6 +102,10 @@ class UserModel {
     String? photoUrl,
     String? phoneNumber,
     String? congregation,
+    String? areaId,
+    bool? isApproved,
+    String? approvedBy,
+    DateTime? approvedAt,
     DateTime? createdAt,
   }) {
     return UserModel(
@@ -101,6 +120,10 @@ class UserModel {
       photoUrl: photoUrl ?? this.photoUrl,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       congregation: congregation ?? this.congregation,
+      areaId: areaId ?? this.areaId,
+      isApproved: isApproved ?? this.isApproved,
+      approvedBy: approvedBy ?? this.approvedBy,
+      approvedAt: approvedAt ?? this.approvedAt,
       createdAt: createdAt ?? this.createdAt,
     );
   }
