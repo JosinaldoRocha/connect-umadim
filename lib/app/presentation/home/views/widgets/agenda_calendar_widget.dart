@@ -1,11 +1,17 @@
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
+import 'package:connect_umadim_app/app/core/style/app_text.dart';
+import 'package:connect_umadim_app/app/data/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../data/models/event_model.dart';
+import '../../../../core/style/app_decoration.dart';
 
 class AgendaCalendarWidget extends StatelessWidget {
+  final DateTime focusedDay;
+  final Function(DateTime) onPageChanged;
+  final List<EventModel> events;
+
   const AgendaCalendarWidget({
     super.key,
     required this.focusedDay,
@@ -13,78 +19,112 @@ class AgendaCalendarWidget extends StatelessWidget {
     required this.events,
   });
 
-  final DateTime focusedDay;
-  final Function(DateTime) onPageChanged;
-  final List<EventModel> events;
-
-  List<EventModel> getEventsForDay(DateTime date) {
-    return events.where((event) {
-      return event.eventDate?.year == date.year &&
-          event.eventDate?.month == date.month &&
-          event.eventDate?.day == date.day;
-    }).toList();
+  List<EventModel> _eventsForDay(DateTime date) {
+    return events
+        .where((e) =>
+            e.eventDate?.year == date.year &&
+            e.eventDate?.month == date.month &&
+            e.eventDate?.day == date.day)
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
-      height: 310,
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: const Color(0xE6FFECD7),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0x78000000),
-            offset: Offset(0, 5),
-            blurRadius: 5,
-          ),
-        ],
+        color: isDark ? AppColor.darkSurface : AppColor.lightSurface,
+        borderRadius: AppDecoration.radiusLg,
+        border: Border.all(
+          color: isDark ? AppColor.darkBorder : AppColor.lightBorder,
+        ),
       ),
       child: TableCalendar(
         locale: 'pt_BR',
         focusedDay: focusedDay,
-        firstDay: DateTime(DateTime.now().year),
-        lastDay: DateTime(DateTime.now().year + 1),
+        firstDay: DateTime(DateTime.now().year - 1),
+        lastDay: DateTime(DateTime.now().year + 2),
         calendarFormat: CalendarFormat.month,
-        eventLoader: getEventsForDay,
-        headerStyle: HeaderStyle(
-          titleTextStyle: Theme.of(context).textTheme.titleMedium!,
-          leftChevronIcon: Icon(
-            Icons.arrow_back_ios_rounded,
-            size: 22,
-            color: AppColor.amber500,
-          ),
-          rightChevronIcon: Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 22,
-            color: AppColor.amber500,
-          ),
-          headerPadding: EdgeInsets.symmetric(vertical: 4),
+        eventLoader: _eventsForDay,
+        onPageChanged: onPageChanged,
+        rowHeight: 38,
+        headerStyle: const HeaderStyle(
           formatButtonVisible: false,
           titleCentered: true,
-          titleTextFormatter: (date, locale) => toBeginningOfSentenceCase(
-            DateFormat.MMMM(locale).format(date),
-          ),
+          leftChevronVisible: false,
+          rightChevronVisible: false,
+          headerPadding: EdgeInsets.zero,
+          headerMargin: EdgeInsets.zero,
         ),
-        onPageChanged: onPageChanged,
         daysOfWeekStyle: DaysOfWeekStyle(
-          dowTextFormatter: (date, locale) => toBeginningOfSentenceCase(
-            DateFormat.E(locale).format(date),
+          weekdayStyle: AppText.labelSmall(context).copyWith(
+            color: isDark
+                ? AppColor.darkOnSurfaceMuted
+                : AppColor.lightOnSurfaceMuted,
           ),
+          weekendStyle: AppText.labelSmall(context).copyWith(
+            color: AppColor.orange400,
+          ),
+          dowTextFormatter: (date, locale) =>
+              toBeginningOfSentenceCase(DateFormat.E(locale).format(date)) ??
+              '',
         ),
-        rowHeight: 36,
         calendarStyle: CalendarStyle(
-          todayDecoration: BoxDecoration(
+          todayDecoration: const BoxDecoration(
             color: AppColor.orange500,
             shape: BoxShape.circle,
           ),
-          markerSize: 6,
-          markerMargin: EdgeInsets.only(top: 2),
-          markerDecoration: BoxDecoration(
+          todayTextStyle: AppText.labelMedium(context)
+              .copyWith(color: AppColor.light50, fontWeight: FontWeight.w700),
+          selectedDecoration: BoxDecoration(
+            color: AppColor.orange500.withOpacity(0.2),
+            shape: BoxShape.circle,
+          ),
+          selectedTextStyle: AppText.labelMedium(context)
+              .copyWith(color: AppColor.orange400, fontWeight: FontWeight.w600),
+          defaultTextStyle: AppText.labelMedium(context).copyWith(
+            color: isDark ? AppColor.darkOnSurface : AppColor.lightOnSurface,
+          ),
+          weekendTextStyle: AppText.labelMedium(context)
+              .copyWith(color: AppColor.orange400.withOpacity(0.8)),
+          outsideTextStyle: AppText.labelMedium(context).copyWith(
+            color: isDark
+                ? AppColor.darkOnSurfaceMuted.withOpacity(0.4)
+                : AppColor.lightOnSurfaceMuted.withOpacity(0.4),
+          ),
+          markerSize: 5,
+          markerMargin: const EdgeInsets.only(top: 1),
+          markerDecoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: AppColor.wine600,
           ),
+          cellMargin: const EdgeInsets.all(4),
+          tablePadding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+        ),
+        calendarBuilders: CalendarBuilders(
+          markerBuilder: (context, date, events) {
+            if (events.isEmpty) return const SizedBox.shrink();
+            return Positioned(
+              bottom: 4,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: events
+                    .take(3)
+                    .map((_) => Container(
+                          width: 5,
+                          height: 5,
+                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColor.wine600,
+                          ),
+                        ))
+                    .toList(),
+              ),
+            );
+          },
         ),
       ),
     );
