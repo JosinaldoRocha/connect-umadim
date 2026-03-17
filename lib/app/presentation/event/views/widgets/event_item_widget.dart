@@ -27,14 +27,16 @@ class EventItemWidget extends StatelessWidget {
         width: isHorizontalScrolling ? 300 : double.infinity,
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColor.cardBackground,
+          color: AppColor.darkSurface,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               spreadRadius: 1,
               offset: Offset(0, 2),
               blurRadius: 3,
-              color: AppColor.lightGrey,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColor.darkOnSurfaceMuted
+                  : AppColor.lightOnSurfaceMuted,
             ),
           ],
         ),
@@ -47,15 +49,14 @@ class EventItemWidget extends StatelessWidget {
               children: [
                 Text(
                   event.title,
-                  style: AppText.text()
-                      .titleSmall!
-                      .copyWith(color: AppColor.secondary),
+                  style: Theme.of(context).textTheme.titleSmall!
+                      .copyWith(color: AppColor.wine600),
                 ),
                 Text(
                   event.eventDate != null
                       ? '📌 ${formatEventDate(event.eventDate!)}'
                       : event.status.text,
-                  style: AppText.text().bodySmall!.copyWith(fontSize: 14),
+                  style: AppText.bodySmall(context).copyWith(fontSize: 14),
                 ),
               ],
             ),
@@ -66,9 +67,9 @@ class EventItemWidget extends StatelessWidget {
               child: Text(
                 event.promotedBy.text,
                 overflow: TextOverflow.ellipsis,
-                style: AppText.text().titleSmall!.copyWith(
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontSize: 14,
-                      color: AppColor.mediumGrey,
+                      color: AppColor.light500,
                     ),
               ),
             ),

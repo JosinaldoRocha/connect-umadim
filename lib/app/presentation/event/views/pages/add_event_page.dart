@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/helpers/common_state/state.dart';
 import '../../../../core/style/app_colors.dart';
-import '../../../../core/style/app_text.dart';
 import '../../../../widgets/button/button_widget.dart';
 import '../../../../widgets/dropdown/dropdown_widget.dart';
 import '../../../../widgets/input/input_widget.dart';
@@ -39,11 +38,11 @@ class _AddEventPageState extends ConsumerState<AddEventPage>
       appBar: AppBar(
         title: Text(
           'Criar evento',
-          style: AppText.text().titleLarge!.copyWith(
-                color: AppColor.tertiary,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: AppColor.amber500,
               ),
         ),
-        iconTheme: IconThemeData(color: AppColor.tertiary),
+        iconTheme: IconThemeData(color: AppColor.amber500),
       ),
       body: Column(
         children: [

@@ -38,9 +38,8 @@ class ConfirmPresenceDialogWidget extends ConsumerWidget {
                 'Uhuu!\nQue bom que você vai estar conosco 😀\n'
                 'Nos vemos lá então!!!',
                 textAlign: TextAlign.center,
-                style: AppText.text()
-                    .bodyLarge!
-                    .copyWith(color: AppColor.tertiary),
+                style: AppText.bodyLarge(context)
+                    .copyWith(color: AppColor.amber500),
               ),
             ],
           ),

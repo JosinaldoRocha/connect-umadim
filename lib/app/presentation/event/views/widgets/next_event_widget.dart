@@ -4,8 +4,6 @@ import 'package:connect_umadim_app/app/presentation/event/views/widgets/next_eve
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/style/app_text.dart';
-
 class NextEventWidget extends ConsumerStatefulWidget {
   const NextEventWidget({super.key});
 
@@ -41,7 +39,7 @@ class _NextEventWidgetState extends ConsumerState<NextEventWidget> {
                   ),
                   child: Text(
                     data.length > 1 ? 'Próximos eventos' : 'Próximo evento',
-                    style: AppText.text().titleSmall!.copyWith(fontSize: 14),
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                   ),
                 ),
                 data.length == 1

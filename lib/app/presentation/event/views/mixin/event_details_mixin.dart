@@ -98,14 +98,14 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
       children: [
         Text(
           title,
-          style: AppText.text().bodySmall!.copyWith(
+          style: AppText.bodySmall(context).copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
         ),
         Text(
           value,
-          style: AppText.text().bodySmall!.copyWith(fontSize: 14),
+          style: AppText.bodySmall(context).copyWith(fontSize: 14),
         ),
       ],
     );
@@ -124,11 +124,11 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
         trailing: confirmPresence
             ? Icon(
                 Icons.check_circle,
-                color: confirmPresence ? AppColor.error : AppColor.white,
+                color: confirmPresence ? AppColor.error : AppColor.light50,
                 size: 32,
               )
             : null,
-        textColor: confirmPresence ? AppColor.error : AppColor.white,
+        textColor: confirmPresence ? AppColor.error : AppColor.light50,
         onTap: !confirmPresence ? onConfirmPresence : null,
       ),
     );
@@ -151,7 +151,7 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
               padding: const EdgeInsets.only(top: 6),
               child: Text(
                 widget.event.title,
-                style: AppText.text().titleMedium,
+                style: Theme.of(context).textTheme.titleMedium!,
               ),
             ),
           ),
@@ -169,7 +169,7 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
       onPressed: () => Navigator.pop(context),
       icon: Icon(
         Icons.arrow_back,
-        color: validImage ? AppColor.white : AppColor.tertiary,
+        color: validImage ? AppColor.light50 : AppColor.amber500,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/event_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/views/mixin/event_details_mixin.dart';
@@ -26,7 +27,9 @@ class _EventDetailsPageState extends ConsumerState<EventDetailsPage>
   Widget build(BuildContext context) {
     listen();
     final bool validImage =
-        widget.event.imageUrl != null && widget.event.imageUrl!.isNotEmpty;
+        widget.event.imageUrl != null &&
+        widget.event.imageUrl!.isNotEmpty &&
+        isSupabaseImageUrlValid(widget.event.imageUrl);
 
     return Scaffold(
       body: validImage
@@ -69,16 +72,18 @@ class _EventDetailsPageState extends ConsumerState<EventDetailsPage>
                   Text(
                     widget.event.title,
                     textAlign: TextAlign.center,
-                    style: AppText.text().titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium!,
                   ),
                 SpaceVertical.x2(),
                 if (widget.event.description != null)
                   Text(
                     widget.event.description!,
                     textAlign: TextAlign.center,
-                    style: AppText.text().bodySmall!.copyWith(
+                    style: AppText.bodySmall(context).copyWith(
                           fontSize: 14,
-                          color: AppColor.primaryGrey,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColor.darkOnSurfaceMuted
+                              : AppColor.lightOnSurfaceMuted,
                         ),
                   ),
                 Spacer(),

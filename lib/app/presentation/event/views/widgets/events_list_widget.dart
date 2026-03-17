@@ -22,7 +22,7 @@ class EventsListWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   'Nenhum evento para este mês 😕',
-                  style: AppText.text().bodyMedium,
+                  style: AppText.bodyMedium(context),
                 ),
               ),
             )

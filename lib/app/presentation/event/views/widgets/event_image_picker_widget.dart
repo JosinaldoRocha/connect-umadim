@@ -25,14 +25,14 @@ class EventImagePickerWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: SizedBox(
             height: image != null || imageBytes != null ? 250 : 66,
-            child: _buildImageWidget(),
+            child: _buildImageWidget(context),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildImageWidget() {
+  Widget _buildImageWidget(BuildContext context) {
     if (imageBytes != null) {
       return Image.memory(imageBytes!, fit: BoxFit.cover);
     }
@@ -56,11 +56,11 @@ class EventImagePickerWidget extends StatelessWidget {
         Icon(
           Icons.image,
           size: 48,
-          color: AppColor.mediumGrey,
+          color: AppColor.light500,
         ),
         Text(
           'Toque para selecionar uma imagem',
-          style: AppText.text().bodySmall,
+          style: AppText.bodySmall(context),
         ),
       ],
     );
