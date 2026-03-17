@@ -39,7 +39,7 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
         filterEventsByMonth(data, focusedDay);
 
         return Container(
-          color: AppColor.lightBgColor,
+          color: AppColor.lightBackground,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Stack(
             children: [
@@ -96,7 +96,7 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
         width: 40,
         child: LoadingIndicator(
           indicatorType: Indicator.ballPulse,
-          colors: [AppColor.primary],
+          colors: [AppColor.orange500],
         ),
       ),
     );

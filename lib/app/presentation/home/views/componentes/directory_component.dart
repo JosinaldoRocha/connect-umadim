@@ -20,14 +20,14 @@ class DirectoryComponent extends ConsumerWidget {
       loadInProgress: () => _buildLoadingIndicator(),
       loadSuccess: (data) {
         return Container(
-          color: AppColor.lightBgColor,
+          color: AppColor.lightBackground,
           padding: EdgeInsets.only(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: double.infinity,
-                color: AppColor.cardBackground,
+                color: AppColor.darkSurface,
                 padding: EdgeInsets.only(
                   top: 48,
                   left: 16,
@@ -37,9 +37,9 @@ class DirectoryComponent extends ConsumerWidget {
                 child: Center(
                   child: Text(
                     'UMADIM ${DateTime.now().year}',
-                    style: AppText.text().bodyLarge!.copyWith(
+                    style: AppText.bodyLarge(context).copyWith(
                           fontSize: 26,
-                          color: AppColor.tertiary,
+                          color: AppColor.amber500,
                         ),
                   ),
                 ),
@@ -68,7 +68,7 @@ class DirectoryComponent extends ConsumerWidget {
         width: 40,
         child: LoadingIndicator(
           indicatorType: Indicator.ballPulse,
-          colors: [AppColor.primary],
+          colors: [AppColor.orange500],
         ),
       ),
     );

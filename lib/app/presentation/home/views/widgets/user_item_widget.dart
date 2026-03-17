@@ -28,17 +28,21 @@ class UserItemWidget extends ConsumerWidget {
             child: Text(
               user.name,
               overflow: TextOverflow.ellipsis,
-              style: AppText.text()
-                  .bodyMedium!
-                  .copyWith(color: AppColor.primaryGrey),
+              style: AppText.bodyMedium(context)
+                  .copyWith(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColor.darkOnSurfaceMuted
+                          : AppColor.lightOnSurfaceMuted),
             ),
           ),
           SpaceHorizontal.x2(),
           Text(
             getInitials(user.name),
-            style: AppText.text().bodyMedium!.copyWith(
+            style: AppText.bodyMedium(context).copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColor.primaryGrey,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColor.darkOnSurfaceMuted
+                      : AppColor.lightOnSurfaceMuted,
                 ),
           ),
         ],

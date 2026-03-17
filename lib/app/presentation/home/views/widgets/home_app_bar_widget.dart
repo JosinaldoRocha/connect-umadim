@@ -1,179 +1,171 @@
-import 'dart:ui';
-
-import 'package:connect_umadim_app/app/data/enums/funciton_type_enum.dart';
-import 'package:connect_umadim_app/app/presentation/home/views/widgets/happy_birthday_widget.dart';
-import 'package:connect_umadim_app/app/widgets/spacing/spacing.dart';
-import 'package:flutter/foundation.dart';
+import 'package:connect_umadim_app/app/core/style/app_colors.dart';
+import 'package:connect_umadim_app/app/core/style/app_text.dart';
+import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter/services.dart';
 
-import '../../../../core/style/app_colors.dart';
-import '../../../../core/style/app_text.dart';
-import '../../../../data/models/user_model.dart';
-import '../../../../widgets/image/profile_image_widget.dart';
+import '../../../../core/style/app_decoration.dart';
 
-class HomeAppBarWidget extends ConsumerStatefulWidget {
-  const HomeAppBarWidget({
-    super.key,
-    required this.user,
-  });
+class HomeAppBarWidget extends StatelessWidget {
   final UserModel user;
+  const HomeAppBarWidget({super.key, required this.user});
 
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _HomeAppBarWidgetState();
-}
-
-class _HomeAppBarWidgetState extends ConsumerState<HomeAppBarWidget> {
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final isBirthday = (widget.user.birthDate?.day == now.day &&
-        widget.user.birthDate!.month == now.month);
+    // Status bar clara/escura conforme tema
+    SystemChrome.setSystemUIOverlayStyle(
+      isDark
+          ? SystemUiOverlayStyle.light
+              .copyWith(statusBarColor: Colors.transparent)
+          : SystemUiOverlayStyle.dark
+              .copyWith(statusBarColor: Colors.transparent),
+    );
 
-    return Column(
+    return Container(
+      color: isDark ? AppColor.darkBackground : AppColor.lightBackground,
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + 8,
+        left: 16,
+        right: 16,
+        bottom: 10,
+      ),
+      child: Row(
+        children: [
+          // ── Logo + nome ─────────────────────────────────
+          _buildLogo(context, isDark),
+
+          const Spacer(),
+
+          // ── Busca ────────────────────────────────────────
+          _buildIconButton(
+            context,
+            isDark,
+            icon: Icons.search_rounded,
+            onTap: () => Navigator.pushNamed(context, '/search'),
+          ),
+          const SizedBox(width: 8),
+
+          // ── Notificações ─────────────────────────────────
+          _buildNotifButton(context, isDark),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogo(BuildContext context, bool isDark) {
+    return Row(
       children: [
         Container(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: kIsWeb ? 12 : 48,
-            bottom: 12,
-          ),
+          width: 34,
+          height: 34,
           decoration: BoxDecoration(
-            color: AppColor.lightBgColor,
-            image: isBirthday
-                ? DecorationImage(
-                    opacity: 0.3,
-                    fit: BoxFit.fitWidth,
-                    image: AssetImage('assets/images/confetti.png'),
-                  )
-                : null,
+            color: AppColor.wine800,
+            borderRadius: AppDecoration.radiusMd,
+            border: Border.all(
+              color: AppColor.orange500.withOpacity(0.3),
+              width: 1,
+            ),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: const Center(
+            child: Text('🔥', style: TextStyle(fontSize: 18)),
+          ),
+        ),
+        const SizedBox(width: 8),
+        RichText(
+          text: TextSpan(
             children: [
-              SpaceHorizontal.x1(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    isBirthday ? 'Happy Birthday 🎉' : 'A paz do Senhor ✋',
-                    style: AppText.text().titleSmall,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        _getUserFunction(),
-                        style:
-                            AppText.text().titleSmall!.copyWith(fontSize: 14),
-                      ),
-                      Text(
-                        getFirstAndSecondName(widget.user.name),
-                        style: AppText.text().titleMedium!.copyWith(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
-                    ],
-                  ),
-                ],
+              TextSpan(
+                text: 'Conecta ',
+                style: AppText.headlineMedium(context),
               ),
-              Spacer(),
-              if (isBirthday)
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      barrierColor: Colors.transparent,
-                      builder: (context) => Stack(
-                        children: [
-                          BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                            child: Container(
-                              // ignore: deprecated_member_use
-                              color: Colors.black.withOpacity(0.2),
-                            ),
-                          ),
-                          AlertDialog(
-                            contentPadding: EdgeInsets.all(0),
-                            content: HappyBirthdayWidget(),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    margin: const EdgeInsets.only(right: 8),
-                    child: Stack(
-                      children: [
-                        Lottie.asset(
-                          'assets/animations/received_message.json',
-                          width: 40,
-                          height: 40,
-                          fit: BoxFit.cover,
-                        ),
-                        Positioned(
-                          bottom: 5,
-                          child: Text('🎂'),
-                        ),
-                      ],
-                    ),
-                  ),
+              TextSpan(
+                text: 'UMADIM',
+                style: AppText.headlineMedium(context).copyWith(
+                  color: AppColor.orange400,
                 ),
-              ProfileImageWidget(
-                image: widget.user.photoUrl,
-                size: 52,
               ),
             ],
           ),
-        ),
-        Divider(
-          height: 0,
-          endIndent: 16,
-          indent: 16,
-          color: AppColor.lightGrey2,
         ),
       ],
     );
   }
 
-  String _getUserFunction() {
-    if (widget.user.umadimFunction.title == FunctionType.leader ||
-        widget.user.umadimFunction.title == FunctionType.regent) {
-      return '${widget.user.umadimFunction.title.text} ';
-    }
-
-    return (widget.user.localFunction.title == FunctionType.leader ||
-            widget.user.localFunction.title == FunctionType.regent)
-        ? '${widget.user.localFunction.title.text} '
-        : '';
+  Widget _buildIconButton(
+    BuildContext context,
+    bool isDark, {
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: isDark
+              ? AppColor.darkSurfaceVariant
+              : AppColor.lightSurfaceVariant,
+          borderRadius: AppDecoration.radiusMd,
+          border: Border.all(
+            color: isDark ? AppColor.darkBorder : AppColor.lightBorder,
+          ),
+        ),
+        child: Icon(
+          icon,
+          size: 18,
+          color: isDark ? AppColor.darkOnSurface : AppColor.lightOnSurface,
+        ),
+      ),
+    );
   }
 
-  String getGreetingMessage() {
-    final hour = DateTime.now().hour;
-
-    if (hour >= 5 && hour < 12) {
-      return 'Bom dia';
-    } else if (hour >= 12 && hour < 18) {
-      return 'Boa tarde';
-    } else {
-      return 'Boa noite';
-    }
-  }
-
-  String getFirstAndSecondName(String fullName) {
-    final names = fullName.split(' ');
-    if (names.length >= 2) {
-      return '${names[0]} ${names[1]}';
-    }
-    return names[0];
+  Widget _buildNotifButton(BuildContext context, bool isDark) {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, '/notifications'),
+      child: Stack(
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: isDark
+                  ? AppColor.darkSurfaceVariant
+                  : AppColor.lightSurfaceVariant,
+              borderRadius: AppDecoration.radiusMd,
+              border: Border.all(
+                color: isDark ? AppColor.darkBorder : AppColor.lightBorder,
+              ),
+            ),
+            child: Icon(
+              Icons.notifications_outlined,
+              size: 18,
+              color: isDark ? AppColor.darkOnSurface : AppColor.lightOnSurface,
+            ),
+          ),
+          // Ponto de notificação
+          Positioned(
+            top: 6,
+            right: 6,
+            child: Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: AppColor.orange500,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isDark
+                      ? AppColor.darkBackground
+                      : AppColor.lightBackground,
+                  width: 1.5,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

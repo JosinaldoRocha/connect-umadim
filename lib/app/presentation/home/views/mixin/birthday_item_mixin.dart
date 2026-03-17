@@ -1,3 +1,4 @@
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/data/enums/funciton_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
@@ -46,13 +47,13 @@ mixin BirthdayItemMixin {
     return '';
   }
 
-  Container buildWeekDayText(UserModel user) {
+  Container buildWeekDayText(BuildContext context, UserModel user) {
     return Container(
       padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: formatBirthdayDate(user.birthDate!) == "Hoje"
-            ? AppColor.primaryGreen
-            : AppColor.mediumGrey,
+            ? AppColor.success
+            : AppColor.light500,
         borderRadius: BorderRadius.circular(4).copyWith(
           topLeft: Radius.circular(0),
         ),
@@ -65,9 +66,9 @@ mixin BirthdayItemMixin {
               (char) => Text(
                 char,
                 textAlign: TextAlign.center,
-                style: AppText.text().bodySmall!.copyWith(
+                style: AppText.bodySmall(context).copyWith(
                       fontSize: 10,
-                      color: AppColor.white,
+                      color: AppColor.light50,
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -83,7 +84,9 @@ mixin BirthdayItemMixin {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Center(
-          child: user.photoUrl != null && user.photoUrl!.isNotEmpty
+          child: user.photoUrl != null &&
+                  user.photoUrl!.isNotEmpty &&
+                  isSupabaseImageUrlValid(user.photoUrl)
               ? Image.network(
                   user.photoUrl!,
                   fit: BoxFit.cover,
@@ -97,7 +100,7 @@ mixin BirthdayItemMixin {
                         width: 20,
                         child: LoadingIndicator(
                           indicatorType: Indicator.ballPulse,
-                          colors: [AppColor.white],
+                          colors: [AppColor.light50],
                         ),
                       ),
                     );

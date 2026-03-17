@@ -37,23 +37,21 @@ class HappyBirthdayWidget extends ConsumerWidget {
             children: [
               Text(
                 'Uhuu! Hoje é o seu aniversário!!!',
-                style: AppText.text()
-                    .bodyLarge!
-                    .copyWith(color: AppColor.tertiary),
+                style: AppText.bodyLarge(context)
+                    .copyWith(color: AppColor.amber500),
               ),
               SpaceVertical.x1(),
               Text(
                 'E nós desejamos que seu dia seja\ncheio de alegria,\nbênçãos e momentos incríveis. '
                 'Deus te abençoe sempre! 🙌✨\n🎉 Feliz aniversário! 🎉',
                 textAlign: TextAlign.center,
-                style: AppText.text().bodyMedium!.copyWith(fontSize: 14),
+                style: AppText.bodyMedium(context).copyWith(fontSize: 14),
               ),
               SpaceVertical.x1(),
               Text(
                 'Pa ra bééénsss!!! 🎈',
-                style: AppText.text()
-                    .bodyLarge!
-                    .copyWith(color: AppColor.tertiary),
+                style: AppText.bodyLarge(context)
+                    .copyWith(color: AppColor.amber500),
               ),
             ],
           ),

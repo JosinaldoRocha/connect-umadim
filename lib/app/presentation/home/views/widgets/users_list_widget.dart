@@ -74,7 +74,9 @@ class _UsersListWidgetState extends State<UsersListWidget> {
                       horizontal: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColor.lightGrey,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColor.darkOnSurfaceMuted
+                          : AppColor.lightOnSurfaceMuted,
                       borderRadius: isExpanded
                           ? BorderRadius.circular(12).copyWith(
                               bottomLeft: Radius.circular(0),
@@ -90,12 +92,12 @@ class _UsersListWidgetState extends State<UsersListWidget> {
                       children: [
                         Text(
                           department,
-                          style: AppText.text().bodyMedium,
+                          style: AppText.bodyMedium(context),
                         ),
                         Icon(
                           isExpanded ? Icons.expand_less : Icons.expand_more,
                           size: 28,
-                          color: AppColor.tertiary,
+                          color: AppColor.amber500,
                         )
                       ],
                     ),

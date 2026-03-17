@@ -21,8 +21,8 @@ class BirthdayItemWidget extends StatelessWidget with BirthdayItemMixin {
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: user.gender == "Masculino"
-                ? AppColor.primary
-                : AppColor.secondary,
+                ? AppColor.orange500
+                : AppColor.wine600,
             borderRadius: BorderRadius.circular(16).copyWith(
               topRight: Radius.circular(4),
             ),
@@ -31,7 +31,9 @@ class BirthdayItemWidget extends StatelessWidget with BirthdayItemMixin {
                 spreadRadius: 1,
                 offset: Offset(0, 2),
                 blurRadius: 3,
-                color: AppColor.lightGrey,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColor.darkOnSurfaceMuted
+                    : AppColor.lightOnSurfaceMuted,
               ),
             ],
           ),
@@ -42,9 +44,9 @@ class BirthdayItemWidget extends StatelessWidget with BirthdayItemMixin {
               SpaceVertical.x2(),
               Text(
                 getUserFunction(user),
-                style: AppText.text().bodySmall!.copyWith(
+                style: AppText.bodySmall(context).copyWith(
                       fontSize: 10,
-                      color: AppColor.white,
+                      color: AppColor.light50,
                       fontWeight: FontWeight.w600,
                     ),
               ),
@@ -52,20 +54,20 @@ class BirthdayItemWidget extends StatelessWidget with BirthdayItemMixin {
                 user.name,
                 overflow: TextOverflow.ellipsis,
                 style:
-                    AppText.text().bodyMedium!.copyWith(color: AppColor.white),
+                    AppText.bodyMedium(context).copyWith(color: AppColor.light50),
               ),
               Text(
                 user.congregation,
                 overflow: TextOverflow.ellipsis,
                 style:
-                    AppText.text().bodySmall!.copyWith(color: AppColor.white),
+                    AppText.bodySmall(context).copyWith(color: AppColor.light50),
               ),
             ],
           ),
         ),
         Positioned(
           right: 0,
-          child: buildWeekDayText(user),
+          child: buildWeekDayText(context, user),
         ),
       ],
     );

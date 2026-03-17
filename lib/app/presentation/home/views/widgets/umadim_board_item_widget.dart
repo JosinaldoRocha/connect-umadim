@@ -1,3 +1,4 @@
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/data/models/user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +22,13 @@ class UmadimBoardItemWidget extends StatelessWidget {
         children: [
           Text(
             user.umadimFunction.title.text,
-            style: AppText.text().bodySmall!.copyWith(fontSize: 10),
+            style: AppText.bodySmall(context).copyWith(fontSize: 10),
           ),
           SpaceVertical.x1(),
           ClipOval(
-            child: user.photoUrl != null && user.photoUrl!.isNotEmpty
+            child: user.photoUrl != null &&
+                    user.photoUrl!.isNotEmpty &&
+                    isSupabaseImageUrlValid(user.photoUrl)
                 ? Image.network(
                     user.photoUrl!,
                     fit: BoxFit.cover,
@@ -43,7 +46,7 @@ class UmadimBoardItemWidget extends StatelessWidget {
           Text(
             getFirstAndInitial(user.name),
             overflow: TextOverflow.ellipsis,
-            style: AppText.text().bodySmall!.copyWith(),
+            style: AppText.bodySmall(context).copyWith(),
           ),
         ],
       ),

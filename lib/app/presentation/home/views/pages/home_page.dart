@@ -1,11 +1,12 @@
+import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/componentes/agenda_component.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/componentes/home_component.dart';
+import 'package:connect_umadim_app/app/presentation/home/views/componentes/profile_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-import '../../../../core/style/app_colors.dart';
 import '../../../user/providers/user_provider.dart';
 import '../../provider/home_provider.dart';
 import '../componentes/directory_component.dart';
@@ -18,7 +19,6 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  int selectedIcon = 0;
   PersistentTabController controller = PersistentTabController();
 
   @override
@@ -28,41 +28,38 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.read(listUsersProvider.notifier).load();
       ref.read(getUserProvider.notifier).load();
       ref.read(getAllVersesProvider.notifier).load();
-      return ref.read(homeTabsProvider.notifier).updateState = 0;
+      ref.read(homeTabsProvider.notifier).updateState = 0;
     });
   }
 
-  void listenTab() {
-    ref.listen<int>(
-      homeTabsProvider,
-      (previous, next) {
-        setState(() {
-          controller.jumpToTab(next);
-          selectedIcon = next;
-        });
-      },
-    );
+  void _listenTab() {
+    ref.listen<int>(homeTabsProvider, (previous, next) {
+      controller.jumpToTab(next);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    listenTab();
+    final userState = ref.watch(getUserProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    _listenTab();
 
     return Scaffold(
-      bottomNavigationBar: PersistentTabView(
+      body: PersistentTabView(
         context,
         controller: controller,
         screens: [
-          HomeComponent(),
-          AgendaComponent(),
-          DirectoryComponent(),
-          Center(child: Text('Perfil')),
-          Center(child: Text('Mais')),
+          const HomeComponent(),
+          const AgendaComponent(),
+          // Índice 2 é o FAB — tela vazia (nunca chega aqui normalmente)
+          const SizedBox.shrink(),
+          const DirectoryComponent(),
+          const ProfileComponent(),
         ],
-        items: _navBarsItems(),
+        items: _navItems(context, isDark),
         popBehaviorOnSelectedNavBarItemPress: PopBehavior.all,
-        padding: const EdgeInsets.all(8).copyWith(top: 10),
-        backgroundColor: AppColor.bgColor,
+        padding: const EdgeInsets.only(top: 8),
+        backgroundColor: isDark ? AppColor.darkSurface : AppColor.lightSurface,
         animationSettings: const NavBarAnimationSettings(
           screenTransitionAnimation: ScreenTransitionAnimationSettings(
             animateTabTransition: true,
@@ -72,52 +69,112 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
         confineToSafeArea: true,
         navBarHeight: 64,
-        navBarStyle: NavBarStyle.style6,
+        navBarStyle: NavBarStyle.style15,
+        onItemSelected: (index) {
+          // Índice 2 = botão Postar (FAB central)
+          if (index == 2) {
+            userState.maybeWhen(
+              loadSuccess: (data) => Navigator.pushNamed(
+                context,
+                '/post/create',
+                arguments: data,
+              ),
+              orElse: () {},
+            );
+          }
+        },
       ),
     );
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
+  List<PersistentBottomNavBarItem> _navItems(
+      BuildContext context, bool isDark) {
+    final inactiveColor =
+        isDark ? AppColor.darkOnSurfaceMuted : AppColor.lightOnSurfaceMuted;
+
     return [
+      // ── Início ──────────────────────────────────────────
       PersistentBottomNavBarItem(
-        iconSize: 24,
-        icon: Icon(Icons.home),
-        inactiveIcon: Icon(Icons.home_outlined),
-        title: ("Início"),
-        activeColorPrimary: AppColor.primary,
-        inactiveColorPrimary: AppColor.mediumGrey,
-        textStyle: AppText.text().bodyMedium!.copyWith(fontSize: 14),
+        icon: const Icon(Icons.home_rounded),
+        inactiveIcon: const Icon(Icons.home_outlined),
+        title: 'Início',
+        activeColorPrimary: AppColor.orange500,
+        inactiveColorPrimary: inactiveColor,
+        textStyle: AppText.labelSmall(context),
       ),
+      // ── Eventos ─────────────────────────────────────────
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.calendar_month),
-        inactiveIcon: Icon(Icons.calendar_month_outlined),
-        title: ("Agenda"),
-        activeColorPrimary: AppColor.primary,
-        inactiveColorPrimary: AppColor.mediumGrey,
-        textStyle: AppText.text().bodyMedium!.copyWith(fontSize: 14),
+        icon: const Icon(Icons.calendar_month_rounded),
+        inactiveIcon: const Icon(Icons.calendar_month_outlined),
+        title: 'Eventos',
+        activeColorPrimary: AppColor.orange500,
+        inactiveColorPrimary: inactiveColor,
+        textStyle: AppText.labelSmall(context),
       ),
+      // ── Postar (FAB central) ─────────────────────────────
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.folder),
-        inactiveIcon: Icon(Icons.folder_open),
-        title: ("Diretório"),
-        activeColorPrimary: AppColor.primary,
-        inactiveColorPrimary: AppColor.mediumGrey,
-        textStyle: AppText.text().bodyMedium!.copyWith(fontSize: 14),
+        icon: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            gradient: AppColor.flamePrimary,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.orange500.withOpacity(0.45),
+                blurRadius: 14,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.add_rounded,
+            color: AppColor.light50,
+            size: 28,
+          ),
+        ),
+        inactiveIcon: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            gradient: AppColor.flamePrimary,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.orange500.withOpacity(0.35),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.add_rounded,
+            color: AppColor.light50,
+            size: 28,
+          ),
+        ),
+        title: 'Postar',
+        activeColorPrimary: AppColor.orange500,
+        inactiveColorPrimary: inactiveColor,
+        textStyle: AppText.labelSmall(context),
       ),
+      // ── Membros ──────────────────────────────────────────
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.person_2),
-        inactiveIcon: Icon(Icons.person_2_outlined),
-        title: ("Perfil"),
-        activeColorPrimary: AppColor.primary,
-        inactiveColorPrimary: AppColor.mediumGrey,
-        textStyle: AppText.text().bodyMedium!.copyWith(fontSize: 14),
+        icon: const Icon(Icons.group_rounded),
+        inactiveIcon: const Icon(Icons.group_outlined),
+        title: 'Membros',
+        activeColorPrimary: AppColor.orange500,
+        inactiveColorPrimary: inactiveColor,
+        textStyle: AppText.labelSmall(context),
       ),
+      // ── Perfil ───────────────────────────────────────────
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.menu_rounded),
-        title: ("Mais"),
-        activeColorPrimary: AppColor.primary,
-        inactiveColorPrimary: AppColor.mediumGrey,
-        textStyle: AppText.text().bodyMedium!.copyWith(fontSize: 14),
+        icon: const Icon(Icons.person_rounded),
+        inactiveIcon: const Icon(Icons.person_outline_rounded),
+        title: 'Perfil',
+        activeColorPrimary: AppColor.orange500,
+        inactiveColorPrimary: inactiveColor,
+        textStyle: AppText.labelSmall(context),
       ),
     ];
   }

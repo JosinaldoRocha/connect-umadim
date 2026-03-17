@@ -1,4 +1,3 @@
-import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/birthday_item_widget.dart';
 import 'package:connect_umadim_app/app/presentation/user/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +32,7 @@ class BirthdaysWeekWidget extends ConsumerWidget {
                       birthdayUsers.length > 1
                           ? 'Aniversariantes da semana 🎈'
                           : 'Aniversariante da semana 🎈',
-                      style: AppText.text().titleSmall!.copyWith(fontSize: 14),
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                     ),
                   ),
                   SizedBox(

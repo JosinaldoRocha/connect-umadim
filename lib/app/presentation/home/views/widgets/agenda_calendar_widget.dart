@@ -1,5 +1,4 @@
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
-import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -50,16 +49,16 @@ class AgendaCalendarWidget extends StatelessWidget {
         calendarFormat: CalendarFormat.month,
         eventLoader: getEventsForDay,
         headerStyle: HeaderStyle(
-          titleTextStyle: AppText.text().titleMedium!,
+          titleTextStyle: Theme.of(context).textTheme.titleMedium!,
           leftChevronIcon: Icon(
             Icons.arrow_back_ios_rounded,
             size: 22,
-            color: AppColor.tertiary,
+            color: AppColor.amber500,
           ),
           rightChevronIcon: Icon(
             Icons.arrow_forward_ios_rounded,
             size: 22,
-            color: AppColor.tertiary,
+            color: AppColor.amber500,
           ),
           headerPadding: EdgeInsets.symmetric(vertical: 4),
           formatButtonVisible: false,
@@ -77,14 +76,14 @@ class AgendaCalendarWidget extends StatelessWidget {
         rowHeight: 36,
         calendarStyle: CalendarStyle(
           todayDecoration: BoxDecoration(
-            color: AppColor.primary,
+            color: AppColor.orange500,
             shape: BoxShape.circle,
           ),
           markerSize: 6,
           markerMargin: EdgeInsets.only(top: 2),
           markerDecoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColor.secondary,
+            color: AppColor.wine600,
           ),
         ),
       ),

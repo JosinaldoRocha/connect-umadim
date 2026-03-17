@@ -9,7 +9,7 @@ class LoadingHomeAppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: AppColor.lightGrey2,
+      baseColor: AppColor.light400,
       highlightColor: const Color.fromARGB(255, 244, 244, 244),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,7 +25,7 @@ class LoadingHomeAppBarWidget extends StatelessWidget {
             height: 48,
             width: 48,
             decoration: BoxDecoration(
-              color: AppColor.lightGrey2,
+              color: AppColor.light400,
               shape: BoxShape.circle,
             ),
           )
@@ -41,7 +41,7 @@ class LoadingHomeAppBarWidget extends StatelessWidget {
         height: height,
         width: width ?? double.infinity,
         decoration: BoxDecoration(
-          color: AppColor.lightGrey2,
+          color: AppColor.light400,
           borderRadius: BorderRadius.circular(8),
         ),
       ),

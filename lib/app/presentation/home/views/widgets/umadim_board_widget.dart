@@ -18,7 +18,7 @@ class UmadimBoardWidget extends ConsumerWidget {
           children: [
             Container(
               height: 94,
-              color: AppColor.bgColor,
+              color: AppColor.darkBackground,
               margin: EdgeInsets.only(top: 16),
               child: UmadimBoardListWidget(data: data),
             ),
