@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/enums/post_type_enum.dart';
@@ -141,8 +142,16 @@ class _PostCardWidgetState extends ConsumerState<PostCardWidget> {
         children: [
           if (post.isPinned) _buildPinnedBanner(context),
           _buildHeader(context, isDark),
-          if (post.hasMedia && post.isImage) _buildImage(post.mediaUrl!),
-          if (post.hasMedia && post.isVideo) _buildVideoThumb(context),
+          if (post.hasMedia &&
+              post.isImage &&
+              post.mediaUrl != null &&
+              isSupabaseImageUrlValid(post.mediaUrl))
+            _buildImage(post.mediaUrl!),
+          if (post.hasMedia &&
+              post.isVideo &&
+              post.mediaUrl != null &&
+              isSupabaseImageUrlValid(post.mediaUrl))
+            _buildVideoThumb(context),
           _buildContent(context, isDark),
           if (post.type == PostType.poll) _PollWidget(post: post, uid: _uid),
           _buildActions(context, isDark),
@@ -186,7 +195,9 @@ class _PostCardWidgetState extends ConsumerState<PostCardWidget> {
               gradient: const LinearGradient(
                   colors: [AppColor.wine700, AppColor.orange600]),
             ),
-            child: post.authorPhotoUrl != null
+            child: post.authorPhotoUrl != null &&
+                    post.authorPhotoUrl!.isNotEmpty &&
+                    isSupabaseImageUrlValid(post.authorPhotoUrl)
                 ? ClipRRect(
                     borderRadius: AppDecoration.radiusMd,
                     child: CachedNetworkImage(
@@ -264,6 +275,11 @@ class _PostCardWidgetState extends ConsumerState<PostCardWidget> {
         children: [
           CachedNetworkImage(
             imageUrl: widget.post.mediaUrl!,
+            errorWidget: (_, __, ___) => Container(
+              height: 200,
+              color: AppColor.darkSurfaceVariant,
+              child: const Center(child: Icon(Icons.broken_image_outlined)),
+            ),
             width: double.infinity,
             height: 200,
             fit: BoxFit.cover,

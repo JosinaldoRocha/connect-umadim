@@ -314,7 +314,17 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage>
                   isSupabaseImageUrlValid(user.photoUrl)
               ? ClipRRect(
                   borderRadius: AppDecoration.radiusMd,
-                  child: Image.network(user.photoUrl!, fit: BoxFit.cover),
+                  child: Image.network(
+                    user.photoUrl!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Center(
+                      child: Text(
+                        user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                        style: AppText.labelLarge(context)
+                            .copyWith(color: AppColor.light50),
+                      ),
+                    ),
+                  ),
                 )
               : Center(
                   child: Text(
@@ -353,10 +363,12 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage>
           const Icon(Icons.verified_rounded,
               size: 15, color: AppColor.amber400),
           const SizedBox(width: 7),
-          Text(
-            'Postando como líder — aviso, evento e enquete disponíveis',
-            style: AppText.labelSmall(context).copyWith(
-              color: AppColor.amber300,
+          Expanded(
+            child: Text(
+              'Postando como líder — aviso, evento e enquete disponíveis',
+              style: AppText.labelSmall(context).copyWith(
+                color: AppColor.amber300,
+              ),
             ),
           ),
         ],
