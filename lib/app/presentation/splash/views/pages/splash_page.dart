@@ -48,7 +48,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     authListen();
 
     return Scaffold(
-      backgroundColor: AppColor.bgColor,
+      backgroundColor: AppColor.darkBackground,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -61,7 +61,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
             width: 60,
             child: LoadingIndicator(
               indicatorType: Indicator.ballPulse,
-              colors: [AppColor.primary],
+              colors: [AppColor.orange500],
             ),
           ),
         ],
