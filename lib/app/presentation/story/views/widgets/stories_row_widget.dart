@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/story_model.dart';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:connect_umadim_app/app/presentation/story/provider/story_provider.dart';
+import 'package:connect_umadim_app/app/presentation/story/views/pages/story_viewer_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,6 +39,8 @@ class StoriesRowWidget extends ConsumerWidget {
               return Padding(
                 padding: EdgeInsets.only(right: i < groups.length - 1 ? 12 : 0),
                 child: _StoryGroupItem(
+                  groups: groups,
+                  initialGroupIndex: i,
                   group: group,
                   isSeen: allSeen,
                   currentUid: uid,
@@ -141,11 +145,15 @@ class _AddStoryButton extends StatelessWidget {
 // ── Item de grupo de stories ──────────────────────────────────
 
 class _StoryGroupItem extends ConsumerWidget {
+  final List<StoryGroup> groups;
+  final int initialGroupIndex;
   final StoryGroup group;
   final bool isSeen;
   final String currentUid;
 
   const _StoryGroupItem({
+    required this.groups,
+    required this.initialGroupIndex,
     required this.group,
     required this.isSeen,
     required this.currentUid,
@@ -165,11 +173,12 @@ class _StoryGroupItem extends ConsumerWidget {
         }
         Navigator.pushNamed(
           context,
-          '/story/view',
-          arguments: {
-            'group': group,
-            'currentUid': currentUid,
-          },
+          '/story/viewer',
+          arguments: StoryViewerArgs(
+            groups: groups,
+            initialGroupIndex: initialGroupIndex,
+            currentUid: currentUid,
+          ),
         );
       },
       child: Column(
@@ -205,7 +214,9 @@ class _StoryGroupItem extends ConsumerWidget {
                 ),
               ),
               child: ClipOval(
-                child: group.authorPhotoUrl != null
+                child: group.authorPhotoUrl != null &&
+                        group.authorPhotoUrl!.isNotEmpty &&
+                        isSupabaseImageUrlValid(group.authorPhotoUrl)
                     ? CachedNetworkImage(
                         imageUrl: group.authorPhotoUrl!,
                         fit: BoxFit.cover,
