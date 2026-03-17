@@ -13,7 +13,7 @@ class AppSnackBar {
         backgroundColor: bgColor,
         content: Text(
           title,
-          style: const TextStyle(color: AppColor.white),
+          style: const TextStyle(color: AppColor.light50),
         ),
       ),
     );

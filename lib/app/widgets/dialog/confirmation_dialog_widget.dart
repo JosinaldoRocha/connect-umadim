@@ -17,18 +17,18 @@ class ConfirmationDialogWidget extends StatelessWidget {
     return AlertDialog(
       title: Text(
         'Importante!',
-        style: AppText.text().titleMedium!.copyWith(color: AppColor.tertiary),
+        style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.amber500),
       ),
       content: Text(
         'Essa ação não pode ser desfeita. Deseja continuar?',
-        style: AppText.text().bodyMedium!.copyWith(color: AppColor.tertiary),
+        style: AppText.bodyMedium(context).copyWith(color: AppColor.amber500),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             'Cancelar',
-            style: AppText.text().bodyLarge!.copyWith(color: AppColor.tertiary),
+            style: AppText.bodyLarge(context).copyWith(color: AppColor.amber500),
           ),
         ),
         ButtonWidget(

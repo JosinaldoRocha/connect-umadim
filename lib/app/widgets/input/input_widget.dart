@@ -91,14 +91,18 @@ class InputWidget extends StatelessWidget {
             textAlignVertical: TextAlignVertical.center,
             onFieldSubmitted: onSubmitted,
             readOnly: readOnly,
-            cursorColor: AppColor.primary,
+            cursorColor: AppColor.orange500,
             cursorHeight: 22,
             inputFormatters: inputFormatters,
             keyboardType: keyboardType,
             obscureText: obscureText ?? false,
             maxLines: lines,
-            style: AppText.text().bodyMedium!.copyWith(
-                  color: !isEnabled ? AppColor.black : AppColor.primaryGrey,
+            style: AppText.bodyMedium(context).copyWith(
+                  color: !isEnabled
+                      ? AppColor.wine900
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? AppColor.darkOnSurfaceMuted
+                          : AppColor.lightOnSurfaceMuted),
                 ),
             textAlign: TextAlign.left,
             decoration: InputDecoration(
@@ -112,10 +116,10 @@ class InputWidget extends StatelessWidget {
               ),
               errorStyle: const TextStyle(color: AppColor.error),
               filled: true,
-              fillColor: hasFocus ? AppColor.lightBlue : AppColor.lightGrey,
+              fillColor: hasFocus ? AppColor.info : (Theme.of(context).brightness == Brightness.dark ? AppColor.darkOnSurfaceMuted : AppColor.lightOnSurfaceMuted),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50),
-                borderSide: const BorderSide(color: AppColor.mediumBlue),
+                borderSide: const BorderSide(color: AppColor.info),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50),
@@ -126,8 +130,10 @@ class InputWidget extends StatelessWidget {
                 borderSide: BorderSide.none,
               ),
               prefixIcon: prefix,
-              hintStyle: AppText.text().bodyMedium?.copyWith(
-                    color: AppColor.primaryGrey,
+              hintStyle: AppText.bodyMedium(context).copyWith(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColor.darkOnSurfaceMuted
+                        : AppColor.lightOnSurfaceMuted,
                   ),
               hintText: hintText,
               suffixIcon: sufix,

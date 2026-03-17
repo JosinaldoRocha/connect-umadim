@@ -45,7 +45,9 @@ class _TimeSelectorWidgetState extends State<TimeSelectorWidget> {
             height: 60,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
-              color: AppColor.lightGrey,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColor.darkOnSurfaceMuted
+                  : AppColor.lightOnSurfaceMuted,
               borderRadius: BorderRadius.circular(50),
               border: widget.date == null
                   ? Border.all(color: AppColor.error)
@@ -60,8 +62,10 @@ class _TimeSelectorWidgetState extends State<TimeSelectorWidget> {
                     widget.date == null
                         ? widget.hintText
                         : '${TimeOfDay.fromDateTime(widget.date!).format(context)}h',
-                    style: AppText.text().bodyMedium!.copyWith(
-                          color: AppColor.primaryGrey,
+                    style: AppText.bodyMedium(context).copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColor.darkOnSurfaceMuted
+                              : AppColor.lightOnSurfaceMuted,
                         ),
                   ),
                   widget.date != null
@@ -71,7 +75,9 @@ class _TimeSelectorWidgetState extends State<TimeSelectorWidget> {
                         )
                       : Icon(
                           Icons.timer_outlined,
-                          color: AppColor.primaryGrey,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColor.darkOnSurfaceMuted
+                              : AppColor.lightOnSurfaceMuted,
                         ),
                 ],
               ),

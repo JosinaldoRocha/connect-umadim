@@ -46,7 +46,9 @@ class _SelectDateWidgetState extends State<SelectDateWidget> {
             height: 60,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
-              color: AppColor.lightGrey,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColor.darkOnSurfaceMuted
+                  : AppColor.lightOnSurfaceMuted,
               borderRadius: BorderRadius.circular(50),
               border: widget.date == null
                   ? Border.all(color: AppColor.error)
@@ -61,8 +63,10 @@ class _SelectDateWidgetState extends State<SelectDateWidget> {
                     widget.date == null
                         ? widget.hintText
                         : DateFormat('dd/MM/yyyy').format(widget.date!),
-                    style: AppText.text().bodyMedium!.copyWith(
-                          color: AppColor.primaryGrey,
+                    style: AppText.bodyMedium(context).copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColor.darkOnSurfaceMuted
+                              : AppColor.lightOnSurfaceMuted,
                         ),
                   ),
                   widget.date != null
@@ -72,7 +76,9 @@ class _SelectDateWidgetState extends State<SelectDateWidget> {
                         )
                       : Icon(
                           Icons.calendar_month_rounded,
-                          color: AppColor.primaryGrey,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColor.darkOnSurfaceMuted
+                              : AppColor.lightOnSurfaceMuted,
                         ),
                 ],
               ),

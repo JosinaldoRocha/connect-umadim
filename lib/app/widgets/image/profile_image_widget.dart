@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:connect_umadim_app/app/core/supabase/supabase_init.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class ProfileImageWidget extends StatelessWidget {
     }
 
     if (image != null) {
-      if (image!.contains('connect-umadim')) {
+      if (image!.contains('connect-umadim') && isSupabaseImageUrlValid(image)) {
         return Image.network(
           image!,
           fit: BoxFit.cover,
@@ -40,7 +41,9 @@ class ProfileImageWidget extends StatelessWidget {
         );
       }
 
-      if (!kIsWeb) {
+      // Só usa File para caminhos locais (não URLs http/https)
+      final isLocalPath = !image!.startsWith('http://') && !image!.startsWith('https://');
+      if (!kIsWeb && isLocalPath) {
         return CircleAvatar(
           radius: size,
           backgroundImage: FileImage(File(image!)),

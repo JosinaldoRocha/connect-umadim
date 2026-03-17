@@ -39,8 +39,10 @@ class _DropDownWidgetState extends State<DropDownWidget> {
             }
             return null;
           },
-      textStyle: AppText.text().bodyMedium!.copyWith(
-            color: AppColor.primaryGrey,
+      textStyle: AppText.bodyMedium(context).copyWith(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColor.darkOnSurfaceMuted
+                : AppColor.lightOnSurfaceMuted,
           ),
       textFieldDecoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
@@ -48,14 +50,18 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           vertical: 17,
         ),
         filled: true,
-        fillColor: AppColor.lightGrey,
+        fillColor: Theme.of(context).brightness == Brightness.dark
+            ? AppColor.darkOnSurfaceMuted
+            : AppColor.lightOnSurfaceMuted,
         hintText: widget.hintText,
-        hintStyle: AppText.text().bodyMedium?.copyWith(
-              color: AppColor.primaryGrey,
+        hintStyle: AppText.bodyMedium(context).copyWith(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColor.darkOnSurfaceMuted
+                  : AppColor.lightOnSurfaceMuted,
               fontWeight: FontWeight.w500,
             ),
-        enabledBorder: _buildOutlineInputBorder(),
-        focusedBorder: _buildOutlineInputBorder(),
+        enabledBorder: _buildOutlineInputBorder(context),
+        focusedBorder: _buildOutlineInputBorder(context),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
           borderSide: const BorderSide(color: AppColor.error),
@@ -68,12 +74,16 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       dropDownIconProperty: IconProperty(
         icon: Icons.arrow_drop_down_rounded,
         size: 35,
-        color: AppColor.primaryGrey,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColor.darkOnSurfaceMuted
+            : AppColor.lightOnSurfaceMuted,
       ),
       clearIconProperty: IconProperty(
         icon: Icons.close,
         size: 20,
-        color: AppColor.primaryGrey,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColor.darkOnSurfaceMuted
+            : AppColor.lightOnSurfaceMuted,
       ),
       readOnly: true,
       controller: widget.controller,
@@ -86,10 +96,13 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     );
   }
 
-  OutlineInputBorder _buildOutlineInputBorder() {
+  OutlineInputBorder _buildOutlineInputBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(50),
-      borderSide: const BorderSide(color: AppColor.lightGrey),
+      borderSide: BorderSide(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColor.darkOnSurfaceMuted
+              : AppColor.lightOnSurfaceMuted),
     );
   }
 }

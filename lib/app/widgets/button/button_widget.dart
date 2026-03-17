@@ -64,14 +64,14 @@ class ButtonWidget extends StatelessWidget {
     this.trailing,
   }) : type = ButtonType.secundary;
   Color get buttonColor {
-    return type == ButtonType.primary ? AppColor.primary : AppColor.lightBlue;
+    return type == ButtonType.primary ? AppColor.orange500 : AppColor.info;
   }
 
   Color get buttonTitleColor {
-    return type == ButtonType.primary ? Colors.white : AppColor.primary;
+    return type == ButtonType.primary ? Colors.white : AppColor.orange500;
   }
 
-  Color get buttonDisabledColor => buttonColor.withOpacity(0.48);
+  Color get buttonDisabledColor => buttonColor.withValues(alpha: 0.48);
 
   @override
   Widget build(BuildContext context) {
@@ -86,14 +86,14 @@ class ButtonWidget extends StatelessWidget {
       disabledColor: !isLoading ? buttonDisabledColor : color ?? buttonColor,
       onPressed: !isLoading ? onTap : null,
       child: !isLoading
-          ? _buildContent()
+          ? _buildContent(context)
           : SizedBox(
               height: 8,
               width: 48,
               child: LoadingIndicator(
                 indicatorType: Indicator.ballPulse,
                 colors: [
-                  (color == Colors.white) ? AppColor.primary : Colors.white,
+                  (color == Colors.white) ? AppColor.orange500 : Colors.white,
                 ],
                 strokeWidth: 1,
               ),
@@ -105,23 +105,27 @@ class ButtonWidget extends StatelessWidget {
   //   return leading != null ? _buildWithIcon() : _buildText();
   // }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return trailing == null
-        ? _buildText()
+        ? _buildText(context)
         : Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [_buildText(), const SpaceHorizontal.x2(), trailing!],
+            children: [
+              _buildText(context),
+              const SpaceHorizontal.x2(),
+              trailing!
+            ],
           );
   }
 
-  Widget _buildText() {
+  Widget _buildText(BuildContext context) {
     return Text(
       title,
-      style: AppText.text().bodyLarge!.copyWith(
-            fontWeight: FontWeight.bold,
-            color: textColor ?? AppColor.white,
-          ),
+      style: AppText.bodyLarge(context).copyWith(
+        fontWeight: FontWeight.bold,
+        color: textColor ?? AppColor.light50,
+      ),
     );
   }
 
