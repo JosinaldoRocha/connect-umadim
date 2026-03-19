@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/style/app_colors.dart';
+import '../../core/style/app_decoration.dart';
 import '../../core/style/app_text.dart';
 
 class InputWidget extends StatelessWidget {
@@ -10,10 +11,8 @@ class InputWidget extends StatelessWidget {
   final Widget? sufix;
   final TextInputType keyboardType;
   final bool isEnabled;
-
   final String? hintText;
   final bool? obscureText;
-
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
   final Iterable<String>? autofillHints;
@@ -23,26 +22,11 @@ class InputWidget extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int? lines;
   final int? minLines;
-
   final AutovalidateMode? autoValidate;
   final FocusNode? focus;
   final bool autoFocus;
-
   final TextCapitalization? textCapitalization;
 
-  /// FormInput
-  ///
-  /// [controller] form controller
-  ///
-  /// [prefix] is a prefix of input will be rendered on left side of input
-  ///
-  /// [type] type of text input
-  ///
-  /// [isEnable] is a bool that will be check if formInput is active
-  ///
-  /// [validator] function that validate input
-  ///
-  /// [onChanged] onChanged of formInput
   InputWidget({
     required this.controller,
     this.isEnabled = true,
@@ -71,11 +55,31 @@ class InputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Focus(
       child: Builder(
         builder: (context) {
-          final FocusNode focusNode = Focus.of(context);
-          final bool hasFocus = focusNode.hasFocus;
+          final hasFocus = Focus.of(context).hasFocus;
+
+          final fillColor = isDark
+              ? AppColor.darkSurfaceVariant
+              : AppColor.lightSurfaceVariant;
+
+          final borderColor = hasFocus
+              ? AppColor.orange500
+              : (isDark ? AppColor.darkBorder : AppColor.lightBorder);
+
+          final border = OutlineInputBorder(
+            borderRadius: AppDecoration.radiusMd,
+            borderSide: BorderSide(color: borderColor, width: 1.5),
+          );
+
+          final errorBorder = OutlineInputBorder(
+            borderRadius: AppDecoration.radiusMd,
+            borderSide: const BorderSide(color: AppColor.error, width: 1.5),
+          );
+
           return TextFormField(
             textCapitalization: textCapitalization!,
             focusNode: focus ?? _focus,
@@ -92,51 +96,39 @@ class InputWidget extends StatelessWidget {
             onFieldSubmitted: onSubmitted,
             readOnly: readOnly,
             cursorColor: AppColor.orange500,
-            cursorHeight: 22,
+            cursorHeight: 20,
             inputFormatters: inputFormatters,
             keyboardType: keyboardType,
             obscureText: obscureText ?? false,
             maxLines: lines,
             style: AppText.bodyMedium(context).copyWith(
-                  color: !isEnabled
-                      ? AppColor.wine900
-                      : (Theme.of(context).brightness == Brightness.dark
-                          ? AppColor.darkOnSurfaceMuted
-                          : AppColor.lightOnSurfaceMuted),
-                ),
-            textAlign: TextAlign.left,
+              color: isDark
+                  ? AppColor.darkOnBackground
+                  : AppColor.lightOnBackground,
+            ),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 17.0,
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50),
-                borderSide: const BorderSide(color: AppColor.error),
-              ),
-              errorStyle: const TextStyle(color: AppColor.error),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
               filled: true,
-              fillColor: hasFocus ? AppColor.info : (Theme.of(context).brightness == Brightness.dark ? AppColor.darkOnSurfaceMuted : AppColor.lightOnSurfaceMuted),
+              fillColor: fillColor,
+              border: border,
+              enabledBorder: border,
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50),
-                borderSide: const BorderSide(color: AppColor.info),
+                borderRadius: AppDecoration.radiusMd,
+                borderSide:
+                    const BorderSide(color: AppColor.orange500, width: 1.5),
               ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50),
-                borderSide: const BorderSide(color: AppColor.error),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50),
-                borderSide: BorderSide.none,
-              ),
+              errorBorder: errorBorder,
+              focusedErrorBorder: errorBorder,
+              errorStyle: const TextStyle(color: AppColor.error, fontSize: 11),
               prefixIcon: prefix,
-              hintStyle: AppText.bodyMedium(context).copyWith(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? AppColor.darkOnSurfaceMuted
-                        : AppColor.lightOnSurfaceMuted,
-                  ),
-              hintText: hintText,
               suffixIcon: sufix,
+              hintText: hintText,
+              hintStyle: AppText.bodyMedium(context).copyWith(
+                color: isDark
+                    ? AppColor.darkOnSurfaceMuted
+                    : AppColor.lightOnSurfaceMuted,
+              ),
             ),
           );
         },

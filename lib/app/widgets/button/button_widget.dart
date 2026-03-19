@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 import '../../core/style/app_colors.dart';
+import '../../core/style/app_decoration.dart';
 import '../../core/style/app_text.dart';
 import '../spacing/spacing.dart';
 
@@ -16,32 +17,16 @@ class ButtonWidget extends StatelessWidget {
   final double? width;
   final Widget? leading;
   final Widget? prefixIcon;
-
   final Color? color;
   final Color? textColor;
-
   final Widget? trailing;
-
-  ///  Button
-  /// button that will be execute show a circular progress indicator
-  ///
-  /// [text] is the text inside button
-  ///
-  /// [onTap] is a function will be execute when button is clicked
-  ///
-  /// [isLoading] is a bool that check if  circular progress
-  /// indicator is active.
-  /// IMPORTANT -  You need change manually [isLoading]
-  /// to activated the circular progress indicator
-  ///
-  /// [color] is a background color of button
 
   const ButtonWidget({
     super.key,
     required this.title,
     this.isLoading = false,
     this.onTap,
-    this.height = 56,
+    this.height = 52,
     this.leading,
     this.prefixIcon,
     this.color,
@@ -55,7 +40,7 @@ class ButtonWidget extends StatelessWidget {
     required this.title,
     this.isLoading = false,
     this.onTap,
-    this.height = 56,
+    this.height = 52,
     this.leading,
     this.prefixIcon,
     this.color,
@@ -63,31 +48,34 @@ class ButtonWidget extends StatelessWidget {
     this.textColor,
     this.trailing,
   }) : type = ButtonType.secundary;
-  Color get buttonColor {
-    return type == ButtonType.primary ? AppColor.orange500 : AppColor.info;
-  }
 
-  Color get buttonTitleColor {
-    return type == ButtonType.primary ? Colors.white : AppColor.orange500;
-  }
+  Color get _bgColor =>
+      type == ButtonType.primary ? AppColor.orange500 : AppColor.info;
 
-  Color get buttonDisabledColor => buttonColor.withValues(alpha: 0.48);
+  Color get _titleColor =>
+      type == ButtonType.primary ? AppColor.light50 : AppColor.orange500;
+
+  Color get _disabledColor => _bgColor.withOpacity(0.38);
+
+  bool get _isDisabled => onTap == null && !isLoading;
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       elevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
       height: height,
       minWidth: width ?? double.maxFinite,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: AppDecoration.radiusMd,
       ),
-      color: color ?? buttonColor,
-      disabledColor: !isLoading ? buttonDisabledColor : color ?? buttonColor,
+      color: color ?? _bgColor,
+      disabledColor: !isLoading ? _disabledColor : color ?? _bgColor,
       onPressed: !isLoading ? onTap : null,
-      child: !isLoading
-          ? _buildContent(context)
-          : SizedBox(
+      child: isLoading
+          ? SizedBox(
               height: 8,
               width: 48,
               child: LoadingIndicator(
@@ -97,13 +85,10 @@ class ButtonWidget extends StatelessWidget {
                 ],
                 strokeWidth: 1,
               ),
-            ),
+            )
+          : _buildContent(context),
     );
   }
-
-  // Widget _buildContent() {
-  //   return leading != null ? _buildWithIcon() : _buildText();
-  // }
 
   Widget _buildContent(BuildContext context) {
     return trailing == null
@@ -114,7 +99,7 @@ class ButtonWidget extends StatelessWidget {
             children: [
               _buildText(context),
               const SpaceHorizontal.x2(),
-              trailing!
+              trailing!,
             ],
           );
   }
@@ -122,44 +107,11 @@ class ButtonWidget extends StatelessWidget {
   Widget _buildText(BuildContext context) {
     return Text(
       title,
-      style: AppText.bodyLarge(context).copyWith(
-        fontWeight: FontWeight.bold,
-        color: textColor ?? AppColor.light50,
+      style: AppText.labelLarge(context).copyWith(
+        fontSize: 15,
+        fontWeight: FontWeight.w700,
+        color: textColor ?? _titleColor,
       ),
     );
   }
-
-  // Widget _buildWithIcon() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       const Spacer(),
-  //       if (prefixIcon != null)
-  //         Align(
-  //           alignment: Alignment.centerLeft,
-  //           child: Padding(
-  //             padding: const EdgeInsets.only(left: Spacing.x10),
-  //             child: leading,
-  //           ),
-  //         ),
-  //       const SizedBox(
-  //         width: 16,
-  //       ),
-  //       Center(
-  //         child: _buildText(),
-  //       ),
-  //       const SizedBox(
-  //         width: 16,
-  //       ),
-  //       Align(
-  //         alignment: Alignment.centerRight,
-  //         child: Padding(
-  //           padding: const EdgeInsets.only(right: Spacing.x10),
-  //           child: leading,
-  //         ),
-  //       ),
-  //       const Spacer(),
-  //     ],
-  //   );
-  // }
 }
