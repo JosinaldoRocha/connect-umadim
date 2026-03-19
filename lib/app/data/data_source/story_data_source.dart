@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -95,7 +96,9 @@ class StoryDataSource {
 
       await _storiesRef.doc(id).set(story.toMap());
       return Right(story);
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('StoryDataSource.createStory erro: $e');
+      debugPrint('StackTrace: $st');
       return Left(CommonError.undefined());
     }
   }
