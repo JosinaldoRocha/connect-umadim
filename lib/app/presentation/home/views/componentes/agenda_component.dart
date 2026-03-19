@@ -2,6 +2,7 @@ import 'package:connect_umadim_app/app/core/style/app_colors.dart';
 import 'package:connect_umadim_app/app/core/style/app_text.dart';
 import 'package:connect_umadim_app/app/data/models/event_model.dart';
 import 'package:connect_umadim_app/app/presentation/event/provider/event_provider.dart';
+import 'package:connect_umadim_app/app/presentation/event/views/widgets/add_event_button_widget.dart';
 import 'package:connect_umadim_app/app/presentation/home/views/widgets/agenda_calendar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 
 import '../../../../core/style/app_decoration.dart';
 import '../../../event/views/widgets/event_card_widget.dart';
+import '../../../user/providers/user_provider.dart';
 
 class AgendaComponent extends ConsumerStatefulWidget {
   const AgendaComponent({super.key});
@@ -88,8 +90,8 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
 
           const SizedBox(height: 14),
 
-          // Header da lista
-          _buildListHeader(context),
+          // Header da lista com botão adicionar
+          _buildListHeader(context, ref),
 
           // Lista de eventos
           Expanded(
@@ -108,16 +110,33 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
     );
   }
 
-  Widget _buildListHeader(BuildContext context) {
+  Widget _buildListHeader(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 0, 14, 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Eventos do mês', style: AppText.headlineSmall(context)),
-          Text(
-            '${filteredEvents.length} evento${filteredEvents.length != 1 ? 's' : ''}',
-            style: AppText.labelSmall(context),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${filteredEvents.length} evento${filteredEvents.length != 1 ? 's' : ''}',
+                style: AppText.labelSmall(context),
+              ),
+              const SizedBox(width: 12),
+              AddEventButtonWidget(
+                onTap: () {
+                  ref.read(getUserProvider).maybeWhen(
+                        loadSuccess: (user) =>
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed('/event/add', arguments: user),
+                        orElse: () {},
+                      );
+                },
+                compact: true,
+              ),
+            ],
           ),
         ],
       ),
@@ -133,6 +152,17 @@ class _AgendaComponentState extends ConsumerState<AgendaComponent> {
             Text(
               'Nenhum evento para este mês',
               style: AppText.bodySmall(context),
+            ),
+            const SizedBox(height: 20),
+            AddEventButtonWidget(
+              onTap: () {
+                ref.read(getUserProvider).maybeWhen(
+                      loadSuccess: (user) =>
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed('/event/add', arguments: user),
+                      orElse: () {},
+                    );
+              },
             ),
           ],
         ),
