@@ -11,6 +11,6 @@ class StoryRoutes extends IModuleRoutes {
   @override
   Map<String, Widget Function(BuildContext context)> get routes => {
         '/viewer': (context) => const StoryViewerPage(),
-        '/create': (context) => const StoryCreatePage(),
+        '/create': (context) => CreateStoryPage(),
       };
 }

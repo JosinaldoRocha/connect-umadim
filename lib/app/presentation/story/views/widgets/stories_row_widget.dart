@@ -100,7 +100,8 @@ class _AddStoryButton extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, '/story/create'),
+      onTap: () =>
+          Navigator.of(context, rootNavigator: true).pushNamed('/story/create'),
       child: Column(
         children: [
           Stack(
@@ -171,8 +172,7 @@ class _StoryGroupItem extends ConsumerWidget {
         if (unseen.isNotEmpty) {
           ref.read(markStoryViewedProvider(unseen.first.id));
         }
-        Navigator.pushNamed(
-          context,
+        Navigator.of(context, rootNavigator: true).pushNamed(
           '/story/viewer',
           arguments: StoryViewerArgs(
             groups: groups,
