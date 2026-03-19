@@ -5,7 +5,9 @@ import 'package:connect_umadim_app/app/presentation/event/provider/event_provide
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'add_event_button_widget.dart';
 import 'event_card_widget.dart';
+import '../../../user/providers/user_provider.dart';
 
 class NextEventWidget extends ConsumerStatefulWidget {
   const NextEventWidget({super.key});
@@ -54,15 +56,33 @@ class _NextEventWidgetState extends ConsumerState<NextEventWidget> {
                 isSingle ? 'Próximo evento' : 'Próximos eventos',
                 style: AppText.headlineSmall(context),
               ),
-              if (!isSingle)
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    'Ver todos',
-                    style: AppText.labelSmall(context)
-                        .copyWith(color: AppColor.orange400),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AddEventButtonWidget(
+                    onTap: () {
+                      ref.read(getUserProvider).maybeWhen(
+                            loadSuccess: (user) => Navigator.of(context,
+                                    rootNavigator: true)
+                                .pushNamed('/event/add', arguments: user),
+                            orElse: () {},
+                          );
+                    },
+                    compact: true,
                   ),
-                ),
+                  if (!isSingle) ...[
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Ver todos',
+                        style: AppText.labelSmall(context)
+                            .copyWith(color: AppColor.orange400),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ],
           ),
         ),

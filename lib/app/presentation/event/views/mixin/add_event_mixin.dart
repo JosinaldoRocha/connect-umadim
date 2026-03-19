@@ -17,138 +17,175 @@ import '../../../../widgets/snack_bar/app_snack_bar_widget.dart';
 import '../../provider/event_provider.dart';
 
 mixin AddEventMixin<T extends AddEventPage> on ConsumerState<T> {
+  // ── Controllers obrigatórios ──────────────────────────────
   final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
   final eventLocationController = TextEditingController();
   final promotedByController = SingleValueDropDownController();
   final eventTypeController = SingleValueDropDownController();
+
+  // ── Controllers opcionais ─────────────────────────────────
+  final descriptionController = TextEditingController();
+  final themeController = TextEditingController();
+  final ministerController = TextEditingController();
+  final singerController = TextEditingController();
+
+  // ── Estado ────────────────────────────────────────────────
   File? image;
   Uint8List? imageBytes;
   DateTime? eventDate;
   DateTime? eventTime;
   final formKey = GlobalKey<FormState>();
 
+  @override
+  void dispose() {
+    titleController.dispose();
+    eventLocationController.dispose();
+    descriptionController.dispose();
+    themeController.dispose();
+    ministerController.dispose();
+    singerController.dispose();
+    super.dispose();
+  }
+
+  // ── Escuta o estado ───────────────────────────────────────
+
   void listen() {
     ref.listen<AddEventState>(
       addEventProvider,
       (previous, next) {
         next.maybeWhen(
-          loadSuccess: (data) =>
+          loadSuccess: (_) =>
               Navigator.of(context).pushReplacementNamed('/home'),
-          loadFailure: (message) {
-            AppSnackBar.show(
-              context,
-              'Não foi possível adicionar o evento',
-              AppColor.error,
-            );
-          },
+          loadFailure: (_) => AppSnackBar.show(
+            context,
+            'Não foi possível adicionar o evento',
+            AppColor.error,
+          ),
           orElse: () {},
         );
       },
     );
   }
 
-  Future<void> selectEventTime() async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: eventTime != null
-          ? TimeOfDay(hour: eventTime!.hour, minute: eventTime!.minute)
-          : TimeOfDay.now(),
-    );
-
-    if (picked != null) {
-      DateTime now = DateTime.now();
-      DateTime selectedDateTime =
-          DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
-
-      setState(() {
-        eventTime = selectedDateTime;
-      });
-    }
-  }
+  // ── Seleção de data ───────────────────────────────────────
 
   Future<void> selectEventDate() async {
-    final currentDate = DateTime.now();
-    final lastDate = DateTime(currentDate.year, 12, 31);
-
-    final DateTime? picked = await showDatePicker(
+    final now = DateTime.now();
+    final picked = await showDatePicker(
       context: context,
-      firstDate: currentDate,
-      lastDate: lastDate,
+      initialDate: eventDate ?? now,
+      firstDate: now,
+      lastDate: DateTime(now.year + 2, 12, 31),
     );
+    if (picked != null) setState(() => eventDate = picked);
+  }
 
-    if (picked != null && picked != eventDate) {
+  // ── Seleção de hora ───────────────────────────────────────
+
+  Future<void> selectEventTime() async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: eventTime != null
+          ? TimeOfDay(
+              hour: eventTime!.hour,
+              minute: eventTime!.minute,
+            )
+          : TimeOfDay.now(),
+    );
+    if (picked != null) {
+      final now = DateTime.now();
       setState(() {
-        eventDate = picked;
+        eventTime =
+            DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
       });
     }
   }
 
+  // ── Seleção de imagem ─────────────────────────────────────
+
   Future<void> getImage() async {
-    final pickedFile = await ImagePicker().pickImage(
+    final picked = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 30,
     );
+    if (picked == null) return;
 
-    if (pickedFile != null) {
-      if (kIsWeb) {
-        Uint8List bytes = await pickedFile.readAsBytes();
-
-        setState(() {
-          imageBytes = bytes;
-          image = null;
-        });
-      } else {
-        setState(() {
-          image = File(pickedFile.path);
-          imageBytes = null;
-        });
-      }
+    if (kIsWeb) {
+      final bytes = await picked.readAsBytes();
+      setState(() {
+        imageBytes = bytes;
+        image = null;
+      });
+    } else {
+      setState(() {
+        image = File(picked.path);
+        imageBytes = null;
+      });
     }
   }
 
+  // ── Publicar evento ───────────────────────────────────────
+
   void onTapButton() {
-    if (formKey.currentState!.validate()) {
-      if (eventTime != null) {
-        final event = EventModel(
-          id: const Uuid().v4(),
-          userId: widget.user.id,
-          title: titleController.text,
-          type: eventTypeController.dropDownValue?.value,
-          status: eventDate != null
-              ? EventStatus.scheduled
-              : EventStatus.notScheduled,
-          imageUrl: image?.path,
-          eventLocation: eventLocationController.text,
-          promotedBy: promotedByController.dropDownValue?.value,
-          eventDate: eventDate,
-          eventTime: eventTime!,
-          description: descriptionController.text,
-          confirmedPresences: [],
-          createdAt: DateTime.now(),
-        );
+    if (!formKey.currentState!.validate()) return;
 
-        final authorizedUser =
-            widget.user.umadimFunction.title == FunctionType.leader ||
-                widget.user.umadimFunction.title == FunctionType.viceLeader ||
-                widget.user.umadimFunction.title == FunctionType.regent ||
-                widget.user.localFunction.title == FunctionType.leader ||
-                widget.user.localFunction.title == FunctionType.viceLeader;
+    if (eventTime == null) {
+      AppSnackBar.show(
+        context,
+        'Selecione o horário do evento',
+        AppColor.error,
+      );
+      return;
+    }
 
-        final isDepartmentAllowed =
-            widget.user.umadimFunction.department == event.promotedBy ||
-                widget.user.localFunction.department == event.promotedBy;
+    // Verifica permissão do usuário
+    final authorizedUser =
+        widget.user.umadimFunction.title == FunctionType.leader ||
+            widget.user.umadimFunction.title == FunctionType.viceLeader ||
+            widget.user.umadimFunction.title == FunctionType.regent ||
+            widget.user.localFunction.title == FunctionType.leader ||
+            widget.user.localFunction.title == FunctionType.viceLeader;
 
-        if (authorizedUser && isDepartmentAllowed) {
-          ref.read(addEventProvider.notifier).add(event, imageBytes);
-        } else {
-          AppSnackBar.show(
-            context,
-            'Você não tem permissão para criar um evento por esse departamento',
-            AppColor.error,
-          );
-        }
-      }
+    final event = EventModel(
+      id: const Uuid().v4(),
+      userId: widget.user.id,
+      title: titleController.text.trim(),
+      type: eventTypeController.dropDownValue?.value,
+      status:
+          eventDate != null ? EventStatus.scheduled : EventStatus.notScheduled,
+      imageUrl: image?.path,
+      eventLocation: eventLocationController.text.trim(),
+      promotedBy: promotedByController.dropDownValue?.value,
+      eventDate: eventDate,
+      eventTime: eventTime!,
+      description: descriptionController.text.trim().isEmpty
+          ? null
+          : descriptionController.text.trim(),
+      theme: themeController.text.trim().isEmpty
+          ? null
+          : themeController.text.trim(),
+      minister: ministerController.text.trim().isEmpty
+          ? null
+          : ministerController.text.trim(),
+      singer: singerController.text.trim().isEmpty
+          ? null
+          : singerController.text.trim(),
+      confirmedPresences: [],
+      createdAt: DateTime.now(),
+    );
+
+    final isDepartmentAllowed =
+        widget.user.umadimFunction.department == event.promotedBy ||
+            widget.user.localFunction.department == event.promotedBy;
+
+    if (authorizedUser && isDepartmentAllowed) {
+      ref.read(addEventProvider.notifier).add(event, imageBytes);
+    } else {
+      AppSnackBar.show(
+        context,
+        'Você não tem permissão para criar um evento por esse departamento',
+        AppColor.error,
+      );
     }
   }
 }

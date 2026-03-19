@@ -99,9 +99,9 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
         Text(
           title,
           style: AppText.bodySmall(context).copyWith(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         Text(
           value,
@@ -111,11 +111,10 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
     );
   }
 
-  Align buildConfirmPresenceButton() {
+  Widget buildConfirmPresenceButton() {
     final state = ref.watch(updateEventProvider);
 
-    return Align(
-      alignment: AlignmentDirectional.bottomEnd,
+    return Center(
       child: ButtonWidget(
         height: 44,
         width: 200,
@@ -160,16 +159,25 @@ mixin EventDetailsMixin<T extends EventDetailsPage> on ConsumerState<T> {
     );
   }
 
-  IconButton buildBackButton(bool validImage) {
-    return IconButton(
-      style: IconButton.styleFrom(
-        elevation: 0,
-        backgroundColor: validImage ? const Color(0x291A1A1A) : null,
-      ),
-      onPressed: () => Navigator.pop(context),
-      icon: Icon(
-        Icons.arrow_back,
-        color: validImage ? AppColor.light50 : AppColor.amber500,
+  Widget buildBackButton([bool validImage = false]) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => Navigator.pop(context),
+        borderRadius: BorderRadius.circular(24),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColor.darkSurfaceContainer,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColor.darkBorder),
+          ),
+          child: Icon(
+            Icons.chevron_left_rounded,
+            color: AppColor.light50,
+            size: 28,
+          ),
+        ),
       ),
     );
   }

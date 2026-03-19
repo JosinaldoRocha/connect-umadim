@@ -24,7 +24,7 @@ class EventImagePickerWidget extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: SizedBox(
-            height: image != null || imageBytes != null ? 250 : 66,
+            height: image != null || imageBytes != null ? 250 : 72,
             child: _buildImageWidget(context),
           ),
         ),
@@ -52,15 +52,21 @@ class EventImagePickerWidget extends StatelessWidget {
     }
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           Icons.image,
-          size: 48,
+          size: 40,
           color: AppColor.light500,
         ),
+        const SizedBox(height: 6),
         Text(
           'Toque para selecionar uma imagem',
           style: AppText.bodySmall(context),
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
